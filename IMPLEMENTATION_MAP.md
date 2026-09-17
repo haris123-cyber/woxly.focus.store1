@@ -6,6 +6,8 @@ This repository was empty when implementation began, so the frontend is a standa
 
 - `src/app`: Next.js App Router shell, metadata and product structured data.
 - `src/components/storefront.tsx`: interactive single-product experience and guarded UI states.
+- `src/components/site-shell.tsx`: shared navigation, utility actions and footer for secondary routes.
+- `src/components/interior-pages.tsx`: shop, checkout, customer, content and policy page experiences.
 - `src/data/store.ts`: demo content boundary; replace this module with a server-side storefront context adapter.
 - `src/types/store.ts`: normalized product and variant contracts.
 - `src/lib/catalog-mode.mjs`: PRD catalog-mode resolver, isolated for testing.
@@ -18,3 +20,5 @@ The cart, checkout, inventory, pincode, reviews and analytics interactions are d
 ## Implemented PRD coverage
 
 Compact adaptive header, product hero, real UI price derivation, colour variants, quantity bundles, cart drawer, trust strip, benefits, lifestyle story, feature proof, specifications, review summary, delivery checker UI, returns and warranty reassurance, FAQ, final CTA, footer, mobile purchase bar, metadata and Product JSON-LD.
+
+The route set also includes product listing, product details, search, cart, checkout, order success, order tracking, authentication, account overview, profile, order list/detail, wishlist, journal, about, contact, FAQ, privacy, terms, shipping and returns pages.
