@@ -1,7 +1,6 @@
 export function Logo() {
   return (
-    <a className="logo" href="#top" aria-label="Woxly home">
-      <span className="logoMark" aria-hidden="true">W</span>
+    <a className="logo" href="/" aria-label="Woxly home">
       <span>WOXLY</span>
     </a>
   );
