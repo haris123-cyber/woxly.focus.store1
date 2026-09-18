@@ -1,6 +1,5 @@
 "use client";
 
-import { ArrowRight } from "lucide-react";
 import { Logo } from "./logo";
 import Link from "next/link";
 

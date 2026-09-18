@@ -2,11 +2,10 @@
 
 import Image from "next/image";
 import { useEffect, useMemo, useRef, useState, use } from "react";
-import { ArrowDown, ArrowRight, BatteryCharging, Check, ChevronDown, CircleCheck, Eye, Headphones, Leaf, Menu, Minus, PackageCheck, Plus, Quote, ShieldCheck, ShoppingBag, SlidersHorizontal, Sparkles, Truck, X, Zap } from "lucide-react";
-import { bundles, faqs, product as defaultProduct, reviews } from "@/data/store";
+import { ArrowDown, ArrowRight, BatteryCharging, Check, ChevronDown, CircleCheck, Eye, Headphones, PackageCheck, Quote, ShieldCheck, SlidersHorizontal, Truck } from "lucide-react";
+import { faqs, product as defaultProduct, reviews } from "@/data/store";
 import { catalog } from "@/data/catalog";
 import { useCart } from "@/context/CartContext";
-import { Logo } from "@/components/logo";
 
 const money = (value: number) => new Intl.NumberFormat("en-IN", { style: "currency", currency: "INR", maximumFractionDigits: 0 }).format(value);
 
@@ -37,8 +36,6 @@ export default function Storefront({ params }: { params: Promise<{ slug: string 
   const [activeImage, setActiveImage] = useState(0);
   const [activeReviewIndex, setActiveReviewIndex] = useState(0);
   const [stickyVisible, setStickyVisible] = useState(false);
-  const [pincode, setPincode] = useState("");
-  const [delivery, setDelivery] = useState<"idle" | "valid" | "invalid">("idle");
   const heroActionRef = useRef<HTMLDivElement>(null);
   const galleryRef = useRef<HTMLDivElement>(null);
 
@@ -64,12 +61,10 @@ export default function Storefront({ params }: { params: Promise<{ slug: string 
     return () => clearInterval(interval);
   }, []);
 
-  const savings = useMemo(() => product.compareAtPrice - product.price, []);
   const addToCart = () => {
     setCartQuantity((quantity) => quantity + bundle.quantity);
     setCartOpen(true);
   };
-  const checkDelivery = () => setDelivery(/^\d{6}$/.test(pincode) ? "valid" : "invalid");
 
   return (
     <main id="top" className="bg-paper min-h-screen text-ink pb-24">

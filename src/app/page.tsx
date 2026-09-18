@@ -55,7 +55,7 @@ export default function Home() {
             <div className="flex -space-x-2">
               {[1, 2, 3].map((i) => (
                 <div key={i} className="w-8 h-8 rounded-full border-2 border-paper bg-sage flex items-center justify-center overflow-hidden relative">
-                  <Image src={`/images/sol-detail.png`} alt="avatar" fill className="object-cover opacity-50" />
+                  <Image src={`/images/sol-detail.png`} alt="avatar" fill sizes="40px" className="object-cover opacity-50" />
                 </div>
               ))}
             </div>
@@ -81,7 +81,7 @@ export default function Home() {
 
         <div className="grid grid-cols-1 md:grid-cols-3 h-[600px] border-t border-l border-line">
           <Link href="/store" className="relative group overflow-hidden border-r border-b border-line">
-            <Image src="/images/sol-hero.png" alt="Precision" fill className="object-cover  opacity-100 group-hover:opacity-90 transition-opacity duration-700 group-hover:scale-105" />
+            <Image src="/images/sol-hero.png" alt="Precision" fill sizes="(max-width: 800px) 100vw, 33vw" className="object-cover  opacity-100 group-hover:opacity-90 transition-opacity duration-700 group-hover:scale-105" />
             <div className="absolute inset-0 bg-gradient-to-t from-paper/0 via-paper/20 to-transparent"></div>
             <div className="absolute bottom-8 left-8">
               <span className="text-amber text-[10px] font-bold tracking-widest uppercase mb-2 block">Precision Lighting</span>
@@ -89,7 +89,7 @@ export default function Home() {
             </div>
           </Link>
           <Link href="/store" className="relative group overflow-hidden border-r border-b border-line">
-            <Image src="/images/sol-lifestyle.png" alt="Ambient" fill className="object-cover opacity-100 group-hover:opacity-90 transition-opacity duration-700 group-hover:scale-105" />
+            <Image src="/images/sol-lifestyle.png" alt="Ambient" fill sizes="(max-width: 800px) 100vw, 33vw" className="object-cover opacity-100 group-hover:opacity-90 transition-opacity duration-700 group-hover:scale-105" />
             <div className="absolute inset-0 bg-gradient-to-t from-paper/0 via-paper/20 to-transparent"></div>
             <div className="absolute bottom-8 left-8">
               <span className="text-amber text-[10px] font-bold tracking-widest uppercase mb-2 block">Signature Moods</span>
@@ -97,7 +97,7 @@ export default function Home() {
             </div>
           </Link>
           <Link href="/store" className="relative group overflow-hidden border-r border-b border-line">
-            <Image src="/images/sol-detail.png" alt="Accessories" fill className="object-cover opacity-100 group-hover:opacity-90 transition-opacity duration-700 group-hover:scale-105" />
+            <Image src="/images/sol-detail.png" alt="Accessories" fill sizes="(max-width: 800px) 100vw, 33vw" className="object-cover opacity-100 group-hover:opacity-90 transition-opacity duration-700 group-hover:scale-105" />
             <div className="absolute inset-0 bg-gradient-to-t from-paper/0 via-paper/20 to-transparent"></div>
             <div className="absolute bottom-8 left-8">
               <span className="text-amber text-[10px] font-bold tracking-widest uppercase mb-2 block">Targeted Care</span>
@@ -136,7 +136,7 @@ export default function Home() {
 
                 {/* Main Content Area */}
 
-                <Image src={item.image} alt={item.name} fill className="object-cover drop-shadow-sm group-hover:scale-105 transition-transform duration-700" />
+                <Image src={item.image} alt={item.name} fill sizes="(max-width: 800px) 100vw, 33vw" className="object-cover drop-shadow-sm group-hover:scale-105 transition-transform duration-700" />
               </Link>
 
               {/* Details below card */}
