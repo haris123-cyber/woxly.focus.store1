@@ -20,7 +20,8 @@ export function Navbar() {
         <span>30-day returns</span>
       </div>
 
-      <header className="bg-paper border-b border-line px-6 py-4 flex justify-between items-center sticky top-0 z-[100] relative">
+      <header className="bg-paper border-b border-line sticky top-0 z-[100] relative">
+        <div className="max-w-[1200px] mx-auto w-full px-6 py-4 flex justify-between items-center">
         <Logo />
         <nav className="hidden md:flex items-center gap-8 text-sm font-medium text-ink" aria-label="Main navigation">
           <Link href="/store#benefits" className="hover:text-muted transition-colors">Why Sol</Link>
@@ -37,6 +38,7 @@ export function Navbar() {
             <span className="hidden md:inline pointer-events-none">Bag</span>
             {cartQuantity > 0 && <b className="bg-ink text-paper text-[11px] h-5 min-w-[20px] rounded-full flex items-center justify-center px-1 font-bold pointer-events-none">{cartQuantity}</b>}
           </button>
+        </div>
         </div>
       </header>
 
