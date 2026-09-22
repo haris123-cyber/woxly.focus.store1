@@ -1,3 +1,3 @@
-import { ProfilePage } from "@/components/interior-pages";
+import { ProfileClient } from "./client";
 export const metadata = { title: "Profile | Woxly" };
-export default function Page() { return <ProfilePage />; }
+export default function Page() { return <ProfileClient />; }

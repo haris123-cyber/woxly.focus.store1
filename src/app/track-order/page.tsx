@@ -1,3 +1,3 @@
-import { TrackOrderPage } from "@/components/interior-pages";
+import { TrackOrderClient } from "./client";
 export const metadata = { title: "Track Your Order | Woxly" };
-export default function Page() { return <TrackOrderPage />; }
+export default function Page() { return <TrackOrderClient />; }

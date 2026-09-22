@@ -1,3 +1,3 @@
-import { SearchPage } from "@/components/interior-pages";
+import { SearchClient } from "./client";
 export const metadata = { title: "Search | Woxly" };
-export default function Page() { return <SearchPage />; }
+export default function Page() { return <SearchClient />; }

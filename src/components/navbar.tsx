@@ -22,23 +22,27 @@ export function Navbar() {
 
       <header className="bg-paper border-b border-line sticky top-0 z-[100] relative">
         <div className="max-w-[1200px] mx-auto w-full px-6 py-4 flex justify-between items-center">
-        <Logo />
-        <nav className="hidden md:flex items-center gap-8 text-sm font-medium text-ink" aria-label="Main navigation">
-          <Link href="/store#benefits" className="hover:text-muted transition-colors">Why Sol</Link>
-          <Link href="/store#details" className="hover:text-muted transition-colors">Details</Link>
-          <Link href="/store#reviews" className="hover:text-muted transition-colors">Reviews</Link>
-          <Link href="/store#faq" className="hover:text-muted transition-colors">FAQ</Link>
-        </nav>
-        <div className="flex items-center gap-4 relative z-[105]">
-          <button className="md:hidden flex items-center justify-center w-10 h-10 rounded-full hover:bg-line/50 transition-colors cursor-pointer relative z-[110]" onClick={() => { setMenuOpen(true); }} aria-label="Open menu">
-            <Menu size={21} className="pointer-events-none" />
-          </button>
-          <button className="flex items-center gap-2 hover:opacity-70 transition-opacity font-medium text-sm cursor-pointer relative z-[110]" onClick={() => { setCartOpen(true); }} aria-label={`Open cart with ${cartQuantity} items`}>
-            <ShoppingBag size={20} className="pointer-events-none" />
-            <span className="hidden md:inline pointer-events-none">Bag</span>
-            {cartQuantity > 0 && <b className="bg-ink text-paper text-[11px] h-5 min-w-[20px] rounded-full flex items-center justify-center px-1 font-bold pointer-events-none">{cartQuantity}</b>}
-          </button>
-        </div>
+          <Logo />
+          <nav className="hidden md:flex items-center gap-8 text-sm font-medium text-ink" aria-label="Main navigation">
+            <Link href="/" className="hover:text-muted transition-colors">Home</Link>
+            <Link href="/shop" className="hover:text-muted transition-colors">Shop</Link>
+            <Link href="/blog" className="hover:text-muted transition-colors">Journal</Link>
+
+            <Link href="/contact" className="hover:text-muted transition-colors">Support</Link>
+          </nav>
+          <div className="flex items-center gap-4 relative z-[105]">
+            <Link href="/account" className="flex items-center gap-2 hover:opacity-70 transition-opacity font-medium text-sm cursor-pointer relative z-[110]" aria-label="Account">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" /><circle cx="12" cy="7" r="4" /></svg>
+            </Link>
+
+            <button className="flex items-center gap-2 hover:opacity-70 transition-opacity font-medium text-sm cursor-pointer relative z-[110]" onClick={() => { setCartOpen(true); }} aria-label={`Open cart with ${cartQuantity} items`}>
+              <ShoppingBag size={20} className="pointer-events-none" />
+              {cartQuantity > 0 && <b className="bg-ink text-paper text-[11px] h-5 min-w-[20px] rounded-full flex items-center justify-center px-1 font-bold pointer-events-none">{cartQuantity}</b>}
+            </button>
+            <button className="md:hidden flex items-center justify-center w-10 h-10 rounded-full hover:bg-line/50 transition-colors cursor-pointer relative z-[110]" onClick={() => { setMenuOpen(true); }} aria-label="Open menu">
+              <Menu size={21} className="pointer-events-none" />
+            </button>
+          </div>
         </div>
       </header>
 
@@ -90,9 +94,9 @@ export function Navbar() {
                 <strong className="text-xl text-ink">{money(bundle.price * (cartQuantity / bundle.quantity))}</strong>
               </div>
               <p className="text-sm text-muted mb-6">Shipping is free. Taxes included.</p>
-              <button className="w-full bg-ink text-paper py-4 rounded-full font-medium flex items-center justify-center gap-2 hover:bg-forest transition-colors text-lg">
+              <Link href="/checkout" onClick={() => setCartOpen(false)} className="w-full bg-ink text-paper py-4 rounded-full font-medium flex items-center justify-center gap-2 hover:bg-forest transition-colors text-lg">
                 Secure checkout <ArrowRight size={18} />
-              </button>
+              </Link>
               <span className="flex items-center justify-center gap-2 text-xs text-muted mt-4 font-medium"><ShieldCheck size={14} /> Secure checkout · Easy 30-day returns</span>
             </div>
           </>
@@ -106,7 +110,7 @@ export function Navbar() {
           <button onClick={() => setMenuOpen(false)} className="w-10 h-10 rounded-full flex items-center justify-center hover:bg-line/50 transition-colors text-ink"><X size={20} /></button>
         </div>
         <nav className="flex flex-col px-6 py-8 gap-6 flex-1">
-          {[["Why Sol", "/store#benefits"], ["Details", "/store#details"], ["Reviews", "/store#reviews"], ["FAQ", "/store#faq"]].map(([label, href]) => (
+          {[["Home", "/"], ["Shop", "/shop"], ["Journal", "/blog"], ["Support", "/contact"], ["Account", "/account"]].map(([label, href]) => (
             <Link key={label} href={href} onClick={() => setMenuOpen(false)} className="font-serif text-3xl text-ink flex items-center justify-between border-b border-line pb-4">
               {label} <ArrowRight className="text-muted" />
             </Link>

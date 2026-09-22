@@ -1,3 +1,3 @@
-import { AuthPage } from "@/components/interior-pages";
-export const metadata = { title: "Create Account | Woxly" };
+import { AuthPage } from "@/components/auth-page";
+export const metadata = { title: "Sign Up | Woxly" };
 export default function Page() { return <AuthPage mode="signup" />; }

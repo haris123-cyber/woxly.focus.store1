@@ -12,6 +12,7 @@
   "dependencies": {
     "@fontsource/dm-sans": "latest",
     "@fontsource/manrope": "latest",
+    "@tabler/icons-react": "^3.47.0",
     "@tailwindcss/postcss": "^4.3.3",
     "lucide-react": "latest",
     "next": "latest",
