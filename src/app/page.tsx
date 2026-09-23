@@ -21,7 +21,7 @@ export default function Home() {
   return (
     <main className="min-h-screen bg-paper text-ink pb-24">
       {/* 1. Hero Section (Mobile) */}
-      <section className="relative w-full max-w-[1200px] mx-auto bg-[#e6e2db] md:hidden">
+      <section className="relative w-full bg-[#e6e2db] md:hidden">
         <Image
           src="/images/image.png"
           alt="Sol Lamp Hero Banner"
@@ -35,24 +35,19 @@ export default function Home() {
       </section>
 
       {/* 1. Hero Section (Desktop) */}
-      <section className="hidden md:flex relative flex-col justify-between min-h-[600px] lg:min-h-[700px] overflow-hidden bg-[#e6e2db] max-w-[1200px] mx-auto w-full">
+      <section className="hidden md:flex relative flex-col justify-between min-h-[600px] lg:min-h-[700px] xl:min-h-[800px] overflow-hidden bg-[#e6e2db] w-full">
         {/* Background Image */}
         <div className="absolute inset-0 z-0">
           <Image
             src="/images/image cop1y.png"
             alt="Sol Lamp"
             fill
-            className="w-full h-full block"
+            className="w-full h-full block object-cover object-center"
             priority
             sizes="100vw"
           />
           <div className="absolute inset-0 bg-gradient-to-r from-[#e6e2db]/30 via-[#e6e2db]/20 to-transparent"></div>
         </div>
-
-
-
-
-
       </section>
 
 

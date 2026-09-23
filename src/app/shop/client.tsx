@@ -27,12 +27,18 @@ export function ShopClient() {
     <SiteShell>
       <PageHero eyebrow="The collection" title="Fewer things. Better chosen." copy="Thoughtfully designed objects that make everyday focus feel calmer." />
 
-      <section className="max-w-[1200px] mx-auto px-6 w-full flex flex-col md:flex-row justify-between items-start md:items-center py-6 border-b border-line/60 mb-12 gap-6 md:gap-0">
-        <span className="text-muted text-sm font-medium">{sortedCatalog.length} products</span>
-        <div className="flex flex-col sm:flex-row gap-4 sm:items-center w-full md:w-auto justify-between">
-          <div className="flex gap-2 overflow-x-auto pb-2 sm:pb-0 scrollbar-none">
+      <section className="max-w-[1200px] mx-auto px-6 w-full py-4 md:py-6 border-b border-line/60 mb-8 md:mb-12">
+        <div className="flex flex-wrap md:flex-nowrap items-center gap-y-4 md:gap-6 w-full">
+          
+          {/* 1. Count (Mobile: Bottom Left, Desktop: Far Left) */}
+          <span className="order-2 md:order-1 text-muted text-sm font-medium mr-auto">
+            {sortedCatalog.length} products
+          </span>
+          
+          {/* 2. Categories (Mobile: Top Full Width, Desktop: Right aligned) */}
+          <div className="order-1 md:order-2 w-full md:w-auto flex gap-2 overflow-x-auto pb-2 md:pb-0 scrollbar-none">
             {["All", "Lighting", "Accessories"].map(cat => (
-              <button 
+              <button
                 key={cat}
                 onClick={() => setCategory(cat)}
                 className={`px-5 py-2 rounded-full text-sm font-medium transition-colors shrink-0 ${category === cat ? "bg-ink text-paper" : "hover:bg-line/30 text-ink border border-transparent hover:border-line/50"}`}
@@ -41,19 +47,22 @@ export function ShopClient() {
               </button>
             ))}
           </div>
-          <div className="h-6 w-px bg-line hidden sm:block mx-2"></div>
-          
-          <div className="flex items-center justify-between sm:justify-start gap-3 text-sm text-muted font-medium relative z-30">
+
+          {/* Divider (Desktop Only) */}
+          <div className="order-none md:order-3 h-6 w-px bg-line hidden md:block mx-2"></div>
+
+          {/* 3. Sort (Mobile: Bottom Right, Desktop: Far Right) */}
+          <div className="order-3 md:order-4 flex items-center justify-end gap-3 text-sm text-muted font-medium relative z-30">
             <span className="hidden sm:inline">Sort by</span>
             <div className="relative">
-              <button 
+              <button
                 onClick={() => setSortOpen(!sortOpen)}
                 className="flex items-center gap-2 appearance-none bg-white border border-line rounded-full pl-5 pr-3 py-2 text-ink focus:outline-none cursor-pointer hover:border-ink/50 transition-colors shadow-sm font-medium min-w-[140px] justify-between"
               >
                 {sort}
                 <ChevronDown className={`w-4 h-4 transition-transform duration-200 text-muted ${sortOpen ? 'rotate-180' : ''}`} />
               </button>
-              
+
               {sortOpen && (
                 <>
                   <div className="fixed inset-0 z-40" onClick={() => setSortOpen(false)} />

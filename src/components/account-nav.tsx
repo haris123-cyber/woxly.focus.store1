@@ -2,58 +2,72 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { ArrowRight, Package, User, Heart, Home } from "lucide-react";
+import { ArrowRight, Package, User, Heart, Home, MapPin, CreditCard, Bell, Settings, HelpCircle, ChevronRight, LogOut } from "lucide-react";
 import { demoOrder } from "@/data/catalog";
 
 export function AccountNav({ active }: { active: string }) {
   const navItems = [
-    { id: "overview", label: "Overview", href: "/account", icon: Home },
-    { id: "orders", label: "Orders", href: "/account/orders", icon: Package },
-    { id: "profile", label: "Profile", href: "/account/profile", icon: User },
-    { id: "wishlist", label: "Wishlist", href: "/wishlist", icon: Heart },
+    { id: "orders", title: "My Orders", subtitle: "Track, return or view your orders", icon: Package, href: "/account/orders" },
+    { id: "wishlist", title: "Wishlist", subtitle: "Your favourite styles", icon: Heart, href: "/wishlist" },
+    { id: "addresses", title: "Addresses", subtitle: "Manage your delivery addresses", icon: MapPin, href: "/account/profile" },
+    { id: "profile", title: "My Profile", subtitle: "Personal information", icon: User, href: "/account/profile" },
+    { id: "help", title: "Help & Support", subtitle: "Get help, contact us", icon: HelpCircle, href: "/contact" },
   ];
 
   return (
-    <nav className="flex flex-col gap-2 bg-white border border-line rounded-3xl p-4 shadow-sm sticky top-24">
-      {navItems.map((item) => {
-        const Icon = item.icon;
-        const isActive = active === item.id;
-        return (
-          <Link
-            key={item.id}
-            href={item.href}
-            className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-colors font-medium text-sm ${
-              isActive 
-                ? "bg-sage/30 text-ink" 
-                : "text-muted hover:bg-line/20 hover:text-ink"
-            }`}
-          >
-            <Icon className={`w-4 h-4 ${isActive ? "text-forest" : ""}`} />
-            {item.label}
-          </Link>
-        );
-      })}
-    </nav>
+    <div className="flex flex-col gap-5">
+      <nav className="bg-white rounded-[2rem] px-2 py-2 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)]">
+        <div className="flex flex-col divide-y divide-zinc-100/80">
+          {navItems.map((item) => {
+            const Icon = item.icon;
+            const isActive = active === item.id;
+            return (
+              <Link
+                key={item.id}
+                href={item.href}
+                className={`flex items-center gap-4 px-4 py-3.5 hover:bg-zinc-50/80 transition-colors rounded-[1.25rem] ${isActive ? "bg-zinc-50/80" : ""}`}
+              >
+                <div className="shrink-0">
+                  <Icon className={`w-[22px] h-[22px] ${isActive ? "text-zinc-900" : "text-zinc-800"}`} strokeWidth={1.75} />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <p className="text-[14px] font-semibold text-zinc-900">{item.title}</p>
+                  <p className="text-[12px] text-zinc-500 mt-0.5 truncate">{item.subtitle}</p>
+                </div>
+                <ChevronRight className="w-[18px] h-[18px] text-zinc-400 shrink-0" />
+              </Link>
+            )
+          })}
+        </div>
+      </nav>
+
+      <Link href="/" className="flex items-center justify-center gap-2.5 bg-[#f0eee9] hover:bg-[#e6e4df] text-zinc-900 p-4 rounded-full font-semibold text-[15px] transition-colors">
+        <LogOut className="w-5 h-5" strokeWidth={2} />
+        Sign Out
+      </Link>
+    </div>
   );
 }
 
 export function OrderRow() {
   return (
-    <article className="flex gap-6 py-6 border-b border-line items-center w-full">
-      <div className="relative w-24 h-24 bg-line/20 rounded-xl overflow-hidden shrink-0">
-        <Image src="/images/sol-hero.png" alt="Sol Focus Lamp" fill className="object-cover" />
+    <article className="flex flex-col sm:flex-row gap-4 sm:gap-6 py-6 border-b border-line sm:items-center w-full">
+      <div className="flex gap-4 sm:gap-6 items-center flex-1">
+        <div className="relative w-20 h-20 sm:w-24 sm:h-24 bg-line/20 rounded-xl overflow-hidden shrink-0">
+          <Image src="/images/sol-hero.png" alt="Sol Focus Lamp" fill className="object-cover" />
+        </div>
+        <div className="flex-1">
+          <small className="text-muted text-xs font-bold uppercase tracking-wider block mb-1">Order {demoOrder.number}</small>
+          <h3 className="text-base sm:text-lg font-medium text-ink">Sol Focus Lamp</h3>
+          <p className="text-muted text-sm mt-1">{demoOrder.date} · ₹3,499</p>
+        </div>
       </div>
-      <div className="flex-1">
-        <small className="text-muted text-xs font-bold uppercase tracking-wider block mb-1">Order {demoOrder.number}</small>
-        <h3 className="text-lg font-medium text-ink">Sol Focus Lamp</h3>
-        <p className="text-muted text-sm mt-1">{demoOrder.date} · ₹3,499</p>
-      </div>
-      <div className="flex flex-col items-end gap-3">
-        <span className="flex items-center gap-2 bg-sage/20 text-forest text-xs font-bold uppercase tracking-wider px-3 py-1.5 rounded-full">
+      <div className="flex flex-row sm:flex-col items-center sm:items-end justify-between sm:justify-center gap-3 mt-2 sm:mt-0 w-full sm:w-auto">
+        <span className="flex items-center gap-2 bg-sage/20 text-forest text-xs font-bold uppercase tracking-wider px-3 py-1.5 rounded-full whitespace-nowrap">
           <i className="w-1.5 h-1.5 rounded-full bg-forest" />
           {demoOrder.status}
         </span>
-        <Link href={`/account/orders/${demoOrder.number}`} className="text-sm font-semibold text-ink hover:text-forest transition-colors flex items-center gap-2">
+        <Link href={`/account/orders/${demoOrder.number}`} className="text-sm font-semibold text-ink hover:text-forest transition-colors flex items-center gap-2 whitespace-nowrap">
           View order <ArrowRight className="w-4 h-4" />
         </Link>
       </div>

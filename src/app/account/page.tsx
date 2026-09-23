@@ -1,104 +1,85 @@
 import Link from "next/link";
-import { ArrowRight, Heart, Mail, Package, User } from "lucide-react";
+import Image from "next/image";
+import { ChevronRight } from "lucide-react";
 import { SiteShell } from "@/components/site-shell";
-import { OrderRow } from "@/components/account-nav";
+import { AccountNav, OrderRow } from "@/components/account-nav";
 
 export const metadata = { title: "Account | Woxly" };
 
 export default function AccountPage() {
   return (
     <SiteShell>
-      <div className="bg-sage/10 min-h-screen pb-24 font-sans">
-        <div className="max-w-4xl mx-auto px-6 pt-12">
-          
-          {/* Header */}
-          <section className="mb-12 flex flex-col md:flex-row md:items-end justify-between gap-6 pb-8 border-b border-line">
-            <div>
-              <span className="text-forest text-sm font-bold uppercase tracking-wider mb-2 block">My Woxly</span>
-              <h1 className="text-4xl font-serif text-ink">Good morning, Haris.</h1>
-              <p className="text-muted mt-2 text-lg">Manage your orders, details and saved pieces.</p>
-            </div>
-            <Link href="/" className="text-sm font-bold tracking-widest uppercase text-muted hover:text-ink transition-colors border-b-2 border-transparent hover:border-ink pb-1 w-fit">
-              Sign out
-            </Link>
-          </section>
+      <div className="bg-[#fcfbf9] min-h-screen pb-12 font-sans text-zinc-900">
+        <div className="max-w-6xl mx-auto px-4 pt-6 lg:pt-12">
 
-          {/* Navigation Grid */}
-          <section className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-16">
-            <Link href="/account/orders" className="group bg-white border border-line rounded-3xl p-6 shadow-sm hover:shadow-md hover:border-ink/20 transition-all flex items-center justify-between">
-              <div className="flex items-center gap-5">
-                <div className="w-12 h-12 rounded-full bg-sage/30 text-forest flex items-center justify-center shrink-0">
-                  <Package className="w-6 h-6" />
-                </div>
-                <div className="flex flex-col">
-                  <span className="text-lg font-medium text-ink group-hover:text-forest transition-colors">My orders</span>
-                  <small className="text-muted text-sm mt-0.5">View and track your purchases</small>
-                </div>
-              </div>
-              <ArrowRight className="w-5 h-5 text-muted group-hover:text-forest group-hover:translate-x-1 transition-all" />
-            </Link>
-            
-            <Link href="/account/profile" className="group bg-white border border-line rounded-3xl p-6 shadow-sm hover:shadow-md hover:border-ink/20 transition-all flex items-center justify-between">
-              <div className="flex items-center gap-5">
-                <div className="w-12 h-12 rounded-full bg-sage/30 text-forest flex items-center justify-center shrink-0">
-                  <User className="w-6 h-6" />
-                </div>
-                <div className="flex flex-col">
-                  <span className="text-lg font-medium text-ink group-hover:text-forest transition-colors">Profile</span>
-                  <small className="text-muted text-sm mt-0.5">Personal details and addresses</small>
-                </div>
-              </div>
-              <ArrowRight className="w-5 h-5 text-muted group-hover:text-forest group-hover:translate-x-1 transition-all" />
-            </Link>
+          <main className="grid grid-cols-1 lg:grid-cols-[320px_1fr] gap-6 lg:gap-8 items-start w-full">
 
-            <Link href="/wishlist" className="group bg-white border border-line rounded-3xl p-6 shadow-sm hover:shadow-md hover:border-ink/20 transition-all flex items-center justify-between">
-              <div className="flex items-center gap-5">
-                <div className="w-12 h-12 rounded-full bg-sage/30 text-forest flex items-center justify-center shrink-0">
-                  <Heart className="w-6 h-6" />
+              {/* Profile Card */}
+              <section className="order-1 lg:col-start-2 lg:row-start-1 bg-white rounded-[2rem] p-6 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)]">
+                <div className="flex items-center justify-between mb-1">
+                  <div className="flex items-center gap-4">
+                    <div className="relative w-[72px] h-[72px] rounded-full overflow-hidden bg-gray-100 shrink-0 shadow-sm">
+                      <Image
+                        src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=faces&auto=format&q=80"
+                        alt="Haris"
+                        fill
+                        className="object-cover"
+                      />
+                    </div>
+                    <div>
+                      <h1 className="text-[22px] font-serif text-zinc-900 leading-tight">Hi, Haris 👋</h1>
+                      <p className="text-zinc-500 text-[13px] mt-1 tracking-tight">Fashion looks better on you.</p>
+                    </div>
+                  </div>
+                  <ChevronRight className="w-5 h-5 text-zinc-400 shrink-0" />
                 </div>
-                <div className="flex flex-col">
-                  <span className="text-lg font-medium text-ink group-hover:text-forest transition-colors">Wishlist</span>
-                  <small className="text-muted text-sm mt-0.5">3 saved products</small>
-                </div>
-              </div>
-              <ArrowRight className="w-5 h-5 text-muted group-hover:text-forest group-hover:translate-x-1 transition-all" />
-            </Link>
 
-            <Link href="/contact" className="group bg-white border border-line rounded-3xl p-6 shadow-sm hover:shadow-md hover:border-ink/20 transition-all flex items-center justify-between">
-              <div className="flex items-center gap-5">
-                <div className="w-12 h-12 rounded-full bg-sage/30 text-forest flex items-center justify-center shrink-0">
-                  <Mail className="w-6 h-6" />
-                </div>
-                <div className="flex flex-col">
-                  <span className="text-lg font-medium text-ink group-hover:text-forest transition-colors">Support</span>
-                  <small className="text-muted text-sm mt-0.5">We’re here when you need us</small>
-                </div>
-              </div>
-              <ArrowRight className="w-5 h-5 text-muted group-hover:text-forest group-hover:translate-x-1 transition-all" />
-            </Link>
-          </section>
 
-          {/* Recent Order */}
-          <section className="bg-white border border-line rounded-3xl p-8 shadow-sm">
-            <div className="flex items-end justify-between mb-8 pb-4 border-b border-line">
-              <div>
-                <span className="text-forest text-xs font-bold uppercase tracking-wider mb-2 block">Latest purchase</span>
-                <h2 className="text-2xl font-serif text-ink">Recent order</h2>
-              </div>
-              <Link href="/account/orders" className="text-sm font-bold tracking-widest uppercase text-muted hover:text-ink transition-colors border-b-2 border-transparent hover:border-ink pb-1 hidden sm:block">
-                View all orders
-              </Link>
-            </div>
-            
-            <OrderRow />
-            
-            <Link href="/account/orders" className="mt-8 text-sm font-bold tracking-widest uppercase text-ink block sm:hidden text-center border border-line rounded-full py-3 hover:bg-line/20">
-              View all orders
-            </Link>
-          </section>
-          
+              </section>
+              {/* Banner */}
+              <section className="order-2 lg:col-start-2 lg:row-start-2 relative rounded-[20px] overflow-hidden bg-[#ecdacf] shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] flex items-center min-h-[140px]">
+                <div className="absolute right-0 top-0 bottom-0 w-[55%]">
+                  <Image
+                    src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&h=300&fit=crop&auto=format&q=80"
+                    alt="Style Members"
+                    fill
+                    className="object-cover object-top"
+                    style={{ maskImage: "linear-gradient(to right, transparent 0%, black 40%)", WebkitMaskImage: "linear-gradient(to right, transparent 0%, black 40%)" }}
+                  />
+                </div>
+                <div className="relative z-10 p-6 max-w-[65%]">
+                  <h2 className="text-[22px] font-serif italic mb-1.5 leading-tight text-zinc-900">Style<br />Members Get More</h2>
+                  <p className="text-[11px] text-zinc-800 mb-4 leading-tight opacity-90">Exclusive deals, early access<br />and special rewards.</p>
+                  <button className="bg-[#222] hover:bg-black transition-colors text-white text-[12px] font-medium px-4 py-2 rounded-full flex items-center gap-1.5 w-fit">
+                    Explore Benefits <span className="text-[11px] font-serif">→</span>
+                  </button>
+                </div>
+              </section>
+
+              {/* Desktop Left Side: Menu (Shows between Banner and Orders on Mobile) */}
+              <aside className="order-3 lg:col-start-1 lg:row-start-1 lg:row-span-3 w-full shrink-0">
+                <AccountNav active="overview" />
+              </aside>
+
+              {/* My Orders */}
+              <section className="order-4 lg:col-start-2 lg:row-start-3 bg-white rounded-[2rem] p-6 lg:p-8 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)]">
+                <div className="flex items-center justify-between mb-2">
+                  <h2 className="text-[20px] font-serif text-zinc-900">Recent Orders</h2>
+                  <Link href="/account/orders" className="text-[13px] font-medium text-zinc-500 hover:text-zinc-900 transition-colors flex items-center gap-1">
+                    View all <ChevronRight className="w-4 h-4" />
+                  </Link>
+                </div>
+                <div className="flex flex-col [&>article:last-child]:border-0 [&>article:last-child]:pb-0">
+                  <OrderRow />
+                  <OrderRow />
+                </div>
+              </section>
+
+          </main>
+
         </div>
       </div>
     </SiteShell>
   );
 }
+

@@ -1,0 +1,64 @@
+"use client";
+
+import { useState } from "react";
+import { SiteShell } from "@/components/site-shell";
+import { AccountNav, OrderRow } from "@/components/account-nav";
+import Link from "next/link";
+import { ChevronLeft } from "lucide-react";
+
+export function OrdersClient() {
+  const [filter, setFilter] = useState("all");
+
+  return (
+    <SiteShell>
+      <section className="bg-sage/10 min-h-screen pb-24 font-sans">
+        <div className="max-w-6xl mx-auto px-6 pt-12">
+
+          <div className="mb-12">
+            <Link href="/account" className="inline-flex items-center gap-2 text-[13px] font-semibold text-zinc-600 hover:text-zinc-900 transition-colors mb-6 lg:hidden bg-white px-4 py-2 rounded-full shadow-sm border border-zinc-100">
+              <ChevronLeft className="w-4 h-4" />
+              Back to menu
+            </Link>
+            <span className="text-forest text-sm font-bold uppercase tracking-wider mb-2 block">Purchase history</span>
+            <h1 className="text-4xl font-serif text-ink">My orders</h1>
+          </div>
+
+          <div className="flex flex-col lg:flex-row gap-12 lg:gap-16 items-start">
+            {/* Sidebar Navigation */}
+            <aside className="w-full lg:w-64 shrink-0 hidden lg:block">
+              <AccountNav active="orders" />
+            </aside>
+
+            {/* Orders Content */}
+            <div className="flex-1 w-full">
+              <div className="bg-white border border-line rounded-3xl p-8 shadow-sm">
+
+                {/* Filters */}
+                <div className="flex gap-4 border-b border-line pb-6 mb-2 overflow-x-auto scrollbar-none">
+                  <button onClick={() => setFilter("all")} className={`px-5 py-2 rounded-full text-sm font-medium transition-colors shrink-0 ${filter === 'all' ? 'bg-ink text-paper' : 'text-ink hover:bg-line/30 border border-transparent hover:border-line/50'}`}>All orders</button>
+                  <button onClick={() => setFilter("in-progress")} className={`px-5 py-2 rounded-full text-sm font-medium transition-colors shrink-0 ${filter === 'in-progress' ? 'bg-ink text-paper' : 'text-ink hover:bg-line/30 border border-transparent hover:border-line/50'}`}>In progress</button>
+                  <button onClick={() => setFilter("delivered")} className={`px-5 py-2 rounded-full text-sm font-medium transition-colors shrink-0 ${filter === 'delivered' ? 'bg-ink text-paper' : 'text-ink hover:bg-line/30 border border-transparent hover:border-line/50'}`}>Delivered</button>
+                </div>
+
+                {/* Orders List */}
+                <div className="flex flex-col">
+                  {filter === "delivered" ? (
+                    <div className="py-12 text-center text-muted">
+                      <p>No delivered orders found.</p>
+                    </div>
+                  ) : (
+                    <>
+                      <OrderRow />
+                      <OrderRow />
+                    </>
+                  )}
+                </div>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </SiteShell>
+  );
+}

@@ -3,7 +3,8 @@
 import { useState } from "react";
 import { AccountNav } from "@/components/account-nav";
 import { SiteShell } from "@/components/site-shell";
-import { Check, ShieldCheck } from "lucide-react";
+import { Check, ShieldCheck, ChevronLeft } from "lucide-react";
+import Link from "next/link";
 
 export function ProfileClient() {
   const [saved, setSaved] = useState(false);
@@ -19,6 +20,10 @@ export function ProfileClient() {
       <section className="bg-sage/10 min-h-screen pb-24 font-sans">
         <div className="max-w-6xl mx-auto px-6 pt-12">
           <div className="mb-12">
+            <Link href="/account" className="inline-flex items-center gap-2 text-[13px] font-semibold text-zinc-600 hover:text-zinc-900 transition-colors mb-6 lg:hidden bg-white px-4 py-2 rounded-full shadow-sm border border-zinc-100">
+              <ChevronLeft className="w-4 h-4" />
+              Back to menu
+            </Link>
             <span className="text-forest text-sm font-bold uppercase tracking-wider mb-2 block">Account settings</span>
             <h1 className="text-4xl font-serif text-ink">Your profile</h1>
             <p className="text-muted mt-2">Manage your contact details and default delivery addresses.</p>
@@ -26,14 +31,14 @@ export function ProfileClient() {
 
           <div className="flex flex-col lg:flex-row gap-12 lg:gap-16 items-start">
             {/* Sidebar Navigation */}
-            <aside className="w-full lg:w-64 shrink-0">
+            <aside className="w-full lg:w-64 shrink-0 hidden lg:block">
               <AccountNav active="profile" />
             </aside>
 
             {/* Profile Content */}
             <div className="flex-1 w-full flex flex-col gap-8">
               <form onSubmit={handleSubmit} className="flex flex-col gap-8">
-                
+
                 {/* Personal Information */}
                 <div className="bg-white border border-line rounded-3xl p-8 shadow-sm">
                   <h2 className="text-xl font-medium text-ink mb-6 pb-4 border-b border-line">Personal details</h2>
