@@ -70,7 +70,7 @@ export function OrderDetailsClient({ orderId }: { orderId: string }) {
                 <section className="bg-white border border-line rounded-3xl p-8 shadow-sm">
                   <h3 className="text-lg font-medium text-ink mb-4 pb-4 border-b border-line">Delivery address</h3>
                   <p className="text-muted text-sm leading-relaxed">
-                    <strong className="text-ink font-medium">Haris K</strong><br />
+                    <strong className="text-ink font-medium">muhammed</strong><br />
                     24, Residency Road<br />
                     Bengaluru 560001<br />
                     +91 98765 43210

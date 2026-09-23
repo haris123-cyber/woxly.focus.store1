@@ -21,6 +21,7 @@ export const productsMap: Record<string, StoreProduct> = {
       { src: "/images/sol-lifestyle.png", alt: "Sol Focus Lamp illuminating a quiet home workspace" },
       { src: "/images/sol-detail.png", alt: "Close detail of the Sol Focus Lamp dimmer dial" },
     ],
+    urgencyMessage: "Hurry up! Limited time offer.",
   },
   "sol-focus-lamp-sand": {
     id: "sol-02",
@@ -39,6 +40,7 @@ export const productsMap: Record<string, StoreProduct> = {
       { src: "/images/desk-companion.jpg", alt: "Sol Lamp in Sand finish on a wooden desk" },
       { src: "/images/sol-ambient.jpg", alt: "Warm light casting soft shadows" }
     ],
+    urgencyMessage: "Only 5 left in stock!",
   },
   "sol-focus-lamp-graphite": {
     id: "sol-03",
@@ -75,6 +77,7 @@ export const productsMap: Record<string, StoreProduct> = {
       { src: "/images/sol-ambient.jpg", alt: "Ambient glow lamp illuminating a cozy corner" },
       { src: "/images/desk-companion.jpg", alt: "Ambient lamp on a nightstand" }
     ],
+    urgencyMessage: "Selling fast! 12 people looking at this.",
   },
   "sol-desk-companion": {
     id: "sol-05",
@@ -94,6 +97,7 @@ export const productsMap: Record<string, StoreProduct> = {
       { src: "/images/desk-companion.jpg", alt: "Desk companion lamp next to a notebook" },
       { src: "/images/sol-hero.png", alt: "Side profile of the desk companion" }
     ],
+    urgencyMessage: "Trending right now.",
   },
   "sol-precision-dial": {
     id: "sol-06",

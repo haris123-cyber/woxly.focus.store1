@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { useEffect, useMemo, useRef, useState, use } from "react";
-import { ArrowDown, ArrowRight, BatteryCharging, Check, ChevronDown, CircleCheck, Eye, Headphones, PackageCheck, ShieldCheck, SlidersHorizontal, Truck, X, Heart } from "lucide-react";
+import { ArrowDown, ArrowRight, BatteryCharging, Check, ChevronDown, CircleCheck, Eye, Headphones, PackageCheck, ShieldCheck, SlidersHorizontal, Truck, X, Heart, Flame, WashingMachine } from "lucide-react";
 import { faqs, productsMap, reviews } from "@/data/store";
 import { useCart } from "@/context/CartContext";
 import { notFound } from "next/navigation";
@@ -147,7 +147,7 @@ export default function Storefront({ params }: { params: Promise<{ slug: string 
             <span className="text-amber text-lg tracking-widest">★★★★★</span> <strong className="text-ink">{product.rating}</strong> <em className="text-muted not-italic">({product.reviewCount} reviews)</em>
           </a>
 
-          <div className="flex items-end gap-3 mb-0 pb-10 border-b border-line">
+          <div className="flex items-end gap-3 mb-0 pb-10 border-b border-line relative">
             <strong className="text-3xl font-serif text-ink">{money(currentBundle.price)}</strong>
             {currentBundle.quantity === 1 && (
               <div className="flex flex-col text-sm pb-1">
@@ -155,9 +155,14 @@ export default function Storefront({ params }: { params: Promise<{ slug: string 
                 <span className="text-amber font-semibold">Save {money(product.compareAtPrice - product.price)}</span>
               </div>
             )}
+            {product.urgencyMessage && (
+              <div className="absolute -bottom-6 right-0 bg-sage text-forest px-6 py-3 rounded-full text-xs font-bold flex items-center gap-1.5 shadow-sm border border-forest/20 animate-pulse">
+                <Flame size={14} className="fill-current text-red-600" /> {product.urgencyMessage}
+              </div>
+            )}
           </div>
 
-          <div className="mb-10">
+          <div className="mb-10 mt-10">
 
             <div className="flex justify-between items-end mb-4 mt-6">
               <span className="text-sm font-semibold tracking-widest uppercase text-muted">Colour</span>
@@ -199,13 +204,36 @@ export default function Storefront({ params }: { params: Promise<{ slug: string 
               Add to bag <span className="opacity-70 font-normal">·</span> <span>{money(currentBundle.price)}</span>
             </button>
           </div>
-          <div className="flex justify-center items-center gap-4 text-xs font-semibold uppercase tracking-wider text-muted flex-wrap">
-            <span className="flex items-center gap-1.5"><Truck size={14} /> Free shipping</span>
-            <span className="flex items-center gap-1.5"><ShieldCheck size={14} /> 2-year warranty</span>
-            <span className="flex items-center gap-1.5"><PackageCheck size={14} /> Easy returns</span>
-          </div>
+
         </div>
       </section>
+      <div className="relative my-2 border-y border-line/50">
+        {/* Gradient fade to indicate scrollability on mobile */}
+        <div className="absolute right-0 top-0 bottom-0 w-16 bg-gradient-to-l from-[#fcfbf9] to-transparent pointer-events-none z-10 md:hidden" />
+
+        <div className="flex md:justify-center items-start py-6 gap-6 overflow-x-auto scrollbar-none snap-x px-6 md:px-0 text-[10px] md:text-xs font-semibold uppercase tracking-wider text-ink relative">
+          <span className="flex flex-col items-center gap-3 shrink-0 snap-center min-w-[100px] text-center">
+            <div className="w-14 h-14 bg-sage/40 rounded-full flex items-center justify-center text-forest shadow-sm"><Truck size={24} strokeWidth={1.5} /></div>
+            Free shipping
+          </span>
+          <span className="flex flex-col items-center gap-3 shrink-0 snap-center min-w-[100px] text-center">
+            <div className="w-14 h-14 bg-sage/40 rounded-full flex items-center justify-center text-forest shadow-sm"><ShieldCheck size={24} strokeWidth={1.5} /></div>
+            2-year warranty
+          </span>
+          <span className="flex flex-col items-center gap-3 shrink-0 snap-center min-w-[100px] text-center">
+            <div className="w-14 h-14 bg-sage/40 rounded-full flex items-center justify-center text-forest shadow-sm"><PackageCheck size={24} strokeWidth={1.5} /></div>
+            Easy returns
+          </span>
+          <span className="flex flex-col items-center gap-3 shrink-0 snap-center min-w-[100px] text-center">
+            <div className="w-14 h-14 bg-sage/40 rounded-full flex items-center justify-center text-forest shadow-sm"><WashingMachine size={24} strokeWidth={1.5} /></div>
+            Easy to wash
+          </span>
+          <span className="flex flex-col items-center gap-3 shrink-0 snap-center min-w-[100px] text-center">
+            <div className="w-14 h-14 bg-sage/40 rounded-full flex items-center justify-center text-forest shadow-sm"><PackageCheck size={24} strokeWidth={1.5} /></div>
+            Easy returns
+          </span>
+        </div>
+      </div>
 
 
       {/* Intro */}
@@ -216,8 +244,8 @@ export default function Storefront({ params }: { params: Promise<{ slug: string 
       </section>
 
       {/* Benefits Grid */}
-      <section className="max-w-[1200px] mx-auto px-6 pb-24 md:pb-32 grid grid-cols-1 md:grid-cols-3 gap-2">
-        <article className={`bg-ink text-paper rounded-[32px] flex flex-col cursor-pointer transition-all duration-300 border border-transparent ${expandedBenefit === 0 ? "p-8  md:p-10 min-h-[280px] md:min-h-[400px]" : "p-3 pl-5 pr-5   md:p-8"}`} onClick={() => setExpandedBenefit(expandedBenefit === 0 ? null : 0)}>
+      <section className="max-w-[1200px] mx-auto px-6 pb-6 md:pb-32 grid grid-cols-1 md:grid-cols-3 gap-2">
+        <article className={`bg-ink text-paper rounded-xl flex flex-col cursor-pointer transition-all duration-300 border border-transparent ${expandedBenefit === 0 ? "p-8  md:p-10 min-h-[280px] md:min-h-[400px]" : "p-3 pl-5 pr-5   md:p-8"}`} onClick={() => setExpandedBenefit(expandedBenefit === 0 ? null : 0)}>
           <div className={`flex justify-between items-center ${expandedBenefit === 0 ? "mb-4" : ""}`}>
             <div className="text-paper opacity-80 transition-transform origin-left hover:scale-110"><Eye size={28} strokeWidth={1.5} /></div>
             <ChevronDown className={`transition-transform duration-300 opacity-50 ${expandedBenefit === 0 ? 'rotate-180' : ''}`} size={24} />
@@ -229,7 +257,7 @@ export default function Storefront({ params }: { params: Promise<{ slug: string 
           </div>
         </article>
 
-        <article className={`bg-sage/40 text-ink rounded-[32px] flex flex-col cursor-pointer transition-all duration-300 border border-line/50 hover:border-forest/30 ${expandedBenefit === 1 ? "p-8 md:p-10 min-h-[280px] md:min-h-[400px]" : "p-3 pl-5 pr-5   md:p-8"}`} onClick={() => setExpandedBenefit(expandedBenefit === 1 ? null : 1)}>
+        <article className={`bg-sage/40 text-ink rounded-xl flex flex-col cursor-pointer transition-all duration-300 border border-line/50 hover:border-forest/30 ${expandedBenefit === 1 ? "p-8 md:p-10 min-h-[280px] md:min-h-[400px]" : "p-3 pl-5 pr-5   md:p-8"}`} onClick={() => setExpandedBenefit(expandedBenefit === 1 ? null : 1)}>
           <div className={`flex justify-between items-center ${expandedBenefit === 1 ? "mb-4" : ""}`}>
             <div className="text-forest opacity-80 transition-transform origin-left hover:scale-110"><BatteryCharging size={28} strokeWidth={1.5} /></div>
             <ChevronDown className={`transition-transform duration-300 opacity-50 ${expandedBenefit === 1 ? 'rotate-180' : ''}`} size={24} />
@@ -241,7 +269,7 @@ export default function Storefront({ params }: { params: Promise<{ slug: string 
           </div>
         </article>
 
-        <article className={`bg-amber/10 text-ink rounded-[32px] flex flex-col cursor-pointer transition-all duration-300 border border-amber/20 hover:border-amber/30 ${expandedBenefit === 2 ? "p-8 md:p-10 min-h-[280px] md:min-h-[400px]" : "p-3 pl-5 pr-5   md:p-8"}`} onClick={() => setExpandedBenefit(expandedBenefit === 2 ? null : 2)}>
+        <article className={`bg-amber/10 text-ink rounded-xl flex flex-col cursor-pointer transition-all duration-300 border border-amber/20 hover:border-amber/30 ${expandedBenefit === 2 ? "p-8 md:p-10 min-h-[280px] md:min-h-[400px]" : "p-3 pl-5 pr-5   md:p-8"}`} onClick={() => setExpandedBenefit(expandedBenefit === 2 ? null : 2)}>
           <div className={`flex justify-between items-center ${expandedBenefit === 2 ? "mb-4" : ""}`}>
             <div className="text-amber opacity-80 transition-transform origin-left hover:scale-110"><SlidersHorizontal size={28} strokeWidth={1.5} /></div>
             <ChevronDown className={`transition-transform duration-300 opacity-50 ${expandedBenefit === 2 ? 'rotate-180' : ''}`} size={24} />
@@ -361,23 +389,29 @@ export default function Storefront({ params }: { params: Promise<{ slug: string 
             </div>
 
             {/* Customer Photos */}
-            <div className="">
-              <div className="flex justify-between items-center mb-4">
-                <h3 className="font-semibold text-ink">Customer photos</h3>
-                <button className="text-sm text-muted hover:text-ink transition-colors flex items-center gap-1">View all photos <ArrowRight size={12} /></button>
+            {reviews.some(r => r.images && r.images.length > 0) && (
+              <div className="mb-8">
+                <div className="flex justify-between items-end mb-4">
+                  <h3 className="font-semibold text-ink">Customer photos</h3>
+                  <button className="text-[13px] font-medium text-zinc-500 hover:text-zinc-900 transition-colors flex items-center gap-1">
+                    View all photos <ArrowRight className="w-3.5 h-3.5" />
+                  </button>
+                </div>
+                <div className="flex gap-3 overflow-x-auto pb-2 scrollbar-none snap-x">
+                  {reviews.flatMap(r => r.images || []).slice(0, 4).map((img, i) => (
+                    <button key={i} onClick={() => setLightboxImage(img)} className="relative w-[72px] h-[72px] md:w-20 md:h-20 rounded-xl overflow-hidden shrink-0 border border-line snap-start hover:opacity-90 transition-opacity">
+                      <Image src={img} alt={`Customer photo ${i + 1}`} fill className="object-cover" />
+                    </button>
+                  ))}
+                </div>
               </div>
-              <div className="grid grid-cols-4  w-[300px] gap-2">
-                {[1, 2, 3, 4].map((i) => (
-                  <div key={i} onClick={() => setLightboxImage(`/images/sol-lifestyle.png`)} className="aspect-square relative rounded-lg overflow-hidden bg-sage/30 border border-line cursor-pointer">
-                    <Image src={`/images/sol-lifestyle.png`} alt={`Customer photo ${i}`} fill className="object-cover opacity-80 hover:opacity-100 transition-opacity" />
-                  </div>
-                ))}
-              </div>
-            </div>
+            )}
+
           </div>
 
           {/* Right Column: Reviews List */}
           <div>
+
             {/* Filters & Sort */}
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6">
               <div className="flex flex-nowrap md:flex-wrap gap-2 overflow-x-auto w-full md:w-auto pb-2 md:pb-0 scrollbar-none">

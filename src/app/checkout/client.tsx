@@ -62,7 +62,7 @@ const SAVED_ADDRESSES = [
   {
     id: "home",
     label: "Home",
-    firstName: "Haris",
+    firstName: "muhammed",
     lastName: "User",
     address: "123 Main St, Apartment 4B",
     city: "Bangalore",
@@ -73,7 +73,7 @@ const SAVED_ADDRESSES = [
   {
     id: "work",
     label: "Work",
-    firstName: "Haris",
+    firstName: "muhammed",
     lastName: "User",
     address: "Tech Park, Building C, Floor 3",
     city: "Mumbai",

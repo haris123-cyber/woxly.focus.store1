@@ -18,4 +18,5 @@ export type StoreProduct = {
   variants: Variant[];
   images: { src: string; alt: string }[];
   badge?: string;
+  urgencyMessage?: string;
 };
