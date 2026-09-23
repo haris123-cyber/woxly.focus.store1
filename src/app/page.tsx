@@ -14,6 +14,7 @@ export default function Home() {
   const filteredCatalog = catalog.filter((item) => {
     if (filter === "All") return true;
     if (filter === "Lamps") return item.category === "Lighting";
+    if (filter === "bulbs") return item.category === "bulbs";
     if (filter === "Accessories") return item.category === "Accessories";
     return true;
   });
@@ -35,7 +36,7 @@ export default function Home() {
       </section>
 
       {/* 1. Hero Section (Desktop) */}
-      <section className="hidden md:flex relative flex-col justify-between min-h-[600px] lg:min-h-[700px] xl:min-h-[800px] overflow-hidden bg-[#e6e2db] w-full">
+      <section className="hidden md:flex relative flex-col justify-between min-h-[600px] lg:min-h-[700px] xl:min-h-[700px] overflow-hidden bg-[#e6e2db] w-full max-w-[1200px] mx-auto md:mt-6 md:rounded-3xl">
         {/* Background Image */}
         <div className="absolute inset-0 z-0">
           <Image
@@ -115,12 +116,15 @@ export default function Home() {
             <h2 className="text-5xl md:text-6xl font-serif text-ink mb-2 leading-tight">Every formula, <br /><i className="text-amber">intentional.</i></h2>
           </div>
           <div className="relative w-full lg:w-auto max-w-full">
-            <div className="flex gap-1 overflow-x-auto pb-2 max-w-full scrollbar-none pr-10">
+            <div className="flex gap-1 overflow-x-auto  pb-2 max-w-full scrollbar-none pl-20 sm:pr-10">
               <button onClick={() => setFilter("All")} className={`px-6 py-2 text-xs font-bold uppercase tracking-widest shrink-0 transition-colors ${filter === "All" ? "bg-amber text-ink" : "border border-line text-muted hover:text-ink"}`}>
                 All
               </button>
               <button onClick={() => setFilter("Lamps")} className={`px-6 py-2 text-xs font-bold uppercase tracking-widest shrink-0 transition-colors ${filter === "Lamps" ? "bg-amber text-ink border-amber" : "border border-line text-muted hover:text-ink"}`}>
                 Lamps
+              </button>
+              <button onClick={() => setFilter("bulbs")} className={`px-6 py-2 text-xs font-bold uppercase tracking-widest shrink-0 transition-colors ${filter === "bulbs" ? "bg-amber text-ink border-amber" : "border border-line text-muted hover:text-ink"}`}>
+                bulbs
               </button>
               <button onClick={() => setFilter("Accessories")} className={`px-6 py-2 text-xs font-bold uppercase tracking-widest shrink-0 transition-colors ${filter === "Accessories" ? "bg-amber text-ink border-amber" : "border border-line text-muted hover:text-ink"}`}>
                 Accessories

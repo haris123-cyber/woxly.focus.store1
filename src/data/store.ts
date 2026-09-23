@@ -133,10 +133,10 @@ export const faqs = [
 ];
 
 export const reviews = [
-  { 
+  {
     title: "Perfect for detailed sketching",
-    quote: "It gives my desk the warmth I wanted, but the light is still bright enough for detailed sketching. The dimming is incredibly smooth.", 
-    name: "Mira S.", 
+    quote: "It gives my desk the warmth I wanted, but the light is still bright enough for detailed sketching. The dimming is incredibly smooth.",
+    name: "Mira S.",
     meta: "Verified buyer",
     rating: 5,
     date: "1 week ago",
@@ -144,10 +144,10 @@ export const reviews = [
     helpfulCount: 12,
     unhelpfulCount: 0
   },
-  { 
+  {
     title: "Battery life is amazing",
-    quote: "I've been using this for over 2 weeks and the battery easily lasts through my workdays. Premium build and minimal design.", 
-    name: "Arjun K.", 
+    quote: "I've been using this for over 2 weeks and the battery easily lasts through my workdays. Premium build and minimal design.",
+    name: "Arjun K.",
     meta: "Verified buyer",
     rating: 5,
     date: "2 weeks ago",
@@ -155,14 +155,25 @@ export const reviews = [
     helpfulCount: 8,
     unhelpfulCount: 0
   },
-  { 
+  {
     title: "Great product with minor issues",
-    quote: "The light quality is excellent and looks beautiful on my desk. Only wish it came with a longer cable.", 
-    name: "Priya N.", 
+    quote: "The light quality is excellent and looks beautiful on my desk. Only wish it came with a longer cable.",
+    name: "Priya N.",
     meta: "Verified buyer",
     rating: 4,
     date: "3 weeks ago",
     images: ["/images/precision-dial.jpg", "/images/sol-lifestyle.png"],
+    helpfulCount: 5,
+    unhelpfulCount: 1
+  },
+  {
+    title: "Lamp bulb pro",
+    quote: "quality light's excellent and looks beautiful on my desk. Only wish it came with a longer cable.",
+    name: "Priya N.",
+    meta: "Verified buyer",
+    rating: 4,
+    date: "3 weeks ago",
+    images: ["/images/pr.jpg", "/images/sol-lifestyle.png"],
     helpfulCount: 5,
     unhelpfulCount: 1
   },

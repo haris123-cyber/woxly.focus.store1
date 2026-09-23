@@ -17,4 +17,5 @@ export type StoreProduct = {
   reviewCount: number;
   variants: Variant[];
   images: { src: string; alt: string }[];
+  badge?: string;
 };

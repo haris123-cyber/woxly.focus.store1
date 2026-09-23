@@ -1,10 +1,16 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
 import { Heart } from "lucide-react";
+import { useCart } from "@/context/CartContext";
 
 type CardProduct = { slug: string; name: string; category: string; price: number; compareAt?: number; image: string; badge?: string };
 
 export function ProductCard({ product }: { product: CardProduct }) {
+  const { wishlist, toggleWishlist } = useCart();
+  const isWishlisted = wishlist.includes(product.slug);
+
   return (
     <article className="group flex flex-col font-sans">
       <div className="relative aspect-[4/5] bg-line/20 rounded-2xl overflow-hidden mb-4">
@@ -24,9 +30,10 @@ export function ProductCard({ product }: { product: CardProduct }) {
         )}
         <button
           aria-label={`Save ${product.name}`}
-          className="absolute top-4 right-4 w-9 h-9 bg-white/80 backdrop-blur-sm rounded-full flex items-center justify-center text-ink opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300 hover:bg-white hover:text-amber"
+          onClick={(e) => { e.preventDefault(); toggleWishlist(product.slug); }}
+          className={`absolute z-20 top-4 right-4 w-9 h-9 backdrop-blur-sm rounded-full flex items-center justify-center transition-all duration-300 hover:bg-white hover:text-amber ${isWishlisted ? 'bg-white text-amber opacity-100 translate-y-0' : 'bg-white/80 text-ink opacity-100 translate-y-0 md:opacity-0 md:translate-y-2 md:group-hover:opacity-100 md:group-hover:translate-y-0'}`}
         >
-          <Heart className="w-4 h-4" />
+          <Heart className={`w-4 h-4 ${isWishlisted ? 'fill-current' : ''}`} />
         </button>
       </div>
       <div className="flex justify-between items-start gap-4">

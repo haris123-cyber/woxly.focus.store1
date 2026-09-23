@@ -2,7 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { ChevronRight } from "lucide-react";
 import { SiteShell } from "@/components/site-shell";
-import { AccountNav, OrderRow } from "@/components/account-nav";
+import { AccountNav, RecentOrders } from "@/components/account-nav";
 
 export const metadata = { title: "Account | Woxly" };
 
@@ -69,10 +69,7 @@ export default function AccountPage() {
                     View all <ChevronRight className="w-4 h-4" />
                   </Link>
                 </div>
-                <div className="flex flex-col [&>article:last-child]:border-0 [&>article:last-child]:pb-0">
-                  <OrderRow />
-                  <OrderRow />
-                </div>
+                <RecentOrders />
               </section>
 
           </main>

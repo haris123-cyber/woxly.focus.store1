@@ -49,25 +49,53 @@ export function AccountNav({ active }: { active: string }) {
   );
 }
 
-export function OrderRow() {
+import { useCart } from "@/context/CartContext";
+
+export function RecentOrders() {
+  const { orders } = useCart();
+  const recentOrders = orders.slice(0, 2);
+  
+  if (recentOrders.length === 0) {
+    return <p className="text-muted text-sm py-4">No recent orders.</p>;
+  }
+  
+  return (
+    <div className="flex flex-col [&>article:last-child]:border-0 [&>article:last-child]:pb-0">
+      {recentOrders.map(order => (
+        <OrderRow key={order.id} order={order} />
+      ))}
+    </div>
+  );
+}
+
+import { Order } from "@/context/CartContext";
+
+const money = (value: number) => new Intl.NumberFormat("en-IN", { style: "currency", currency: "INR", maximumFractionDigits: 0 }).format(value);
+
+export function OrderRow({ order }: { order: Order }) {
+  const firstItem = order.items[0];
+  if (!firstItem) return null;
+
   return (
     <article className="flex flex-col sm:flex-row gap-4 sm:gap-6 py-6 border-b border-line sm:items-center w-full">
       <div className="flex gap-4 sm:gap-6 items-center flex-1">
         <div className="relative w-20 h-20 sm:w-24 sm:h-24 bg-line/20 rounded-xl overflow-hidden shrink-0">
-          <Image src="/images/sol-hero.png" alt="Sol Focus Lamp" fill className="object-cover" />
+          <Image src={firstItem.image} alt={firstItem.name} fill className="object-cover" />
         </div>
         <div className="flex-1">
-          <small className="text-muted text-xs font-bold uppercase tracking-wider block mb-1">Order {demoOrder.number}</small>
-          <h3 className="text-base sm:text-lg font-medium text-ink">Sol Focus Lamp</h3>
-          <p className="text-muted text-sm mt-1">{demoOrder.date} · ₹3,499</p>
+          <small className="text-muted text-xs font-bold uppercase tracking-wider block mb-1">Order {order.id}</small>
+          <h3 className="text-base sm:text-lg font-medium text-ink">
+            {firstItem.name} {order.items.length > 1 ? `+ ${order.items.length - 1} more` : ""}
+          </h3>
+          <p className="text-muted text-sm mt-1">{order.date} · {money(order.total)}</p>
         </div>
       </div>
       <div className="flex flex-row sm:flex-col items-center sm:items-end justify-between sm:justify-center gap-3 mt-2 sm:mt-0 w-full sm:w-auto">
         <span className="flex items-center gap-2 bg-sage/20 text-forest text-xs font-bold uppercase tracking-wider px-3 py-1.5 rounded-full whitespace-nowrap">
           <i className="w-1.5 h-1.5 rounded-full bg-forest" />
-          {demoOrder.status}
+          {order.status}
         </span>
-        <Link href={`/account/orders/${demoOrder.number}`} className="text-sm font-semibold text-ink hover:text-forest transition-colors flex items-center gap-2 whitespace-nowrap">
+        <Link href={`/account/orders/${order.id}`} className="text-sm font-semibold text-ink hover:text-forest transition-colors flex items-center gap-2 whitespace-nowrap">
           View order <ArrowRight className="w-4 h-4" />
         </Link>
       </div>

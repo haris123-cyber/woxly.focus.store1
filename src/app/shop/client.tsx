@@ -29,15 +29,15 @@ export function ShopClient() {
 
       <section className="max-w-[1200px] mx-auto px-6 w-full py-4 md:py-6 border-b border-line/60 mb-8 md:mb-12">
         <div className="flex flex-wrap md:flex-nowrap items-center gap-y-4 md:gap-6 w-full">
-          
+
           {/* 1. Count (Mobile: Bottom Left, Desktop: Far Left) */}
           <span className="order-2 md:order-1 text-muted text-sm font-medium mr-auto">
             {sortedCatalog.length} products
           </span>
-          
+
           {/* 2. Categories (Mobile: Top Full Width, Desktop: Right aligned) */}
           <div className="order-1 md:order-2 w-full md:w-auto flex gap-2 overflow-x-auto pb-2 md:pb-0 scrollbar-none">
-            {["All", "Lighting", "Accessories"].map(cat => (
+            {["All", "Lighting", "bulbs", "Accessories"].map(cat => (
               <button
                 key={cat}
                 onClick={() => setCategory(cat)}

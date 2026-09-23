@@ -12,6 +12,19 @@ export function TrackOrderClient() {
       <PageHero eyebrow="Order updates" title="Track your order" copy="Enter your order number and email address to see the latest delivery status." />
       <section className="max-w-4xl mx-auto px-6 pb-24 w-full flex flex-col md:flex-row gap-12 font-sans items-start">
 
+        <form onSubmit={(e) => { e.preventDefault(); setTracked(true); }} className="flex-1 w-full bg-white border border-line rounded-3xl p-8 shadow-sm flex flex-col gap-6">
+          <div className="flex flex-col gap-2">
+            <label htmlFor="order-number" className="text-sm font-semibold text-ink">Order number</label>
+            <input id="order-number" required placeholder="e.g. WX-10482" className="w-full px-4 py-3 bg-white rounded-xl border border-line focus:outline-none focus:border-ink focus:ring-1 focus:ring-ink transition-all shadow-sm font-normal" />
+          </div>
+          <div className="flex flex-col gap-2">
+            <label htmlFor="email" className="text-sm font-semibold text-ink">Email address</label>
+            <input id="email" type="email" required placeholder="you@example.com" className="w-full px-4 py-3 bg-white rounded-xl border border-line focus:outline-none focus:border-ink focus:ring-1 focus:ring-ink transition-all shadow-sm font-normal" />
+          </div>
+          <button type="submit" className="w-full py-4 bg-ink text-paper rounded-xl font-medium flex items-center justify-center gap-2 hover:bg-forest transition-colors active:scale-[0.98] shadow-md mt-2">
+            Track order <ArrowRight className="w-4 h-4" />
+          </button>
+        </form>
 
         <div className="w-full md:w-[400px] shrink-0">
           {tracked ? (
@@ -53,16 +66,16 @@ export function OrderTracker() {
             </div>
           </li>
           <li className="relative flex gap-4 items-start">
-            <div className="w-4 h-4 rounded-full bg-forest text-white flex items-center justify-center shrink-0 mt-1 z-10"><Check className="w-2.5 h-2.5" /></div>
+            <div className="w-4 h-4 rounded-full border-2 border-line bg-white flex items-center justify-center shrink-0 mt-1 z-10" />
             <div>
-              <strong className="block text-ink font-medium text-sm">Shipped from our studio</strong>
+              <strong className="block  text-muted font-medium text-sm">Shipped from our studio</strong>
               <small className="text-muted mt-0.5 block">16 Sep · 6:40 PM</small>
             </div>
           </li>
           <li className="relative flex gap-4 items-start">
-            <div className="w-4 h-4 rounded-full border-2 border-forest bg-white flex items-center justify-center shrink-0 mt-1 z-10" />
+            <div className="w-4 h-4 rounded-full border-2 border-line bg-white flex items-center justify-center shrink-0 mt-1 z-10" />
             <div>
-              <strong className="block text-ink font-medium text-sm">In transit</strong>
+              <strong className="block  text-muted font-medium text-sm">In transit</strong>
               <small className="text-muted mt-0.5 block">Arrived at Bengaluru facility</small>
             </div>
           </li>

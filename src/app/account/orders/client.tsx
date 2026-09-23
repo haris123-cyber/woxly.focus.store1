@@ -5,9 +5,18 @@ import { SiteShell } from "@/components/site-shell";
 import { AccountNav, OrderRow } from "@/components/account-nav";
 import Link from "next/link";
 import { ChevronLeft } from "lucide-react";
+import { useCart } from "@/context/CartContext";
 
 export function OrdersClient() {
   const [filter, setFilter] = useState("all");
+  const { orders } = useCart();
+
+  const filteredOrders = orders.filter(order => {
+    if (filter === "all") return true;
+    if (filter === "in-progress") return order.status !== "DELIVERED";
+    if (filter === "delivered") return order.status === "DELIVERED";
+    return true;
+  });
 
   return (
     <SiteShell>
@@ -15,7 +24,7 @@ export function OrdersClient() {
         <div className="max-w-6xl mx-auto px-6 pt-12">
 
           <div className="mb-12">
-            <Link href="/account" className="inline-flex items-center gap-2 text-[13px] font-semibold text-zinc-600 hover:text-zinc-900 transition-colors mb-6 lg:hidden bg-white px-4 py-2 rounded-full shadow-sm border border-zinc-100">
+            <Link href="/account" className="inline-flex items-center gap-2 text-[13px] font-semibold text-muted mb-6 lg:hidden  px-4 py-2   ">
               <ChevronLeft className="w-4 h-4" />
               Back to menu
             </Link>
@@ -42,15 +51,14 @@ export function OrdersClient() {
 
                 {/* Orders List */}
                 <div className="flex flex-col">
-                  {filter === "delivered" ? (
+                  {filteredOrders.length === 0 ? (
                     <div className="py-12 text-center text-muted">
-                      <p>No delivered orders found.</p>
+                      <p>No orders found.</p>
                     </div>
                   ) : (
-                    <>
-                      <OrderRow />
-                      <OrderRow />
-                    </>
+                    filteredOrders.map(order => (
+                      <OrderRow key={order.id} order={order} />
+                    ))
                   )}
                 </div>
 

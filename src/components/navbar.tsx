@@ -10,7 +10,8 @@ import { useCart } from "@/context/CartContext";
 const money = (value: number) => new Intl.NumberFormat("en-IN", { style: "currency", currency: "INR", maximumFractionDigits: 0 }).format(value);
 
 export function Navbar() {
-  const { cartQuantity, setCartQuantity, cartOpen, setCartOpen, menuOpen, setMenuOpen, variant, bundle } = useCart();
+  const { items, cartQuantity, updateQuantity, removeFromCart, cartOpen, setCartOpen, menuOpen, setMenuOpen } = useCart();
+  const subtotal = items.reduce((total, item) => total + item.price * item.quantity, 0);
 
   return (
     <>
@@ -71,27 +72,31 @@ export function Navbar() {
               <div className="bg-sage text-forest text-sm font-medium py-3 px-4 rounded-xl flex items-center gap-2 mb-6">
                 <Check size={16} /> <span>You unlocked free shipping</span>
               </div>
-              <div className="flex gap-4 items-start relative">
-                <div className="relative w-24 h-24 bg-line/30 rounded-xl overflow-hidden shrink-0">
-                  <Image src="/images/sol-hero.png" alt="" fill sizes="100px" className="object-cover" />
-                </div>
-                <div className="flex-1">
-                  <h3 className="font-medium text-ink text-lg">{product.name}</h3>
-                  <p className="text-muted text-sm mb-2">{variant.name} · Set of {bundle.quantity}</p>
-                  <strong className="block text-ink mb-3">{money(bundle.price)}</strong>
-                  <div className="flex items-center gap-4 bg-paper border border-line rounded-full w-fit px-1 py-1">
-                    <button onClick={() => setCartQuantity(Math.max(0, cartQuantity - 1))} className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-line/50 text-ink"><Minus size={14} /></button>
-                    <span className="w-4 text-center font-medium text-sm">{cartQuantity}</span>
-                    <button onClick={() => setCartQuantity(cartQuantity + 1)} className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-line/50 text-ink"><Plus size={14} /></button>
+              <div className="flex flex-col gap-6">
+                {items.map((item) => (
+                  <div key={item.id} className="flex gap-4 items-start relative">
+                    <div className="relative w-24 h-24 bg-line/30 rounded-xl overflow-hidden shrink-0">
+                      <Image src={item.image} alt={item.name} fill sizes="100px" className="object-cover" />
+                    </div>
+                    <div className="flex-1">
+                      <h3 className="font-medium text-ink text-lg">{item.name}</h3>
+                      <p className="text-muted text-sm mb-2">{item.variant ? `${item.variant} · ` : ""}{item.bundleLabel || "One item"}</p>
+                      <strong className="block text-ink mb-3">{money(item.price)}</strong>
+                      <div className="flex items-center gap-4 bg-paper border border-line rounded-full w-fit px-1 py-1">
+                        <button onClick={() => updateQuantity(item.id, item.quantity - 1)} className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-line/50 text-ink"><Minus size={14} /></button>
+                        <span className="w-4 text-center font-medium text-sm">{item.quantity}</span>
+                        <button onClick={() => updateQuantity(item.id, item.quantity + 1)} className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-line/50 text-ink"><Plus size={14} /></button>
+                      </div>
+                    </div>
+                    <button className="absolute top-0 right-0 text-muted hover:text-ink text-xs uppercase font-bold tracking-wider" onClick={() => removeFromCart(item.id)}>Remove</button>
                   </div>
-                </div>
-                <button className="absolute top-0 right-0 text-muted hover:text-ink text-xs uppercase font-bold tracking-wider" onClick={() => setCartQuantity(0)}>Remove</button>
+                ))}
               </div>
             </div>
             <div className="p-6 border-t border-line shrink-0 bg-paper">
               <div className="flex justify-between items-center mb-2">
                 <span className="text-muted font-medium">Subtotal</span>
-                <strong className="text-xl text-ink">{money(bundle.price * (cartQuantity / bundle.quantity))}</strong>
+                <strong className="text-xl text-ink">{money(subtotal)}</strong>
               </div>
               <p className="text-sm text-muted mb-6">Shipping is free. Taxes included.</p>
               <Link href="/checkout" onClick={() => setCartOpen(false)} className="w-full bg-ink text-paper py-4 rounded-full font-medium flex items-center justify-center gap-2 hover:bg-forest transition-colors text-lg">

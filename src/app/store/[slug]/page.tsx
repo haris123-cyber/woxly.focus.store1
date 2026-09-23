@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { useEffect, useMemo, useRef, useState, use } from "react";
-import { ArrowDown, ArrowRight, BatteryCharging, Check, ChevronDown, CircleCheck, Eye, Headphones, PackageCheck, ShieldCheck, SlidersHorizontal, Truck, X } from "lucide-react";
+import { ArrowDown, ArrowRight, BatteryCharging, Check, ChevronDown, CircleCheck, Eye, Headphones, PackageCheck, ShieldCheck, SlidersHorizontal, Truck, X, Heart } from "lucide-react";
 import { faqs, productsMap, reviews } from "@/data/store";
 import { useCart } from "@/context/CartContext";
 import { notFound } from "next/navigation";
@@ -16,7 +16,9 @@ export default function Storefront({ params }: { params: Promise<{ slug: string 
   if (!product) {
     notFound();
   }
-  const { setVariant, setCartQuantity, setCartOpen, variant, bundle, setBundle } = useCart();
+  const { addToCart, setCartOpen, wishlist, toggleWishlist } = useCart();
+  const [variant, setVariant] = useState(product.variants[0]);
+  const [bundle, setBundle] = useState({ quantity: 1 });
 
   const dynamicBundles = useMemo(() => [
     { quantity: 1, label: "One item", caption: "For your desk", price: product.price },
@@ -69,10 +71,18 @@ export default function Storefront({ params }: { params: Promise<{ slug: string 
     };
   }, []);
 
-
-
-  const addToCart = () => {
-    setCartQuantity((quantity) => quantity + bundle.quantity);
+  const handleAddToCart = () => {
+    addToCart({
+      id: `${resolvedParams.slug}-${variant.id}-${currentBundle.quantity}`,
+      slug: resolvedParams.slug,
+      name: product.name,
+      price: Math.round(currentBundle.price / currentBundle.quantity),
+      image: product.images[0].src,
+      quantity: currentBundle.quantity,
+      category: "Lighting", // Or product.category if it existed in productsMap, but fallback for now
+      variant: variant.name,
+      bundleLabel: currentBundle.label,
+    });
     setCartOpen(true);
   };
 
@@ -84,9 +94,19 @@ export default function Storefront({ params }: { params: Promise<{ slug: string 
         {/* Product Gallery */}
         <div className="flex-1 max-w-[640px] w-full mx-auto">
           <div className="relative aspect-[4/5] bg-sage/30 rounded-sm overflow-hidden -mx-6 md:mx-0 my-0 mb-4 border border-line">
-            <span className="absolute top-6 left-6 z-20 px-2 py-1 text-[10px] font-bold tracking-widest uppercase bg-[#7a2e2e] text-white pointer-events-none">
-              Bestseller
-            </span>
+            {product.badge && (
+              <span className="absolute top-6 left-6 z-20 px-2 py-1 text-[10px] font-bold tracking-widest uppercase bg-[#7a2e2e] text-white pointer-events-none">
+                {product.badge}
+              </span>
+            )}
+
+            <button
+              aria-label={`Save ${product.name}`}
+              onClick={() => toggleWishlist(resolvedParams.slug)}
+              className={`absolute top-6 right-6 z-20 w-12 h-12 backdrop-blur-sm rounded-full flex items-center justify-center transition-all duration-300 shadow-sm hover:scale-105 ${wishlist.includes(resolvedParams.slug) ? 'bg-white text-amber' : 'bg-white/80 text-ink hover:bg-white hover:text-amber'}`}
+            >
+              <Heart className={`w-5 h-5 ${wishlist.includes(resolvedParams.slug) ? 'fill-current' : ''}`} />
+            </button>
 
             <div
               ref={galleryRef}
@@ -175,7 +195,7 @@ export default function Storefront({ params }: { params: Promise<{ slug: string 
           </div>
 
           <div className="mb-8" ref={heroActionRef}>
-            <button className="w-full bg-ink text-paper py-5 rounded-full font-medium flex justify-center items-center gap-3 text-lg hover:bg-forest hover:-translate-y-0.5 transition-all shadow-lg hover:shadow-xl active:scale-[0.98]" onClick={addToCart}>
+            <button className="w-full bg-ink text-paper py-5 rounded-full font-medium flex justify-center items-center gap-3 text-lg hover:bg-forest hover:-translate-y-0.5 transition-all shadow-lg hover:shadow-xl active:scale-[0.98]" onClick={handleAddToCart}>
               Add to bag <span className="opacity-70 font-normal">·</span> <span>{money(currentBundle.price)}</span>
             </button>
           </div>
@@ -460,7 +480,7 @@ export default function Storefront({ params }: { params: Promise<{ slug: string 
           <small className="text-muted text-[10px] md:text-xs font-semibold uppercase tracking-wider">{product.name}</small>
           <strong className="text-ink font-serif text-lg md:text-xl leading-none mt-1">{money(currentBundle.price)}</strong>
         </div>
-        <button className="bg-ink text-paper px-6 md:px-8 py-3 rounded-full font-medium hover:bg-forest transition-colors shadow-md whitespace-nowrap shrink-0" onClick={addToCart}>
+        <button className="bg-ink text-paper px-6 md:px-8 py-3 rounded-full font-medium hover:bg-forest transition-colors shadow-md whitespace-nowrap shrink-0" onClick={handleAddToCart}>
           Add to bag
         </button>
       </div>
