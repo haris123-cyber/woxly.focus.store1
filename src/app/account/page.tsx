@@ -1,12 +1,15 @@
+"use client";
+
 import Link from "next/link";
 import Image from "next/image";
-import { ChevronRight, User } from "lucide-react";
+import { ChevronRight, User, Percent } from "lucide-react";
 import { SiteShell } from "@/components/site-shell";
 import { AccountNav, RecentOrders } from "@/components/account-nav";
-
-export const metadata = { title: "Account | Woxly" };
+import { useCart } from "@/context/CartContext";
 
 export default function AccountPage() {
+  const { loyaltyPoints } = useCart();
+
   return (
     <SiteShell>
       <div className="bg-[#fcfbf9] min-h-screen pb-12 font-sans text-zinc-900">
@@ -29,6 +32,20 @@ export default function AccountPage() {
                 <ChevronRight className="w-5 h-5 text-zinc-400 shrink-0" />
               </div>
 
+              <div className="mt-6 pt-6 border-t border-line flex items-center justify-between">
+                <div>
+                  <div className="flex items-center gap-2 text-sm font-semibold text-ink mb-1">
+                    <div className="w-6 h-6 rounded-full bg-forest text-white flex items-center justify-center">
+                      <Percent size={12} strokeWidth={3} />
+                    </div>
+                    Woxly Rewards
+                  </div>
+                  <p className="text-zinc-500 text-xs">You have <strong className="text-forest">{loyaltyPoints} pts</strong> (₹{loyaltyPoints} off)</p>
+                </div>
+                <Link href="/shop" className="text-xs font-medium bg-sage/20 text-forest px-4 py-2 rounded-full hover:bg-sage/40 transition-colors">
+                  Redeem
+                </Link>
+              </div>
 
             </section>
             {/* Banner */}

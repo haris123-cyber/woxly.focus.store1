@@ -1,16 +1,21 @@
 "use client";
 
+import { useEffect } from "react";
 import { useCart } from "@/context/CartContext";
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight, CircleCheck, Minus, PackageCheck, Plus, ShieldCheck, ShoppingBag } from "lucide-react";
+import { ArrowRight, CircleCheck, Minus, PackageCheck, Plus, ShieldCheck, ShoppingBag, Trash2 } from "lucide-react";
 import { SiteShell, PageHero } from "@/components/site-shell";
 
 const money = (value: number) => new Intl.NumberFormat("en-IN", { style: "currency", currency: "INR", maximumFractionDigits: 0 }).format(value);
 
 export function CartClient() {
-  const { items, updateQuantity, removeFromCart, cartQuantity } = useCart();
+  const { items, updateQuantity, removeFromCart, cartQuantity, setCartOpen } = useCart();
   const subtotal = items.reduce((total, item) => total + item.price * item.quantity, 0);
+
+  useEffect(() => {
+    setCartOpen(false);
+  }, [setCartOpen]);
 
   return (
     <SiteShell>
@@ -33,7 +38,7 @@ export function CartClient() {
                 <span className="flex-1">You have free delivery</span>
                 <div className="w-24 h-1.5 bg-white rounded-full overflow-hidden shrink-0"><div className="w-full h-full bg-forest rounded-full" /></div>
               </div>
-              
+
               <div className="flex flex-col">
                 {items.map(item => (
                   <article key={item.id} className="flex gap-6 py-6 border-b border-line last:border-0">
@@ -47,15 +52,17 @@ export function CartClient() {
                           <h2 className="text-xl font-medium text-ink">{item.name}</h2>
                           <p className="text-muted mt-1">{item.variant ? `${item.variant} · ` : ""}{item.bundleLabel || "One item"}</p>
                         </div>
-                        <div className="text-right">
-                          <strong className="block text-lg font-medium text-ink">{money(item.price * item.quantity)}</strong>
-                          <button onClick={() => removeFromCart(item.id)} className="text-xs font-bold uppercase tracking-wider text-muted hover:text-ink transition-colors mt-2">Remove</button>
-                        </div>
+                        <button onClick={() => removeFromCart(item.id)} aria-label="Remove item" className="text-muted hover:text-red-500 transition-colors shrink-0 p-2 -mr-2">
+                          <Trash2 className="w-5 h-5" />
+                        </button>
                       </div>
-                      <div className="flex items-center gap-4 bg-paper border border-line rounded-full w-fit px-1 py-1 mt-4">
-                        <button onClick={() => updateQuantity(item.id, item.quantity - 1)} aria-label="Decrease quantity" className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-line/50 text-ink transition-colors"><Minus className="w-4 h-4" /></button>
-                        <span className="w-6 text-center font-medium text-sm text-ink">{item.quantity}</span>
-                        <button onClick={() => updateQuantity(item.id, item.quantity + 1)} aria-label="Increase quantity" className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-line/50 text-ink transition-colors"><Plus className="w-4 h-4" /></button>
+                      <div className="flex items-center justify-between gap-4 mt-4">
+                        <div className="flex items-center gap-4 bg-paper border border-line rounded-full w-fit px-1 py-1">
+                          <button onClick={() => updateQuantity(item.id, item.quantity - 1)} aria-label="Decrease quantity" className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-line/50 text-ink transition-colors"><Minus className="w-4 h-4" /></button>
+                          <span className="w-6 text-center font-medium text-sm text-ink">{item.quantity}</span>
+                          <button onClick={() => updateQuantity(item.id, item.quantity + 1)} aria-label="Increase quantity" className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-line/50 text-ink transition-colors"><Plus className="w-4 h-4" /></button>
+                        </div>
+                        <strong className="block text-lg font-medium text-ink">{money(item.price * item.quantity)}</strong>
                       </div>
                     </div>
                   </article>
@@ -86,8 +93,8 @@ export function CartClient() {
             <Link href="/checkout" className="w-full py-4 bg-ink text-paper rounded-xl font-medium text-center flex items-center justify-center gap-2 hover:bg-forest transition-colors active:scale-[0.98] shadow-md mb-4">
               Continue to checkout <ArrowRight className="w-4 h-4" />
             </Link>
-          <p className="flex items-center justify-center gap-2 text-xs text-muted font-medium"><ShieldCheck className="w-4 h-4" /> Secure checkout · 30-day returns</p>
-        </aside>
+            <p className="flex items-center justify-center gap-2 text-xs text-muted font-medium"><ShieldCheck className="w-4 h-4" /> Secure checkout · 30-day returns</p>
+          </aside>
         )}
       </section>
 

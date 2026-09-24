@@ -3,13 +3,25 @@
 import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight } from "lucide-react";
+import { ArrowDown, ArrowRight, Check } from "lucide-react";
 import { catalog } from "@/data/catalog";
 
 const money = (value: number) => new Intl.NumberFormat("en-IN", { style: "currency", currency: "INR", maximumFractionDigits: 0 }).format(value);
 
 export default function Home() {
   const [filter, setFilter] = useState("All");
+  const [newsletterStatus, setNewsletterStatus] = useState<"idle" | "submitting" | "success">("idle");
+
+  const handleSubscribe = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (newsletterStatus !== "idle") return;
+
+    setNewsletterStatus("submitting");
+    setTimeout(() => {
+      setNewsletterStatus("success");
+      setTimeout(() => setNewsletterStatus("idle"), 3000);
+    }, 800);
+  };
 
   const filteredCatalog = catalog.filter((item) => {
     if (filter === "All") return true;
@@ -20,11 +32,11 @@ export default function Home() {
   });
 
   return (
-    <main className="min-h-screen bg-paper text-ink pb-24">
+    <main className="min-h-screen bg-paper text-ink pb-1">
       {/* 1. Hero Section (Mobile) */}
       <section className="relative w-full bg-[#e6e2db] md:hidden">
         <Image
-          src="/images/image.png"
+          src="/images/mobile-hero-lamp.jpg"
           alt="Sol Lamp Hero Banner"
           width={1080}
           height={1920}
@@ -32,7 +44,6 @@ export default function Home() {
           priority
           sizes="100vw"
         />
-        <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-paper to-transparent pointer-events-none"></div>
       </section>
 
       {/* 1. Hero Section (Desktop) */}
@@ -47,13 +58,12 @@ export default function Home() {
             priority
             sizes="100vw"
           />
-          <div className="absolute inset-0 bg-gradient-to-r from-[#e6e2db]/30 via-[#e6e2db]/20 to-transparent"></div>
         </div>
       </section>
 
 
       {/* 2. Category Blocks */}
-      <section className="max-w-[1200px] mx-auto py-24 px-6 md:px-12">
+      <section className="max-w-[1200px] mx-auto py-10 px-6 md:px-12">
         <div className="flex justify-between items-end mb-12">
           <div>
             <span className="text-amber text-xs font-semibold tracking-[0.2em] uppercase mb-4 block">Browse by Category</span>
@@ -93,7 +103,7 @@ export default function Home() {
       </section>
 
       {/* Banner 1: Workspace */}
-      <section className="max-w-[1200px] mx-auto w-full px-6 md:px-12 py-12 md:py-24">
+      <section className="max-w-[1200px] mx-auto w-full px-0 md:px-12 py-5 md:py-24">
         <div className="relative w-full aspect-square md:aspect-[21/9] bg-line/20 overflow-hidden group">
           <Image src="/images/workspace_banner.jpg" alt="The Workspace Collection" fill sizes="100vw" className="object-cover group-hover:scale-105 transition-transform duration-1000" />
           <div className="absolute inset-0 bg-gradient-to-t from-ink/60 via-ink/20 to-transparent pointer-events-none" />
@@ -109,7 +119,7 @@ export default function Home() {
       </section>
 
       {/* 3. Collection Grid */}
-      <section className="max-w-[1200px] mx-auto py-24 px-6 md:px-12 border-t border-line">
+      <section className="max-w-[1200px] mx-auto py-4 px-6 md:px-12 ">
         <div className="flex flex-col lg:flex-row justify-between items-start lg:items-end mb-16 gap-8">
           <div>
             <span className="text-amber text-xs font-semibold tracking-[0.2em] uppercase mb-4 block">The Collection</span>
@@ -141,7 +151,7 @@ export default function Home() {
           {filteredCatalog.map((item, i) => (
             <div key={item.slug} className="group">
               {/* White Card Box (Paper Mockup) */}
-              <Link href={`/store/${item.slug}`} className="block relative bg-sage/10 aspect-[4/5] p-6 md:p-8 mb-6 shadow-sm border border-line">
+              <Link href={`/store/${item.slug}`} className="block relative bg-sage/10 aspect-[4/5] p-6 md:p-8 mb-2 shadow-sm border border-line">
                 {item.badge && (
                   <span className={`absolute top-6 left-6 z-20 px-2 py-1 text-[10px] font-bold tracking-widest uppercase ${i === 0 ? 'bg-[#7a2e2e] text-white text-amber' : i === 1 ? 'bg-[#7a2e2e] text-white text-amber' : 'bg-[#7a2e2e] text-white'}`}>
                     {item.badge === "Most popular" ? "Bestseller" : item.badge === "Best value" ? "Sale" : "New"}
@@ -155,16 +165,21 @@ export default function Home() {
               </Link>
 
               {/* Details below card */}
-              <div className="px-2">
-                <span className="text-muted text-[10px] font-bold tracking-widest uppercase block mb-2">{item.category}</span>
-                <h3 className="text-ink text-lg font-serif mb-3 hover:text-amber transition-colors"><Link href="/store">{item.name}</Link></h3>
-                <p className="text-muted text-xs leading-relaxed mb-4 line-clamp-2">
-                  Pure, glare-free illumination balanced to match natural daylight. Visibly improves focus and reduces eye strain within hours.
-                </p>
-                <div className="flex items-center gap-3">
+              <div className="px-0">
+                <span className="text-muted text-[10px] font-bold tracking-widest uppercase block mb-0">{item.category}</span>
+                <h3 className="text-ink text-lg font-serif mb-0 hover:text-amber transition-colors"><Link href="/store">{item.name}</Link></h3>
+
+                <div className="flex items-center gap-2">
                   <strong className="text-amber font-semibold">{money(item.price)}</strong>
                   {item.compareAt && (
-                    <s className="text-black/60 text-sm">{money(item.compareAt)}</s>
+                    <>
+                      <s className="text-black/60 text-xs">{money(item.compareAt)}</s>
+
+                      <span className="text-[13px] font-bold -ml-2 text-green-600 px-1.5 py-0.5 rounded-sm shrink-0 flex items-center">
+                        <ArrowDown size={12} color="currentColor" className="mr-0.5" />
+                        {Math.round(((item.compareAt - item.price) / item.compareAt) * 100)}%
+                      </span>
+                    </>
                   )}
                 </div>
               </div>
@@ -209,13 +224,21 @@ export default function Home() {
       </section>
 
       {/* Newsletter */}
-      <div className="px-6 py-24 max-w-[1200px] mx-auto text-center flex flex-col items-center">
+      <div className="px-0 py-24 max-w-[1200px] mx-auto text-center flex flex-col items-center -mt-15 -mb-15">
         <span className="text-amber text-xs font-bold tracking-[0.2em] uppercase mb-4 block">Newsletter</span>
         <h3 className="text-4xl font-serif text-ink mb-4">Stay in the light.</h3>
         <p className="text-muted mb-6">Notes on better spaces, sent occasionally.</p>
-        <form onSubmit={(event) => event.preventDefault()} className="relative">
-          <input type="email" required placeholder="Email address" aria-label="Email address" className="w-full bg-paper border border-line rounded-full px-5 py-3 outline-none focus:border-ink transition-colors" />
-          <button aria-label="Subscribe" className="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 bg-ink text-paper rounded-full flex items-center justify-center hover:bg-forest transition-colors"><ArrowRight size={16} /></button>
+        <form onSubmit={handleSubscribe} className="relative w-[70%] md:w-96">
+          <input type="email" required placeholder="Email address" aria-label="Email address" className="w-full bg-paper border border-line rounded-full px-5 py-3 outline-none focus:border-ink transition-colors disabled:opacity-70" disabled={newsletterStatus !== "idle"} />
+          <button aria-label="Subscribe" className={`absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 text-paper rounded-full flex items-center justify-center transition-colors disabled:cursor-not-allowed ${newsletterStatus === "success" ? "bg-forest" : "bg-ink hover:bg-forest"}`} disabled={newsletterStatus !== "idle"}>
+            {newsletterStatus === "submitting" ? (
+              <span className="w-4 h-4 border-2 border-paper/30 border-t-paper rounded-full animate-spin"></span>
+            ) : newsletterStatus === "success" ? (
+              <Check size={16} />
+            ) : (
+              <ArrowRight size={16} />
+            )}
+          </button>
         </form>
       </div>
 

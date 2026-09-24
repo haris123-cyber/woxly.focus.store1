@@ -57,12 +57,12 @@ export function OrderDetailsClient({ orderId }: { orderId: string }) {
               <div className="flex flex-col gap-8">
                 <div className="bg-white border border-line rounded-3xl p-8 shadow-sm">
                   <h2 className="text-xl font-medium text-ink mb-2 pb-6 border-b border-line">Order items</h2>
-                  <OrderRow order={order} />
+                  <OrderRow order={order} hideViewOrder />
                 </div>
 
                 <div className="bg-white border border-line rounded-3xl p-8 shadow-sm">
                   <h2 className="text-xl font-medium text-ink mb-8">Order progress</h2>
-                  <OrderTracker />
+                  <OrderTracker hideBorder />
                 </div>
               </div>
 
@@ -71,8 +71,8 @@ export function OrderDetailsClient({ orderId }: { orderId: string }) {
                   <h3 className="text-lg font-medium text-ink mb-4 pb-4 border-b border-line">Delivery address</h3>
                   <p className="text-muted text-sm leading-relaxed">
                     <strong className="text-ink font-medium">muhammed</strong><br />
-                    24, Residency Road<br />
-                    Bengaluru 560001<br />
+                    24, Residency Road
+                    Bengaluru 560001
                     +91 98765 43210
                   </p>
                 </section>
@@ -80,8 +80,8 @@ export function OrderDetailsClient({ orderId }: { orderId: string }) {
                 <section className="bg-white border border-line rounded-3xl p-8 shadow-sm">
                   <h3 className="text-lg font-medium text-ink mb-4 pb-4 border-b border-line">Payment</h3>
                   <p className="text-muted text-sm leading-relaxed">
-                    <strong className="text-ink font-medium">UPI · Paid</strong><br />
-                    Transaction ending 2381
+                    <strong className={`${order.paymentMethod === "Cash on Delivery" ? "text-ink" : "text-[green]"} font-medium`}>{order.paymentMethod || "UPI · Paid"}</strong><br />
+                    {order.paymentMethod === "Cash on Delivery" ? "Pay on delivery" : "Transaction ending 2381"}
                   </p>
                 </section>
 

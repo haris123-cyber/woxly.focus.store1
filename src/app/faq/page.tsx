@@ -7,23 +7,17 @@ export const metadata = { title: "FAQ | Woxly" };
 export default function FAQPage() {
   return (
     <SiteShell>
-      <PageHero 
-        eyebrow="Help centre" 
-        title="Questions, answered." 
-        copy="Everything you need to know about products, delivery, returns and care." 
+      <PageHero
+        eyebrow="Help centre"
+        title="Questions, answered."
+        copy="Everything you need to know about products, delivery, returns and care."
       />
       <section className="max-w-5xl mx-auto px-6 pb-24 flex flex-col md:flex-row gap-12 md:gap-20 font-sans w-full items-start">
-        <aside className="w-full md:w-64 shrink-0 relative md:sticky md:top-32">
-          <nav className="flex flex-col gap-4">
-            <span className="text-xs font-bold uppercase tracking-wider text-muted mb-2 block">Categories</span>
-            <a href="#products" className="text-ink font-medium hover:text-muted transition-colors">Products</a>
-            <a href="#orders" className="text-ink font-medium hover:text-muted transition-colors">Orders & delivery</a>
-          </nav>
-        </aside>
+
 
         <div className="flex-1 w-full max-w-2xl">
           <div className="mb-12">
-            <h2 id="products" className="text-2xl font-bold font-serif text-ink mb-6 scroll-mt-32">Products</h2>
+
             <div className="flex flex-col gap-4">
               {faqs.slice(0, 3).map((f) => (
                 <details key={f.question} className="group bg-white border border-line rounded-2xl overflow-hidden [&_summary::-webkit-details-marker]:hidden shadow-sm">
@@ -37,10 +31,6 @@ export default function FAQPage() {
                 </details>
               ))}
             </div>
-          </div>
-
-          <div>
-            <h2 id="orders" className="text-2xl font-bold font-serif text-ink mb-6 scroll-mt-32">Orders & delivery</h2>
             <div className="flex flex-col gap-4">
               {faqs.slice(3).map((f) => (
                 <details key={f.question} className="group bg-white border border-line rounded-2xl overflow-hidden [&_summary::-webkit-details-marker]:hidden shadow-sm">
@@ -54,7 +44,9 @@ export default function FAQPage() {
                 </details>
               ))}
             </div>
+
           </div>
+
         </div>
       </section>
     </SiteShell>

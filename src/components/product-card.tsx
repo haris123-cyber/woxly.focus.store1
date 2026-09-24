@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { Heart } from "lucide-react";
+import { ArrowDown, Heart } from "lucide-react";
 import { useCart } from "@/context/CartContext";
 
 type CardProduct = { slug: string; name: string; category: string; price: number; compareAt?: number; image: string; badge?: string };
@@ -36,20 +36,31 @@ export function ProductCard({ product }: { product: CardProduct }) {
           <Heart className={`w-4 h-4 ${isWishlisted ? 'fill-current' : ''}`} />
         </button>
       </div>
-      <div className="flex justify-between items-start gap-4">
-        <div>
-          <small className="text-muted text-xs font-medium tracking-wide uppercase block mb-1">
+      <div className="flex flex-col gap-1">
+        <div className="min-w-0 w-full">
+          <small className="text-muted text-xs font-medium tracking-wide uppercase block mb-1 truncate">
             {product.category}
           </small>
-          <h3 className="text-ink font-medium text-[14px] sm:text-lg  leading-tight">
+          <h3 className="text-ink font-medium text-[14px] sm:text-[15px] md:text-base leading-tight truncate">
             <Link href={`/store/${product.slug}`} className="hover:text-muted transition-colors">
               {product.name}
             </Link>
           </h3>
         </div>
-        <strong className="text-ink font-medium shrink-0">
-          ₹{product.price.toLocaleString("en-IN")}
-        </strong>
+        <div className="flex items-center gap-1.5 sm:gap-2 mt-1 shrink-0">
+          <strong className="text-ink font-medium">
+            ₹{product.price.toLocaleString("en-IN")}
+          </strong>
+          {product.compareAt && (
+            <>
+              <s className="text-black/50 text-[15px] sm:text-xs">₹{product.compareAt.toLocaleString("en-IN")}</s>
+              <span className="text-[15px] font-bold ml-0 text-green-600 px-1.5 py-0.5 rounded-sm shrink-0 flex items-center">
+                <ArrowDown size={12} color="currentColor" className="mr-0.5" />
+                {Math.round(((product.compareAt - product.price) / product.compareAt) * 100)}%
+              </span>
+            </>
+          )}
+        </div>
       </div>
     </article>
   );

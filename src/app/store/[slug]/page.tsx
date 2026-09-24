@@ -5,7 +5,7 @@ import { useEffect, useMemo, useRef, useState, use } from "react";
 import { ArrowDown, ArrowRight, BatteryCharging, Check, ChevronDown, CircleCheck, Eye, Headphones, PackageCheck, ShieldCheck, SlidersHorizontal, Truck, X, Heart, Flame, WashingMachine } from "lucide-react";
 import { faqs, productsMap, reviews } from "@/data/store";
 import { useCart } from "@/context/CartContext";
-import { notFound } from "next/navigation";
+import { notFound, useRouter } from "next/navigation";
 
 const money = (value: number) => new Intl.NumberFormat("en-IN", { style: "currency", currency: "INR", maximumFractionDigits: 0 }).format(value);
 
@@ -16,6 +16,7 @@ export default function Storefront({ params }: { params: Promise<{ slug: string 
   if (!product) {
     notFound();
   }
+  const router = useRouter();
   const { addToCart, setCartOpen, wishlist, toggleWishlist } = useCart();
   const [variant, setVariant] = useState(product.variants[0]);
   const [bundle, setBundle] = useState({ quantity: 1 });
@@ -30,12 +31,39 @@ export default function Storefront({ params }: { params: Promise<{ slug: string 
 
   const [activeImage, setActiveImage] = useState(0);
   const [stickyVisible, setStickyVisible] = useState(true);
-  const [expandedBenefit, setExpandedBenefit] = useState<number | null>(null);
+  const [expandedBenefits, setExpandedBenefits] = useState<number[]>([0, 1, 2]);
+
+  const [pincode, setPincode] = useState("");
+  const [pincodeStatus, setPincodeStatus] = useState<"idle" | "success" | "error">("idle");
+  const handleCheckPincode = () => {
+    setPincodeStatus(pincode.startsWith("9") ? "error" : "success");
+  };
+
+  const toggleBenefit = (index: number) => {
+    setExpandedBenefits(prev =>
+      prev.includes(index) ? prev.filter(i => i !== index) : [...prev, index]
+    );
+  };
 
   // Review Section Interactivity State
   const [activeFilter, setActiveFilter] = useState<string | number>("all");
-  const [lightboxImage, setLightboxImage] = useState<string | null>(null);
+  const [lightboxState, setLightboxState] = useState<{ images: string[], index: number } | null>(null);
   const [isReviewModalOpen, setIsReviewModalOpen] = useState(false);
+  const [isPurchasedUser, setIsPurchasedUser] = useState(false);
+  const [sortOrder, setSortOrder] = useState<"recent" | "highest" | "lowest">("recent");
+
+  const lightboxRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (lightboxState && lightboxRef.current) {
+      const slide = lightboxRef.current.children[lightboxState.index] as HTMLElement;
+      if (slide) {
+        lightboxRef.current.scrollTo({ left: slide.offsetLeft, behavior: 'instant' });
+      }
+    }
+  }, [lightboxState?.index, lightboxState?.images]);
+
+  const allReviewsPhotos = useMemo(() => reviews.flatMap(r => r.images || []), []);
 
   const heroActionRef = useRef<HTMLDivElement>(null);
   const galleryRef = useRef<HTMLDivElement>(null);
@@ -83,13 +111,17 @@ export default function Storefront({ params }: { params: Promise<{ slug: string 
       variant: variant.name,
       bundleLabel: currentBundle.label,
     });
-    setCartOpen(true);
+    if (window.innerWidth < 768) {
+      router.push("/cart");
+    } else {
+      setCartOpen(true);
+    }
   };
 
   return (
     <main id="top" className="bg-paper min-h-screen text-ink pb-24">
       {/* Hero Section */}
-      <section className="max-w-[1200px] mx-auto px-6 pt-0 md:pt-16 pb-16 md:pb-24 flex flex-col lg:flex-row gap-12 lg:gap-20" aria-labelledby="hero-title">
+      <section className="max-w-[1200px] mx-auto px-6 pt-0 md:pt-16 pb-6 md:pb-24 flex flex-col lg:flex-row gap-12 lg:gap-20" aria-labelledby="hero-title">
 
         {/* Product Gallery */}
         <div className="flex-1 max-w-[640px] w-full mx-auto">
@@ -133,26 +165,28 @@ export default function Storefront({ params }: { params: Promise<{ slug: string 
             </div>
           </div>
 
-          <p className="flex justify-end items-center gap-2 text-sm text-[green] mt-8 mb-2 font-medium"><CircleCheck size={16} className="text-[green]" /> In stock · Ships in 24 hours</p>
+          <p className="flex justify-end items-center gap-2 text-sm text-[green] mt-8 mb-0 font-medium"><CircleCheck size={16} className="text-[green]" /> In stock </p>
 
 
         </div>
 
         {/* Hero Copy & Form */}
-        <div className="flex-1 flex flex-col justify-center max-w-[480px] mx-auto lg:mx-0">
+        <div className="flex-1 flex flex-col justify-center max-w-[480px] mx-auto lg:mx-0 -mt-16">
           <div className="text-[12px] font-semibold tracking-widest uppercase text-muted mb-4">{product.eyebrow}</div>
           <h1 id="hero-title" className="text-2xl md:text-5xl font-serif text-ink mb-4 leading-tight tracking-tight">{product.name}</h1>
-          <p className="text-muted text-sm leading-relaxed mb-6">{product.description}</p>
-          <a className="flex items-center gap-2 text-sm font-medium hover:text-muted transition-colors w-fit mb-10" href="#reviews">
+          <p className="text-muted text-sm leading-relaxed mb-2">{product.description}</p>
+          <a className="flex items-center gap-2 text-sm font-medium hover:text-muted transition-colors w-fit mb-4" href="#reviews">
             <span className="text-amber text-lg tracking-widest">★★★★★</span> <strong className="text-ink">{product.rating}</strong> <em className="text-muted not-italic">({product.reviewCount} reviews)</em>
           </a>
 
           <div className="flex items-end gap-3 mb-0 pb-10 border-b border-line relative">
-            <strong className="text-3xl font-serif text-ink">{money(currentBundle.price)}</strong>
+            <strong className="text-4xl font-serif mt-5  text-ink">{money(currentBundle.price)}</strong>
             {currentBundle.quantity === 1 && (
-              <div className="flex flex-col text-sm pb-1">
-                <s className="text-black">{money(product.compareAtPrice)}</s>
-                <span className="text-amber font-semibold">Save {money(product.compareAtPrice - product.price)}</span>
+              <div className="  pb-1">
+                <div className="flex flex-col text-md  pb-1">
+                  <s className="text-black ">{money(product.compareAtPrice)}</s>
+                  <span className="text-amber font-semibold">Save {money(product.compareAtPrice - product.price)}</span>
+                </div>
               </div>
             )}
             {product.urgencyMessage && (
@@ -199,7 +233,44 @@ export default function Storefront({ params }: { params: Promise<{ slug: string 
             </div>
           </div>
 
-          <div className="mb-8" ref={heroActionRef}>
+          <div className="mb-8">
+            <div className="flex justify-between items-end mb-3">
+              <span className="text-sm font-semibold tracking-widest uppercase text-muted">Delivery</span>
+              <small className="text-muted text-xs font-medium">Check availability</small>
+            </div>
+            <div className="flex gap-2">
+              <input
+                type="text"
+                placeholder="Enter pincode"
+                maxLength={6}
+                value={pincode}
+                onChange={(e) => {
+                  setPincode(e.target.value.replace(/\D/g, ''));
+                  setPincodeStatus("idle");
+                }}
+                className="flex-1 bg-white border border-line rounded-xl px-4 py-3 text-ink focus:outline-none focus:border-ink transition-colors text-sm shadow-sm"
+              />
+              <button
+                onClick={handleCheckPincode}
+                disabled={pincode.length !== 6}
+                className="bg-ink text-paper px-6 py-3 rounded-xl font-medium text-sm hover:bg-forest transition-colors disabled:bg-line/50 disabled:text-muted disabled:cursor-not-allowed shadow-sm"
+              >
+                Check
+              </button>
+            </div>
+            {pincodeStatus === "success" && (
+              <p className="text-forest text-xs font-medium mt-3 flex items-center gap-1.5 animate-in fade-in slide-in-from-top-1">
+                <Check size={14} /> Delivery available to {pincode} (Usually 2-4 days)
+              </p>
+            )}
+            {pincodeStatus === "error" && (
+              <p className="text-red-500 text-xs font-medium mt-3 flex items-center gap-1.5 animate-in fade-in slide-in-from-top-1">
+                <X size={14} /> Sorry, we don't deliver to {pincode} yet.
+              </p>
+            )}
+          </div>
+
+          <div className="mb-5" ref={heroActionRef}>
             <button className="w-full bg-ink text-paper py-5 rounded-full font-medium flex justify-center items-center gap-3 text-lg hover:bg-forest hover:-translate-y-0.5 transition-all shadow-lg hover:shadow-xl active:scale-[0.98]" onClick={handleAddToCart}>
               Add to bag <span className="opacity-70 font-normal">·</span> <span>{money(currentBundle.price)}</span>
             </button>
@@ -207,7 +278,7 @@ export default function Storefront({ params }: { params: Promise<{ slug: string 
 
         </div>
       </section>
-      <div className="relative my-2 border-y border-line/50">
+      <div className="relative my-2 border-y  mb-10 border-line/50">
         {/* Gradient fade to indicate scrollability on mobile */}
         <div className="absolute right-0 top-0 bottom-0 w-16 bg-gradient-to-l from-[#fcfbf9] to-transparent pointer-events-none z-10 md:hidden" />
 
@@ -236,45 +307,40 @@ export default function Storefront({ params }: { params: Promise<{ slug: string 
       </div>
 
 
-      {/* Intro */}
-      <section className="max-w-[800px] mx-auto px-6 py-24 md:py-32 text-center" id="benefits">
-        <span className="text-sm font-semibold tracking-widest uppercase text-muted mb-6 block">Your space, in a better light</span>
-        <h2 className="text-4xl md:text-5xl font-serif text-ink leading-tight mb-8">Focus without the fluorescent feeling.</h2>
-        <p className="text-lg md:text-xl text-muted leading-relaxed max-w-[600px] mx-auto">Sol brings crisp, comfortable task light to your desk in a form that feels more like furniture than equipment.</p>
-      </section>
+
 
       {/* Benefits Grid */}
       <section className="max-w-[1200px] mx-auto px-6 pb-6 md:pb-32 grid grid-cols-1 md:grid-cols-3 gap-2">
-        <article className={`bg-ink text-paper rounded-xl flex flex-col cursor-pointer transition-all duration-300 border border-transparent ${expandedBenefit === 0 ? "p-8  md:p-10 min-h-[280px] md:min-h-[400px]" : "p-3 pl-5 pr-5   md:p-8"}`} onClick={() => setExpandedBenefit(expandedBenefit === 0 ? null : 0)}>
-          <div className={`flex justify-between items-center ${expandedBenefit === 0 ? "mb-4" : ""}`}>
+        <article className={`bg-ink text-paper rounded-xl flex flex-col cursor-pointer transition-all duration-300 border border-transparent ${expandedBenefits.includes(0) ? "p-8  md:p-10 min-h-[280px] md:min-h-[400px]" : "p-3 pl-5 pr-5   md:p-8"}`} onClick={() => toggleBenefit(0)}>
+          <div className={`flex justify-between items-center ${expandedBenefits.includes(0) ? "mb-4" : ""}`}>
             <div className="text-paper opacity-80 transition-transform origin-left hover:scale-110"><Eye size={28} strokeWidth={1.5} /></div>
-            <ChevronDown className={`transition-transform duration-300 opacity-50 ${expandedBenefit === 0 ? 'rotate-180' : ''}`} size={24} />
+            <ChevronDown className={`transition-transform duration-300 opacity-50 ${expandedBenefits.includes(0) ? 'rotate-180' : ''}`} size={24} />
           </div>
-          <div className={`mt-auto transition-all duration-500 overflow-hidden ${expandedBenefit === 0 ? 'max-h-[500px] opacity-100' : 'max-h-0 opacity-0'}`}>
+          <div className={`mt-auto transition-all duration-500 overflow-hidden ${expandedBenefits.includes(0) ? 'max-h-[500px] opacity-100' : 'max-h-0 opacity-0'}`}>
             <h3 className="text-2xl font-serif mb-3">Comfort for your eyes</h3>
             <p className="text-paper/70 leading-relaxed mb-6">A recessed diffuser softens every setting, keeping glare and flicker out of your line of sight.</p>
             <a href="#details" className="inline-flex items-center gap-2 font-medium border-b border-paper/30 pb-1 hover:border-paper transition-colors" onClick={e => e.stopPropagation()}>See the difference <ArrowRight size={16} /></a>
           </div>
         </article>
 
-        <article className={`bg-sage/40 text-ink rounded-xl flex flex-col cursor-pointer transition-all duration-300 border border-line/50 hover:border-forest/30 ${expandedBenefit === 1 ? "p-8 md:p-10 min-h-[280px] md:min-h-[400px]" : "p-3 pl-5 pr-5   md:p-8"}`} onClick={() => setExpandedBenefit(expandedBenefit === 1 ? null : 1)}>
-          <div className={`flex justify-between items-center ${expandedBenefit === 1 ? "mb-4" : ""}`}>
+        <article className={`bg-sage/40 text-ink rounded-xl flex flex-col cursor-pointer transition-all duration-300 border border-line/50 hover:border-forest/30 ${expandedBenefits.includes(1) ? "p-8 md:p-10 min-h-[280px] md:min-h-[400px]" : "p-3 pl-5 pr-5   md:p-8"}`} onClick={() => toggleBenefit(1)}>
+          <div className={`flex justify-between items-center ${expandedBenefits.includes(1) ? "mb-4" : ""}`}>
             <div className="text-forest opacity-80 transition-transform origin-left hover:scale-110"><BatteryCharging size={28} strokeWidth={1.5} /></div>
-            <ChevronDown className={`transition-transform duration-300 opacity-50 ${expandedBenefit === 1 ? 'rotate-180' : ''}`} size={24} />
+            <ChevronDown className={`transition-transform duration-300 opacity-50 ${expandedBenefits.includes(1) ? 'rotate-180' : ''}`} size={24} />
           </div>
-          <div className={`mt-auto transition-all duration-500 overflow-hidden ${expandedBenefit === 1 ? 'max-h-[500px] opacity-100' : 'max-h-0 opacity-0'}`}>
+          <div className={`mt-auto transition-all duration-500 overflow-hidden ${expandedBenefits.includes(1) ? 'max-h-[500px] opacity-100' : 'max-h-0 opacity-0'}`}>
             <h3 className="text-2xl font-serif mb-3">Work, wire-free</h3>
             <p className="text-muted leading-relaxed mb-6">Up to 18 hours of cordless light. Move from desk to table without reaching for an outlet.</p>
             <strong className="text-3xl font-serif block">18<small className="text-base text-muted font-sans font-normal ml-1">hrs</small></strong>
           </div>
         </article>
 
-        <article className={`bg-amber/10 text-ink rounded-xl flex flex-col cursor-pointer transition-all duration-300 border border-amber/20 hover:border-amber/30 ${expandedBenefit === 2 ? "p-8 md:p-10 min-h-[280px] md:min-h-[400px]" : "p-3 pl-5 pr-5   md:p-8"}`} onClick={() => setExpandedBenefit(expandedBenefit === 2 ? null : 2)}>
-          <div className={`flex justify-between items-center ${expandedBenefit === 2 ? "mb-4" : ""}`}>
+        <article className={`bg-amber/10 text-ink rounded-xl flex flex-col cursor-pointer transition-all duration-300 border border-amber/20 hover:border-amber/30 ${expandedBenefits.includes(2) ? "p-8 md:p-10 min-h-[280px] md:min-h-[400px]" : "p-3 pl-5 pr-5   md:p-8"}`} onClick={() => toggleBenefit(2)}>
+          <div className={`flex justify-between items-center ${expandedBenefits.includes(2) ? "mb-4" : ""}`}>
             <div className="text-amber opacity-80 transition-transform origin-left hover:scale-110"><SlidersHorizontal size={28} strokeWidth={1.5} /></div>
-            <ChevronDown className={`transition-transform duration-300 opacity-50 ${expandedBenefit === 2 ? 'rotate-180' : ''}`} size={24} />
+            <ChevronDown className={`transition-transform duration-300 opacity-50 ${expandedBenefits.includes(2) ? 'rotate-180' : ''}`} size={24} />
           </div>
-          <div className={`mt-auto transition-all duration-500 overflow-hidden ${expandedBenefit === 2 ? 'max-h-[500px] opacity-100' : 'max-h-0 opacity-0'}`}>
+          <div className={`mt-auto transition-all duration-500 overflow-hidden ${expandedBenefits.includes(2) ? 'max-h-[500px] opacity-100' : 'max-h-0 opacity-0'}`}>
             <h3 className="text-2xl font-serif mb-3 text-amber">Three moods. One dial.</h3>
             <p className="text-ink/70 leading-relaxed">From a warm evening glow to clear daylight. Tap to change tone, turn to dim.</p>
           </div>
@@ -382,24 +448,24 @@ export default function Storefront({ params }: { params: Promise<{ slug: string 
                 </div>
               </div>
 
-              <div className="flex items-center gap-2 text-xs md:text-sm text-ink font-medium">
-                <CircleCheck size={16} className="text-ink shrink-0" />
+              <div className="flex items-center gap-2 text-xs md:text-sm text-[green] font-medium">
+                <CircleCheck size={16} className="text-[green] shrink-0" />
                 All reviews are from verified buyers
               </div>
             </div>
 
             {/* Customer Photos */}
-            {reviews.some(r => r.images && r.images.length > 0) && (
+            {allReviewsPhotos.length > 0 && (
               <div className="mb-8">
                 <div className="flex justify-between items-end mb-4">
                   <h3 className="font-semibold text-ink">Customer photos</h3>
-                  <button className="text-[13px] font-medium text-zinc-500 hover:text-zinc-900 transition-colors flex items-center gap-1">
+                  <button onClick={() => setLightboxState({ images: allReviewsPhotos, index: 0 })} className="text-[13px] font-medium text-zinc-500 hover:text-zinc-900 transition-colors flex items-center gap-1">
                     View all photos <ArrowRight className="w-3.5 h-3.5" />
                   </button>
                 </div>
                 <div className="flex gap-3 overflow-x-auto pb-2 scrollbar-none snap-x">
-                  {reviews.flatMap(r => r.images || []).slice(0, 4).map((img, i) => (
-                    <button key={i} onClick={() => setLightboxImage(img)} className="relative w-[72px] h-[72px] md:w-20 md:h-20 rounded-xl overflow-hidden shrink-0 border border-line snap-start hover:opacity-90 transition-opacity">
+                  {allReviewsPhotos.slice(0, 4).map((img, i) => (
+                    <button key={i} onClick={() => setLightboxState({ images: allReviewsPhotos, index: i })} className="relative w-[72px] h-[72px] md:w-20 md:h-20 rounded-xl overflow-hidden shrink-0 border border-line snap-start hover:opacity-90 transition-opacity">
                       <Image src={img} alt={`Customer photo ${i + 1}`} fill className="object-cover" />
                     </button>
                   ))}
@@ -422,66 +488,81 @@ export default function Storefront({ params }: { params: Promise<{ slug: string 
                 <button onClick={() => setActiveFilter(2)} className={`shrink-0 px-2 py-1 text-[12px] font-medium rounded-full ${activeFilter === 2 ? "bg-ink text-paper" : "border border-line text-ink hover:bg-line/20"}`}>2 ★ (1)</button>
                 <button onClick={() => setActiveFilter(1)} className={`shrink-0 px-2 py-1 text-[12px] font-medium rounded-full ${activeFilter === 1 ? "bg-ink text-paper" : "border border-line text-ink hover:bg-line/20"}`}>1 ★ (0)</button>
               </div>
-              <button className="flex items-center gap-2 px-4 py-1.5 border border-line text-ink text-sm font-medium rounded-lg hover:bg-line/20 whitespace-nowrap">
-                Most recent <ChevronDown size={14} />
-              </button>
+              <div className="relative shrink-0 ">
+                <select
+                  value={sortOrder}
+                  onChange={(e) => setSortOrder(e.target.value as "recent" | "highest" | "lowest")}
+                  className="appearance-none bg-transparent border border-line text-ink text-sm font-medium rounded-sm hover:bg-line/20 outline-none cursor-pointer pl-4 pr-10 py-1.5 focus:border-ink transition-colors w-full"
+                >
+                  <option value="recent">Most recent</option>
+                  <option value="highest">Highest rated</option>
+                  <option value="lowest">Lowest rated</option>
+                </select>
+                <ChevronDown size={14} className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-ink" />
+              </div>
             </div>
 
             {/* Review Cards */}
             <div className="flex flex-col gap-4">
-              {reviews.filter(r => activeFilter === "all" || r.rating === activeFilter).map((review, index) => (
-                <article key={index} className="border border-line rounded-2xl p-6">
-                  {/* Review Header */}
-                  <div className="flex justify-between items-start mb-4">
-                    <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 rounded-full bg-sage flex items-center justify-center text-ink font-serif text-lg shrink-0">
-                        {review.name.charAt(0)}
-                      </div>
-                      <div>
-                        <strong className="block text-ink text-sm font-medium">{review.name}</strong>
-                        <div className="flex items-center gap-1 mt-0.5">
-                          <CircleCheck size={12} className="text-ink" />
-                          <small className="text-muted text-xs">{review.meta}</small>
+              {reviews
+                .filter(r => activeFilter === "all" || r.rating === activeFilter)
+                .sort((a, b) => {
+                  if (sortOrder === "highest") return b.rating - a.rating;
+                  if (sortOrder === "lowest") return a.rating - b.rating;
+                  return 0;
+                })
+                .map((review, index) => (
+                  <article key={index} className="border border-line rounded-2xl p-6">
+                    {/* Review Header */}
+                    <div className="flex justify-between items-start mb-4">
+                      <div className="flex items-center gap-3">
+                        <div className="w-10 h-10 rounded-full bg-sage flex items-center justify-center text-ink font-serif text-lg shrink-0">
+                          {review.name.charAt(0)}
+                        </div>
+                        <div>
+                          <strong className="block text-ink text-sm font-medium">{review.name}</strong>
+                          <div className="flex items-center gap-1 mt-0.5">
+                            <CircleCheck size={12} className="text-[green]" />
+                            <small className="text-[green] text-xs">{review.meta}</small>
+                          </div>
                         </div>
                       </div>
+                      <div className="flex items-center gap-4">
+                        <span className="text-muted text-sm">{review.date}</span>
+                      </div>
                     </div>
-                    <div className="flex items-center gap-4">
-                      <span className="text-muted text-sm">{review.date}</span>
-                      <button className="text-muted hover:text-ink"><span className="text-xl tracking-widest leading-none block -mt-2">...</span></button>
+
+                    {/* Review Body */}
+                    <div className="text-[#f6b759] text-sm mb-2">{"★".repeat(review.rating)}{"☆".repeat(5 - review.rating)}</div>
+                    <h3 className="text-base font-semibold text-ink mb-1.5">{review.title}</h3>
+                    <p className="text-ink/80 text-sm leading-relaxed mb-4">{review.quote}</p>
+
+                    {review.images && review.images.length > 0 && (
+                      <div className="flex gap-2 mb-4">
+                        {review.images.slice(0, 3).map((img, i) => (
+                          <div key={i} onClick={() => setLightboxState({ images: review.images!, index: i })} className="relative w-16 h-16 rounded-lg overflow-hidden shrink-0 border border-line cursor-pointer hover:opacity-80 transition-opacity">
+                            <Image src={img} alt="Review attachment" fill className="object-cover" />
+                          </div>
+                        ))}
+                        {review.images.length > 3 && (
+                          <div onClick={() => setLightboxState({ images: review.images!, index: 3 })} className="w-16 h-16 rounded-lg bg-sage flex items-center justify-center text-ink text-sm font-medium shrink-0 cursor-pointer hover:bg-sage/80 transition-colors">
+                            +{review.images.length - 3}
+                          </div>
+                        )}
+                      </div>
+                    )}
+
+                    {/* Review Footer */}
+                    <div className="flex items-center gap-4 text-sm font-medium text-muted mt-2">
+                      <button className="flex items-center gap-1.5 hover:text-ink transition-colors">
+                        👍 Helpful ({review.helpfulCount})
+                      </button>
+                      <button className="flex items-center gap-1.5 hover:text-ink transition-colors">
+                        👎 ({review.unhelpfulCount})
+                      </button>
                     </div>
-                  </div>
-
-                  {/* Review Body */}
-                  <div className="text-[#f6b759] text-sm mb-2">{"★".repeat(review.rating)}{"☆".repeat(5 - review.rating)}</div>
-                  <h3 className="text-base font-semibold text-ink mb-1.5">{review.title}</h3>
-                  <p className="text-ink/80 text-sm leading-relaxed mb-4">{review.quote}</p>
-
-                  {review.images && review.images.length > 0 && (
-                    <div className="flex gap-2 mb-4">
-                      {review.images.map((img, i) => (
-                        <div key={i} onClick={() => setLightboxImage(img)} className="relative w-16 h-16 rounded-lg overflow-hidden shrink-0 border border-line cursor-pointer hover:opacity-80 transition-opacity">
-                          <Image src={img} alt="Review attachment" fill className="object-cover" />
-                        </div>
-                      ))}
-                      {review.images.length > 1 && (
-                        <div className="w-16 h-16 rounded-lg bg-sage flex items-center justify-center text-ink text-sm font-medium shrink-0 cursor-pointer hover:bg-sage/80 transition-colors">
-                          +1
-                        </div>
-                      )}
-                    </div>
-                  )}
-
-                  {/* Review Footer */}
-                  <div className="flex items-center gap-4 text-sm font-medium text-muted mt-2">
-                    <button className="flex items-center gap-1.5 hover:text-ink transition-colors">
-                      👍 Helpful ({review.helpfulCount})
-                    </button>
-                    <button className="flex items-center gap-1.5 hover:text-ink transition-colors">
-                      👎 ({review.unhelpfulCount})
-                    </button>
-                  </div>
-                </article>
-              ))}
+                  </article>
+                ))}
             </div>
           </div>
         </div>
@@ -520,11 +601,21 @@ export default function Storefront({ params }: { params: Promise<{ slug: string 
       </div>
 
       {/* Lightbox Modal */}
-      {lightboxImage && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-ink/90 backdrop-blur-sm p-4" onClick={() => setLightboxImage(null)}>
-          <button className="absolute top-4 right-4 md:top-6 md:right-6 text-paper/70 hover:text-white transition-colors z-[110] p-2" onClick={(e) => { e.stopPropagation(); setLightboxImage(null); }}><X size={32} /></button>
-          <div className="relative w-full max-w-5xl aspect-square md:aspect-video flex items-center justify-center" onClick={e => e.stopPropagation()}>
-            <Image src={lightboxImage} alt="Fullscreen image" fill className="object-contain" />
+      {lightboxState && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-ink/90 backdrop-blur-sm" onClick={() => setLightboxState(null)}>
+          <button className="absolute top-4 right-4 md:top-6 md:right-6 text-paper/70 hover:text-white transition-colors z-[110] p-2" onClick={(e) => { e.stopPropagation(); setLightboxState(null); }}><X size={32} /></button>
+          <div
+            ref={lightboxRef}
+            className="flex w-full h-full overflow-x-auto snap-x snap-mandatory scrollbar-hide scroll-smooth"
+            onClick={e => e.stopPropagation()}
+          >
+            {lightboxState.images.map((src, i) => (
+              <div key={src + i} className="relative w-full h-full shrink-0 snap-center flex items-center justify-center p-4">
+                <div className="relative w-full max-w-5xl aspect-square md:aspect-video">
+                  <Image src={src} alt={`Fullscreen image ${i + 1}`} fill className="object-contain" />
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       )}
@@ -547,6 +638,27 @@ export default function Storefront({ params }: { params: Promise<{ slug: string 
               <div className="mb-6">
                 <label className="block text-sm font-medium text-ink mb-2">Review</label>
                 <textarea required rows={4} className="w-full border border-line rounded-lg px-4 py-2 outline-none focus:border-ink transition-colors resize-none" placeholder="What did you like or dislike?"></textarea>
+              </div>
+              <div className="mb-4">
+                <label className="flex items-center gap-2 text-sm font-medium text-ink cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={isPurchasedUser}
+                    onChange={(e) => setIsPurchasedUser(e.target.checked)}
+                    className="w-4 h-4 rounded border-line text-ink focus:ring-ink"
+                  />
+                  I have purchased this product
+                </label>
+              </div>
+              <div className="mb-6">
+                <label className={`block text-sm font-medium mb-2 ${isPurchasedUser ? 'text-ink' : 'text-muted'}`}>Add Photos (Optional)</label>
+                <input
+                  type="file"
+                  multiple
+                  accept="image/*"
+                  disabled={!isPurchasedUser}
+                  className={`w-full text-sm text-muted file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold transition-colors ${isPurchasedUser ? 'file:bg-sage file:text-ink hover:file:bg-sage/80 cursor-pointer' : 'file:bg-line/50 file:text-muted cursor-not-allowed opacity-60'}`}
+                />
               </div>
               <button type="submit" className="w-full bg-ink text-paper font-medium rounded-lg px-4 py-3 hover:bg-ink/90 transition-colors">Submit Review</button>
             </form>

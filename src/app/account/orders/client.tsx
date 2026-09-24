@@ -4,12 +4,12 @@ import { useState } from "react";
 import { SiteShell } from "@/components/site-shell";
 import { AccountNav, OrderRow } from "@/components/account-nav";
 import Link from "next/link";
-import { ChevronLeft } from "lucide-react";
+import { ChevronLeft, Trash2 } from "lucide-react";
 import { useCart } from "@/context/CartContext";
 
 export function OrdersClient() {
   const [filter, setFilter] = useState("all");
-  const { orders } = useCart();
+  const { orders, clearOrders } = useCart();
 
   const filteredOrders = orders.filter(order => {
     if (filter === "all") return true;
@@ -23,13 +23,29 @@ export function OrdersClient() {
       <section className="bg-sage/10 min-h-screen pb-24 font-sans">
         <div className="max-w-6xl mx-auto px-6 pt-12">
 
-          <div className="mb-12">
-            <Link href="/account" className="inline-flex items-center gap-2 text-[13px] font-semibold text-muted mb-6 lg:hidden  px-4 py-2   ">
-              <ChevronLeft className="w-4 h-4" />
-              Back to menu
-            </Link>
-            <span className="text-forest text-sm font-bold uppercase tracking-wider mb-2 block">Purchase history</span>
-            <h1 className="text-4xl font-serif text-ink">My orders</h1>
+          <div className="mb-12 flex flex-col md:flex-row md:items-end justify-between gap-4">
+            <div>
+              <Link href="/account" className="inline-flex items-center gap-2 text-[13px] font-semibold text-muted mb-6 lg:hidden  px-4 py-2   ">
+                <ChevronLeft className="w-4 h-4" />
+                Back to menu
+              </Link>
+              <span className="text-forest text-sm font-bold uppercase tracking-wider mb-2 block">Purchase history</span>
+              <h1 className="text-4xl font-serif text-ink">My orders</h1>
+            </div>
+
+            {orders.length > 0 && (
+              <button 
+                onClick={() => {
+                  if (window.confirm("Are you sure you want to clear your order history?")) {
+                    clearOrders();
+                  }
+                }}
+                className="inline-flex items-center gap-2 text-sm font-semibold text-red-500 hover:text-red-700 transition-colors w-fit"
+              >
+                <Trash2 className="w-4 h-4" />
+                Clear History
+              </button>
+            )}
           </div>
 
           <div className="flex flex-col lg:flex-row gap-12 lg:gap-16 items-start">
@@ -43,7 +59,7 @@ export function OrdersClient() {
               <div className="bg-white border border-line rounded-3xl p-8 shadow-sm">
 
                 {/* Filters */}
-                <div className="flex gap-4 border-b border-line pb-6 mb-2 overflow-x-auto scrollbar-none">
+                <div className="flex gap-4 border-b border-line pb-3 mb-2 overflow-x-auto scrollbar-none">
                   <button onClick={() => setFilter("all")} className={`px-5 py-2 rounded-full text-sm font-medium transition-colors shrink-0 ${filter === 'all' ? 'bg-ink text-paper' : 'text-ink hover:bg-line/30 border border-transparent hover:border-line/50'}`}>All orders</button>
                   <button onClick={() => setFilter("in-progress")} className={`px-5 py-2 rounded-full text-sm font-medium transition-colors shrink-0 ${filter === 'in-progress' ? 'bg-ink text-paper' : 'text-ink hover:bg-line/30 border border-transparent hover:border-line/50'}`}>In progress</button>
                   <button onClick={() => setFilter("delivered")} className={`px-5 py-2 rounded-full text-sm font-medium transition-colors shrink-0 ${filter === 'delivered' ? 'bg-ink text-paper' : 'text-ink hover:bg-line/30 border border-transparent hover:border-line/50'}`}>Delivered</button>

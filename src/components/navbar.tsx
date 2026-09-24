@@ -27,7 +27,7 @@ export function Navbar() {
           <nav className="hidden md:flex items-center gap-8 text-sm font-medium text-ink" aria-label="Main navigation">
             <Link href="/" className="hover:text-muted transition-colors">Home</Link>
             <Link href="/shop" className="hover:text-muted transition-colors">Shop</Link>
-            <Link href="/blog" className="hover:text-muted transition-colors">Journal</Link>
+            <Link href="/blog" className="hover:text-muted transition-colors">Blog</Link>
 
             <Link href="/contact" className="hover:text-muted transition-colors">Support</Link>
           </nav>
@@ -36,10 +36,17 @@ export function Navbar() {
               <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" /><circle cx="12" cy="7" r="4" /></svg>
             </Link>
 
-            <button className="flex items-center gap-2 hover:opacity-70 transition-opacity font-medium text-sm cursor-pointer relative z-[110]" onClick={() => { setCartOpen(true); }} aria-label={`Open cart with ${cartQuantity} items`}>
+            {/* Desktop Cart Button */}
+            <button className="hidden md:flex items-center gap-2 hover:opacity-70 transition-opacity font-medium text-sm cursor-pointer relative z-[110]" onClick={() => { setCartOpen(true); }} aria-label={`Open cart with ${cartQuantity} items`}>
               <ShoppingBag size={20} className="pointer-events-none" />
               {cartQuantity > 0 && <b className="bg-ink text-paper text-[11px] h-5 min-w-[20px] rounded-full flex items-center justify-center px-1 font-bold pointer-events-none">{cartQuantity}</b>}
             </button>
+
+            {/* Mobile Cart Link */}
+            <Link href="/cart" onClick={() => { setCartOpen(false); setMenuOpen(false); }} className="md:hidden flex items-center gap-2 hover:opacity-70 transition-opacity font-medium text-sm cursor-pointer relative z-[110]" aria-label={`View cart with ${cartQuantity} items`}>
+              <ShoppingBag size={20} className="pointer-events-none" />
+              {cartQuantity > 0 && <b className="bg-ink text-paper text-[11px] h-5 min-w-[20px] rounded-full flex items-center justify-center px-1 font-bold pointer-events-none">{cartQuantity}</b>}
+            </Link>
             <button className="md:hidden flex items-center justify-center w-10 h-10 rounded-full hover:bg-line/50 transition-colors cursor-pointer relative z-[110]" onClick={() => { setMenuOpen(true); }} aria-label="Open menu">
               <Menu size={21} className="pointer-events-none" />
             </button>
@@ -47,9 +54,9 @@ export function Navbar() {
         </div>
       </header>
 
-      {/* Cart Drawer & Overlay */}
-      <div className={`fixed inset-0 bg-ink/30 backdrop-blur-sm z-[110] transition-opacity duration-300 ${cartOpen ? "opacity-100 visible" : "opacity-0 invisible pointer-events-none"}`} onClick={() => setCartOpen(false)} />
-      <aside className={`fixed inset-y-0 right-0 w-full md:w-[420px] bg-paper shadow-2xl z-[120] transform transition-transform duration-300 ease-in-out flex flex-col ${cartOpen ? "translate-x-0" : "translate-x-full pointer-events-none"}`} aria-hidden={!cartOpen} aria-label="Shopping bag">
+      {/* Cart Drawer & Overlay (Desktop only) */}
+      <div className={`hidden md:block fixed inset-0 bg-ink/30 backdrop-blur-sm z-[110] transition-opacity duration-300 ${cartOpen ? "opacity-100 visible" : "opacity-0 invisible pointer-events-none"}`} onClick={() => setCartOpen(false)} />
+      <aside className={`hidden md:flex fixed inset-y-0 right-0 w-[420px] bg-paper shadow-2xl z-[120] transform transition-transform duration-300 ease-in-out flex-col ${cartOpen ? "translate-x-0" : "translate-x-full pointer-events-none"}`} aria-hidden={!cartOpen} aria-label="Shopping bag">
         <div className="flex justify-between items-center px-6 py-5 border-b border-line shrink-0">
           <div>
             <span className="font-serif text-xl block text-ink">Your bag</span>
@@ -115,7 +122,7 @@ export function Navbar() {
           <button onClick={() => setMenuOpen(false)} className="w-10 h-10 rounded-full flex items-center justify-center hover:bg-line/50 transition-colors text-ink"><X size={20} /></button>
         </div>
         <nav className="flex flex-col px-6 py-8 gap-6 flex-1">
-          {[["Home", "/"], ["Shop", "/shop"], ["Journal", "/blog"], ["Support", "/contact"], ["Account", "/account"]].map(([label, href]) => (
+          {[["Home", "/"], ["Shop", "/shop"], ["Blog", "/blog"], ["Support", "/contact"], ["Account", "/account"]].map(([label, href]) => (
             <Link key={label} href={href} onClick={() => setMenuOpen(false)} className="font-serif text-3xl text-ink flex items-center justify-between border-b border-line pb-4">
               {label} <ArrowRight className="text-muted" />
             </Link>
