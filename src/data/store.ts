@@ -9,6 +9,7 @@ export const productsMap: Record<string, StoreProduct> = {
     description: "A calm, glare-free desk light with effortless dimming and all-day battery life. Made to help you focus without making your space feel like an office.",
     price: 3499,
     compareAtPrice: 4299,
+    badge: "Bestseller",
     rating: 4.9,
     reviewCount: 128,
     variants: [
@@ -31,6 +32,7 @@ export const productsMap: Record<string, StoreProduct> = {
     description: "The classic Sol Focus Lamp in a grounding, earthy Warm Sand finish. Perfect for bringing a touch of nature and warmth to austere desk setups.",
     price: 3499,
     compareAtPrice: 3499,
+    badge: "New",
     rating: 4.8,
     reviewCount: 94,
     variants: [
@@ -68,6 +70,7 @@ export const productsMap: Record<string, StoreProduct> = {
     description: "A compact, omnidirectional light source designed for bedside tables and living spaces. Casts a warm, flickering glow that mimics candle light.",
     price: 2999,
     compareAtPrice: 3499,
+    badge: "Sale",
     rating: 4.7,
     reviewCount: 65,
     variants: [
@@ -107,6 +110,7 @@ export const productsMap: Record<string, StoreProduct> = {
     description: "A beautifully machined aluminum dial that pairs wirelessly with any Sol lamp. Turn to adjust brightness, tap to change color temperature.",
     price: 1499,
     compareAtPrice: 1499,
+    badge: "New",
     rating: 4.6,
     reviewCount: 88,
     variants: [

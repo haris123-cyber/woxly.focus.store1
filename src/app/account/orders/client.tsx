@@ -25,7 +25,7 @@ export function OrdersClient() {
 
           <div className="mb-12 flex flex-col md:flex-row md:items-end justify-between gap-4">
             <div>
-              <Link href="/account" className="inline-flex items-center gap-2 text-[13px] font-semibold text-muted mb-6 lg:hidden  px-4 py-2   ">
+              <Link href="/account" className="inline-flex items-center gap-2 text-[13px] font-semibold text-muted mb-6 lg:hidden  px-0 py-2   ">
                 <ChevronLeft className="w-4 h-4" />
                 Back to menu
               </Link>
@@ -33,19 +33,7 @@ export function OrdersClient() {
               <h1 className="text-4xl font-serif text-ink">My orders</h1>
             </div>
 
-            {orders.length > 0 && (
-              <button 
-                onClick={() => {
-                  if (window.confirm("Are you sure you want to clear your order history?")) {
-                    clearOrders();
-                  }
-                }}
-                className="inline-flex items-center gap-2 text-sm font-semibold text-red-500 hover:text-red-700 transition-colors w-fit"
-              >
-                <Trash2 className="w-4 h-4" />
-                Clear History
-              </button>
-            )}
+
           </div>
 
           <div className="flex flex-col lg:flex-row gap-12 lg:gap-16 items-start">

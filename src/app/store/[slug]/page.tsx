@@ -121,17 +121,11 @@ export default function Storefront({ params }: { params: Promise<{ slug: string 
   return (
     <main id="top" className="bg-paper min-h-screen text-ink pb-24">
       {/* Hero Section */}
-      <section className="max-w-[1200px] mx-auto px-6 pt-0 md:pt-16 pb-6 md:pb-24 flex flex-col lg:flex-row gap-12 lg:gap-20" aria-labelledby="hero-title">
+      <section className="max-w-[1200px] mx-auto px-6 pt-0 md:pt-5 pb-6 md:pb-24 flex flex-col lg:flex-row gap-12 lg:gap-20" aria-labelledby="hero-title">
 
         {/* Product Gallery */}
         <div className="flex-1 max-w-[640px] w-full mx-auto">
-          <div className="relative aspect-[4/5] bg-sage/30 rounded-sm overflow-hidden -mx-6 md:mx-0 my-0 mb-4 border border-line">
-            {product.badge && (
-              <span className="absolute top-6 left-6 z-20 px-2 py-1 text-[10px] font-bold tracking-widest uppercase bg-[#7a2e2e] text-white pointer-events-none">
-                {product.badge}
-              </span>
-            )}
-
+          <div className="relative aspect-[4/5] bg-sage/30 rounded-sm overflow-hidden   -mx-6 md:mx-0 my-0 mb-4 border border-line">
             <button
               aria-label={`Save ${product.name}`}
               onClick={() => toggleWishlist(resolvedParams.slug)}
@@ -142,7 +136,7 @@ export default function Storefront({ params }: { params: Promise<{ slug: string 
 
             <div
               ref={galleryRef}
-              className="flex w-full h-full overflow-x-auto snap-x snap-mandatory scrollbar-hide scroll-smooth"
+              className="flex w-full h-full overflow-x-auto snap-x snap-mandatory  scrollbar-hide scroll-smooth"
               onScroll={(e) => {
                 const container = e.currentTarget;
                 const scrollPosition = container.scrollLeft;
@@ -165,27 +159,50 @@ export default function Storefront({ params }: { params: Promise<{ slug: string 
             </div>
           </div>
 
-          <p className="flex justify-end items-center gap-2 text-sm text-[green] mt-8 mb-0 font-medium"><CircleCheck size={16} className="text-[green]" /> In stock </p>
+
 
 
         </div>
 
         {/* Hero Copy & Form */}
-        <div className="flex-1 flex flex-col justify-center max-w-[480px] mx-auto lg:mx-0 -mt-16">
-          <div className="text-[12px] font-semibold tracking-widest uppercase text-muted mb-4">{product.eyebrow}</div>
+        <div className="flex-1 flex flex-col justify-center max-w-[480px] mx-auto lg:mx-0 sm:mt-5 -mt-10">
+          <div className="flex justify-between items-start mb-4 gap-4">
+            <div className="flex flex-col items-end gap-2 shrink-0">
+              <div className="flex justify-start gap-2 mb-5">
+                {product.badge && (
+                  <span className="px-2 py-1 text-[10px] font-bold tracking-widest uppercase bg-[#7a2e2e] text-white">
+                    {product.badge}
+                  </span>
+                )}
+                {product.compareAtPrice && product.compareAtPrice > product.price && (
+                  <span className="px-2 py-1 text-[10px] font-bold tracking-widest uppercase bg-[green] text-white">
+                    {Math.round(((product.compareAtPrice - product.price) / product.compareAtPrice) * 100)}% OFF
+                  </span>
+                )}
+              </div>
+
+            </div>
+            <p className="flex justify-end items-center gap-1.5 text-sm text-[green] m-0 font-medium">
+              <CircleCheck size={16} className="text-[green]" /> In stock
+            </p>
+
+          </div>
+
+          <div className="text-[12px] font-semibold tracking-widest uppercase text-muted mt-2">{product.eyebrow}</div>
+
           <h1 id="hero-title" className="text-2xl md:text-5xl font-serif text-ink mb-4 leading-tight tracking-tight">{product.name}</h1>
           <p className="text-muted text-sm leading-relaxed mb-2">{product.description}</p>
           <a className="flex items-center gap-2 text-sm font-medium hover:text-muted transition-colors w-fit mb-4" href="#reviews">
             <span className="text-amber text-lg tracking-widest">★★★★★</span> <strong className="text-ink">{product.rating}</strong> <em className="text-muted not-italic">({product.reviewCount} reviews)</em>
           </a>
 
-          <div className="flex items-end gap-3 mb-0 pb-10 border-b border-line relative">
-            <strong className="text-4xl font-serif mt-5  text-ink">{money(currentBundle.price)}</strong>
+          <div className="flex items-center gap-3 mb-0 mt-2 pb-10 border-b border-line relative">
+            <strong className="text-4xl font-serif text-ink">{money(currentBundle.price)}</strong>
             {currentBundle.quantity === 1 && (
-              <div className="  pb-1">
-                <div className="flex flex-col text-md  pb-1">
-                  <s className="text-black ">{money(product.compareAtPrice)}</s>
-                  <span className="text-amber font-semibold">Save {money(product.compareAtPrice - product.price)}</span>
+              <div>
+                <div className="flex flex-col text-md">
+                  <s className="text-black text-xl font-serif ">{money(product.compareAtPrice)}</s>
+                  <span className="text-[green] text-md font-semibold font-serif">Save {money(product.compareAtPrice - product.price)}</span>
                 </div>
               </div>
             )}

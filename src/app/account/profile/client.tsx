@@ -20,7 +20,7 @@ export function ProfileClient() {
       <section className="bg-sage/10 min-h-screen pb-24 font-sans">
         <div className="max-w-6xl mx-auto px-6 pt-12">
           <div className="mb-12">
-            <Link href="/account" className="inline-flex items-center gap-2 text-[13px] font-semibold text-zinc-600 hover:text-zinc-900 transition-colors mb-6 lg:hidden bg-white px-4 py-2 rounded-full shadow-sm border border-zinc-100">
+            <Link href="/account" className="inline-flex items-center gap-2 text-[13px] font-semibold text-muted mb-6 lg:hidden  px-0 py-2   ">
               <ChevronLeft className="w-4 h-4" />
               Back to menu
             </Link>

@@ -32,7 +32,7 @@ export function WishlistClient() {
 
           <div className="mb-12 flex flex-col md:flex-row md:items-end justify-between gap-4">
             <div>
-              <Link href="/account" className="inline-flex items-center gap-2 text-[13px] font-semibold text-muted mb-6 lg:hidden  px-4 py-2   ">
+              <Link href="/account" className="inline-flex items-center gap-2 text-[13px] font-semibold text-muted mb-6 lg:hidden  px-0 py-2   ">
                 <ChevronLeft className="w-4 h-4" />
                 Back to menu
               </Link>

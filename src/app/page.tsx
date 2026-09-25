@@ -152,11 +152,19 @@ export default function Home() {
             <div key={item.slug} className="group">
               {/* White Card Box (Paper Mockup) */}
               <Link href={`/store/${item.slug}`} className="block relative bg-sage/10 aspect-[4/5] p-6 md:p-8 mb-2 shadow-sm border border-line">
-                {item.badge && (
-                  <span className={`absolute top-6 left-6 z-20 px-2 py-1 text-[10px] font-bold tracking-widest uppercase ${i === 0 ? 'bg-[#7a2e2e] text-white text-amber' : i === 1 ? 'bg-[#7a2e2e] text-white text-amber' : 'bg-[#7a2e2e] text-white'}`}>
-                    {item.badge === "Most popular" ? "Bestseller" : item.badge === "Best value" ? "Sale" : "New"}
-                  </span>
-                )}
+                <div className="absolute top-6 left-6 z-20 flex flex-col gap-2 items-start pointer-events-none">
+                  {item.badge && (
+                    <span className={`px-2 py-1 text-[10px] font-bold tracking-widest uppercase ${i === 0 ? 'bg-[#7a2e2e] text-white text-amber' : i === 1 ? 'bg-[#7a2e2e] text-white text-amber' : 'bg-[#7a2e2e] text-white'}`}>
+                      {item.badge === "Most popular" ? "Bestseller" : item.badge === "Best value" ? "Sale" : "New"}
+                    </span>
+                  )}
+                  {item.compareAt && item.compareAt > item.price && (
+                    <span className="bg-[green] text-white px-2 py-1 text-[10px] font-bold tracking-widest uppercase">
+                      OFF
+                    </span>
+                  )}
+                </div>
+
 
 
                 {/* Main Content Area */}
@@ -170,7 +178,7 @@ export default function Home() {
                 <h3 className="text-ink text-lg font-serif mb-0 hover:text-amber transition-colors"><Link href="/store">{item.name}</Link></h3>
 
                 <div className="flex items-center gap-2">
-                  <strong className="text-amber font-semibold">{money(item.price)}</strong>
+                  <strong className="text-black font-semibold">{money(item.price)}</strong>
                   {item.compareAt && (
                     <>
                       <s className="text-black/60 text-xs">{money(item.compareAt)}</s>
