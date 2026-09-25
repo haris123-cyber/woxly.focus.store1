@@ -31,7 +31,7 @@ export default function Storefront({ params }: { params: Promise<{ slug: string 
 
   const [activeImage, setActiveImage] = useState(0);
   const [stickyVisible, setStickyVisible] = useState(true);
-  const [expandedBenefits, setExpandedBenefits] = useState<number[]>([0, 1, 2]);
+  const [expandedBenefits, setExpandedBenefits] = useState<number[]>([0, 1, 2, 3]);
 
   const [pincode, setPincode] = useState("");
   const [pincodeStatus, setPincodeStatus] = useState<"idle" | "success" | "error">("idle");
@@ -165,10 +165,10 @@ export default function Storefront({ params }: { params: Promise<{ slug: string 
         </div>
 
         {/* Hero Copy & Form */}
-        <div className="flex-1 flex flex-col justify-center max-w-[480px] mx-auto lg:mx-0 sm:mt-5 -mt-10">
-          <div className="flex justify-between items-start mb-4 gap-4">
+        <div className="flex-1 flex flex-col justify-center max-w-[480px] mx-auto lg:mx-0 sm:mt-0 -mt-10">
+          <div className="flex justify-between items-start mb-2 gap-4">
             <div className="flex flex-col items-end gap-2 shrink-0">
-              <div className="flex justify-start gap-2 mb-5">
+              <div className="flex justify-start gap-2 mb-0">
                 {product.badge && (
                   <span className="px-2 py-1 text-[10px] font-bold tracking-widest uppercase bg-[#7a2e2e] text-white">
                     {product.badge}
@@ -182,9 +182,6 @@ export default function Storefront({ params }: { params: Promise<{ slug: string 
               </div>
 
             </div>
-            <p className="flex justify-end items-center gap-1.5 text-sm text-[green] m-0 font-medium">
-              <CircleCheck size={16} className="text-[green]" /> In stock
-            </p>
 
           </div>
 
@@ -196,7 +193,7 @@ export default function Storefront({ params }: { params: Promise<{ slug: string 
             <span className="text-amber text-lg tracking-widest">★★★★★</span> <strong className="text-ink">{product.rating}</strong> <em className="text-muted not-italic">({product.reviewCount} reviews)</em>
           </a>
 
-          <div className="flex items-center gap-3 mb-0 mt-2 pb-10 border-b border-line relative">
+          <div className="flex items-center gap-3 mb-0 mt-2 pb-4 ">
             <strong className="text-4xl font-serif text-ink">{money(currentBundle.price)}</strong>
             {currentBundle.quantity === 1 && (
               <div>
@@ -206,8 +203,13 @@ export default function Storefront({ params }: { params: Promise<{ slug: string 
                 </div>
               </div>
             )}
+          </div>
+          <div className="flex items-center gap-3 py-3 mb-0 pb-5 border-b border-line">
+            <p className="flex items-center bg-white border border-green-200 py-1 px-3 rounded-full gap-1 text-sm text-[green] m-0 font-medium">
+              <CircleCheck size={16} className="text-[green]" /> In stock
+            </p>
             {product.urgencyMessage && (
-              <div className="absolute -bottom-6 right-0 bg-sage text-forest px-6 py-3 rounded-full text-xs font-bold flex items-center gap-1.5 shadow-sm border border-forest/20 animate-pulse">
+              <div className="bg-sage text-forest ml-auto px-4 py-2 rounded-full text-xs font-bold flex items-center gap-1.5 shadow-sm border border-forest/20 animate-pulse">
                 <Flame size={14} className="fill-current text-red-600" /> {product.urgencyMessage}
               </div>
             )}
@@ -357,11 +359,49 @@ export default function Storefront({ params }: { params: Promise<{ slug: string 
             <div className="text-amber opacity-80 transition-transform origin-left hover:scale-110"><SlidersHorizontal size={28} strokeWidth={1.5} /></div>
             <ChevronDown className={`transition-transform duration-300 opacity-50 ${expandedBenefits.includes(2) ? 'rotate-180' : ''}`} size={24} />
           </div>
-          <div className={`mt-auto transition-all duration-500 overflow-hidden ${expandedBenefits.includes(2) ? 'max-h-[500px] opacity-100' : 'max-h-0 opacity-0'}`}>
+          <div className={`mt-auto transition-all  duration-500 overflow-hidden ${expandedBenefits.includes(2) ? 'max-h-[500px] opacity-100' : 'max-h-0 opacity-0'}`}>
             <h3 className="text-2xl font-serif mb-3 text-amber">Three moods. One dial.</h3>
             <p className="text-ink/70 leading-relaxed">From a warm evening glow to clear daylight. Tap to change tone, turn to dim.</p>
           </div>
         </article>
+
+        <article className={`bg-sage/20 text-ink rounded-xl flex flex-col cursor-pointer transition-all duration-300 border border-line/50 hover:border-forest/30 ${expandedBenefits.includes(3) ? "p-8 md:p-10 min-h-[280px] md:min-h-[400px]" : "p-3 pl-5 pr-5 md:p-8"}`} onClick={() => toggleBenefit(3)}>
+          <div className={`flex justify-between items-center ${expandedBenefits.includes(3) ? "mb-4" : ""}`}>
+            <div className="text-forest opacity-80 transition-transform origin-left hover:scale-110">
+              <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2" /><rect x="9" y="3" width="6" height="4" rx="1" /><line x1="9" y1="12" x2="15" y2="12" /><line x1="9" y1="16" x2="13" y2="16" /></svg>
+            </div>
+            <ChevronDown className={`transition-transform duration-300 opacity-50 ${expandedBenefits.includes(3) ? 'rotate-180' : ''}`} size={24} />
+          </div>
+          <div className={`mt-auto transition-all duration-500 overflow-hidden ${expandedBenefits.includes(3) ? 'max-h-[1000px] opacity-100' : 'max-h-0 opacity-0'}`}>
+            <h3 className="text-2xl font-serif mb-4 text-ink">Full specifications</h3>
+            <div className="rounded-xl overflow-hidden border border-line/60">
+              {[
+                { label: "Light source", value: "High-CRI LED (Ra ≥ 95)" },
+                { label: "Colour temps", value: "2700 K · 4000 K · 5000 K" },
+                { label: "Battery life", value: "Up to 18 hrs (medium)" },
+                { label: "Charging", value: "USB-C, ~3 hrs full charge" },
+                { label: "Brightness", value: "5 – 800 lux (stepless)" },
+                { label: "Flicker", value: "Flicker-free (IEEE 1789)" },
+                { label: "Dimensions", value: "H 38 cm · Base ø 12 cm" },
+                { label: "Weight", value: "620 g" },
+                { label: "Materials", value: "Aluminium · Silicone diffuser" },
+                { label: "Colours", value: "Sand · White · Graphite" },
+                { label: "Warranty", value: "2 years limited" },
+                { label: "In the box", value: "Lamp · USB-C cable · Card" },
+              ].map((row, i, arr) => (
+                <div
+                  key={row.label}
+                  onClick={e => e.stopPropagation()}
+                  className={`flex items-start gap-3 px-4 py-2.5 ${i % 2 === 0 ? "bg-white" : "bg-sage/10"} ${i !== arr.length - 1 ? "border-b border-line" : ""}`}
+                >
+                  <span className="w-[44%] shrink-0 text-xs font-semibold text-ink">{row.label}</span>
+                  <span className="text-xs text-muted leading-relaxed">{row.value}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </article>
+
       </section>
 
       {/* Story Section */}
@@ -416,6 +456,8 @@ export default function Storefront({ params }: { params: Promise<{ slug: string 
           />
         </div>
       </section>
+
+
 
       {/* Reviews */}
       <section className="max-w-[1200px] mx-auto px-6 pb-24 md:pb-32" id="reviews">
@@ -591,7 +633,6 @@ export default function Storefront({ params }: { params: Promise<{ slug: string 
           <span className="text-sm font-semibold tracking-widest uppercase text-muted mb-6 block">Good to know</span>
           <h2 className="text-4xl md:text-5xl font-serif text-ink leading-tight mb-6">Questions, answered.</h2>
           <p className="text-lg text-muted mb-8">Still deciding? We are happy to help.</p>
-          <a href="mailto:hello@woxly.com" className="inline-flex items-center gap-2 font-medium text-forest bg-sage/30 hover:bg-sage/50 transition-colors px-6 py-3 rounded-full"><Headphones size={18} /> Talk to our product team</a>
         </div>
         <div className="border-t border-line">
           {faqs.map((faq, index) => (

@@ -93,7 +93,7 @@ export function CartClient() {
             <Link href="/checkout" className="w-full py-4 bg-ink text-paper rounded-xl font-medium text-center flex items-center justify-center gap-2 hover:bg-forest transition-colors active:scale-[0.98] shadow-md mb-4">
               Continue to checkout <ArrowRight className="w-4 h-4" />
             </Link>
-            <p className="flex items-center justify-center gap-2 text-xs text-muted font-medium"><ShieldCheck className="w-4 h-4" /> Secure checkout · 30-day returns</p>
+            <p className="flex items-center justify-center gap-2 text-xs text-[green] font-medium"><ShieldCheck className="w-4 h-4" /> Secure checkout · 30-day returns</p>
           </aside>
         )}
       </section>

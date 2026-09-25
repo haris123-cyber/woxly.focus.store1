@@ -14,6 +14,7 @@ export function CheckoutClient() {
   const { items, loyaltyPoints } = useCart();
   const subtotal = items.reduce((total, item) => total + item.price * item.quantity, 0);
   const [useLoyalty, setUseLoyalty] = useState(false);
+  const [checkoutStep, setCheckoutStep] = useState<2 | 3>(2);
   const loyaltyDiscount = Math.min(loyaltyPoints, subtotal);
   const total = Math.max(0, subtotal - (useLoyalty ? loyaltyDiscount : 0));
 
@@ -23,11 +24,12 @@ export function CheckoutClient() {
         <div className="max-w-6xl mx-auto px-6 pt-12 flex flex-col lg:flex-row gap-12 lg:gap-24 items-start">
           <div className="flex-1 w-full flex flex-col gap-8">
             <div>
-              <Link href="/cart" className="text-sm font-bold uppercase tracking-wider text-muted hover:text-ink transition-colors flex items-center gap-2 mb-8 w-fit"><ArrowLeft className="w-4 h-4" /> Back to bag</Link>
-              <span className="text-forest text-sm font-bold uppercase tracking-wider mb-2 block">Secure checkout</span>
-              <h1 className="text-3xl md:text-4xl font-serif text-ink">Where should we send it?</h1>
+              {checkoutStep === 2 && (
+                <Link href="/cart" className="text-sm font-bold uppercase tracking-wider text-muted hover:text-ink transition-colors flex items-center gap-2 mb-8 w-fit"><ArrowLeft className="w-4 h-4" /> Back to bag</Link>
+              )}
+              <h1 className="text-2xl md:text-4xl font-serif text-ink">Where should we send it?</h1>
             </div>
-            <CheckoutForm discount={useLoyalty ? loyaltyDiscount : 0} />
+            <CheckoutForm discount={useLoyalty ? loyaltyDiscount : 0} onStepChange={setCheckoutStep} />
           </div>
 
           <aside className="w-full lg:w-[420px] shrink-0 bg-white border border-line rounded-3xl p-8 sticky top-12 shadow-sm ">
@@ -117,14 +119,25 @@ const SAVED_ADDRESSES = [
 ];
 
 
-function CheckoutForm({ discount = 0 }: { discount?: number }) {
+function CheckoutForm({ discount = 0, onStepChange }: { discount?: number; onStepChange?: (step: 2 | 3) => void }) {
   const router = useRouter();
   const { items, placeOrder } = useCart();
+  const [checkoutStep, setCheckoutStep] = useState<2 | 3>(2);
   const [payment, setPayment] = useState("online");
   const [addressMode, setAddressMode] = useState<"saved" | "new">("saved");
   const [selectedAddress, setSelectedAddress] = useState("home");
   const subtotal = items.reduce((total, item) => total + item.price * item.quantity, 0);
 
+  const goToStep = (step: 2 | 3) => {
+    setCheckoutStep(step);
+    onStepChange?.(step);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
+  const handleContinue = (e: React.FormEvent) => {
+    e.preventDefault();
+    goToStep(3);
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -132,64 +145,85 @@ function CheckoutForm({ discount = 0 }: { discount?: number }) {
     router.push("/order-success");
   };
 
-  return (
-    <form className="flex flex-col gap-12" onSubmit={handleSubmit}>
+  /* ─── STEP 2: Delivery Address ─── */
+  if (checkoutStep === 2) {
+    return (
+      <form className="flex flex-col gap-8" onSubmit={handleContinue}>
+        <section className="bg-white border border-line rounded-3xl p-8 shadow-sm">
+          <div className="flex items-center gap-4 mb-6 border-b border-line pb-4">
+            <b className="w-8 h-8 rounded-full bg-ink text-paper flex items-center justify-center font-bold text-sm">2</b>
+            <h2 className="text-xl font-medium text-ink">Delivery address</h2>
+          </div>
+          <div className="flex gap-4 mb-6">
+            <button
+              type="button"
+              onClick={() => setAddressMode("saved")}
+              className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${addressMode === "saved" ? "bg-ink text-paper" : "bg-line/20 text-ink hover:bg-line/40"}`}
+            >
+              Saved addresses
+            </button>
+            <button
+              type="button"
+              onClick={() => setAddressMode("new")}
+              className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${addressMode === "new" ? "bg-ink text-paper" : "bg-line/20 text-ink hover:bg-line/40"}`}
+            >
+              Add new address
+            </button>
+          </div>
 
-
-      <section className="bg-white border border-line rounded-3xl p-8 shadow-sm">
-        <div className="flex items-center gap-4 mb-6 border-b border-line pb-4">
-          <b className="w-8 h-8 rounded-full bg-ink text-paper flex items-center justify-center font-bold text-sm">2</b>
-          <h2 className="text-xl font-medium text-ink">Delivery address</h2>
-        </div>
-        <div className="flex gap-4 mb-6">
-          <button
-            type="button"
-            onClick={() => setAddressMode("saved")}
-            className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${addressMode === "saved" ? "bg-ink text-paper" : "bg-line/20 text-ink hover:bg-line/40"}`}
-          >
-            Saved addresses
-          </button>
-          <button
-            type="button"
-            onClick={() => setAddressMode("new")}
-            className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${addressMode === "new" ? "bg-ink text-paper" : "bg-line/20 text-ink hover:bg-line/40"}`}
-          >
-            Add new address
-          </button>
-        </div>
-
-        {addressMode === "saved" ? (
-          <div className="flex flex-col gap-4">
-            {SAVED_ADDRESSES.map((addr) => (
-              <label key={addr.id} className={`flex items-start gap-4 p-4 rounded-xl border cursor-pointer transition-colors ${selectedAddress === addr.id ? 'border-ink bg-sage/10' : 'border-line bg-white hover:border-ink/50'}`}>
-                <div className="relative flex items-center justify-center w-5 h-5 shrink-0 mt-1">
-                  <input type="radio" name="saved-address" checked={selectedAddress === addr.id} onChange={() => setSelectedAddress(addr.id)} className="peer appearance-none w-5 h-5 border border-line rounded-full cursor-pointer checked:border-ink transition-colors" />
-                  <div className="absolute w-2.5 h-2.5 bg-ink rounded-full opacity-0 peer-checked:opacity-100 transition-opacity pointer-events-none" />
-                </div>
-                <div className="flex flex-col text-sm">
-                  <span className="font-semibold text-ink flex items-center gap-2">{addr.label} {addr.id === "home" && <span className="bg-line/50 px-2 py-0.5 rounded text-[10px] uppercase tracking-wider text-muted font-bold">Default</span>}</span>
-                  <span className="text-ink mt-1">{addr.firstName} {addr.lastName}</span>
-                  <span className="text-muted">{addr.address}, {addr.city}, {addr.state} {addr.pincode}</span>
-                  <span className="text-muted mt-1">{addr.phone}</span>
-                </div>
+          {addressMode === "saved" ? (
+            <div className="flex flex-col gap-4">
+              {SAVED_ADDRESSES.map((addr) => (
+                <label key={addr.id} className={`flex items-start gap-4 p-4 rounded-xl border cursor-pointer transition-colors ${selectedAddress === addr.id ? 'border-ink bg-sage/10' : 'border-line bg-white hover:border-ink/50'}`}>
+                  <div className="relative flex items-center justify-center w-5 h-5 shrink-0 mt-1">
+                    <input type="radio" name="saved-address" checked={selectedAddress === addr.id} onChange={() => setSelectedAddress(addr.id)} className="peer appearance-none w-5 h-5 border border-line rounded-full cursor-pointer checked:border-ink transition-colors" />
+                    <div className="absolute w-2.5 h-2.5 bg-ink rounded-full opacity-0 peer-checked:opacity-100 transition-opacity pointer-events-none" />
+                  </div>
+                  <div className="flex flex-col text-sm">
+                    <span className="font-semibold text-ink flex items-center gap-2">{addr.label} {addr.id === "home" && <span className="bg-line/50 px-2 py-0.5 rounded text-[10px] uppercase tracking-wider text-muted font-bold">Default</span>}</span>
+                    <span className="text-ink mt-1">{addr.firstName} {addr.lastName}</span>
+                    <span className="text-muted">{addr.address}, {addr.city}, {addr.state} {addr.pincode}</span>
+                    <span className="text-muted mt-1">{addr.phone}</span>
+                  </div>
+                </label>
+              ))}
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <label className="flex flex-col gap-2 text-sm font-semibold text-ink">First name<input required className="w-full px-4 py-3 bg-white rounded-xl border border-line focus:outline-none focus:border-ink focus:ring-1 focus:ring-ink transition-all shadow-sm font-normal" /></label>
+              <label className="flex flex-col gap-2 text-sm font-semibold text-ink">Last name<input required className="w-full px-4 py-3 bg-white rounded-xl border border-line focus:outline-none focus:border-ink focus:ring-1 focus:ring-ink transition-all shadow-sm font-normal" /></label>
+              <label className="flex flex-col gap-2 text-sm font-semibold text-ink md:col-span-2">Address<input required className="w-full px-4 py-3 bg-white rounded-xl border border-line focus:outline-none focus:border-ink focus:ring-1 focus:ring-ink transition-all shadow-sm font-normal" /></label>
+              <label className="flex flex-col gap-2 text-sm font-semibold text-ink">City<input required className="w-full px-4 py-3 bg-white rounded-xl border border-line focus:outline-none focus:border-ink focus:ring-1 focus:ring-ink transition-all shadow-sm font-normal" /></label>
+              <label className="flex flex-col gap-2 text-sm font-semibold text-ink">Pincode<input inputMode="numeric" maxLength={6} required className="w-full px-4 py-3 bg-white rounded-xl border border-line focus:outline-none focus:border-ink focus:ring-1 focus:ring-ink transition-all shadow-sm font-normal" /></label>
+              <label className="flex flex-col gap-2 text-sm font-semibold text-ink">
+                State
+                <input required className="w-full px-4 py-3 bg-white rounded-xl border border-line focus:outline-none focus:border-ink focus:ring-1 focus:ring-ink transition-all shadow-sm font-normal" />
               </label>
-            ))}
-          </div>
-        ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <label className="flex flex-col gap-2 text-sm font-semibold text-ink">First name<input required className="w-full px-4 py-3 bg-white rounded-xl border border-line focus:outline-none focus:border-ink focus:ring-1 focus:ring-ink transition-all shadow-sm font-normal" /></label>
-            <label className="flex flex-col gap-2 text-sm font-semibold text-ink">Last name<input required className="w-full px-4 py-3 bg-white rounded-xl border border-line focus:outline-none focus:border-ink focus:ring-1 focus:ring-ink transition-all shadow-sm font-normal" /></label>
-            <label className="flex flex-col gap-2 text-sm font-semibold text-ink md:col-span-2">Address<input required className="w-full px-4 py-3 bg-white rounded-xl border border-line focus:outline-none focus:border-ink focus:ring-1 focus:ring-ink transition-all shadow-sm font-normal" /></label>
-            <label className="flex flex-col gap-2 text-sm font-semibold text-ink">City<input required className="w-full px-4 py-3 bg-white rounded-xl border border-line focus:outline-none focus:border-ink focus:ring-1 focus:ring-ink transition-all shadow-sm font-normal" /></label>
-            <label className="flex flex-col gap-2 text-sm font-semibold text-ink">Pincode<input inputMode="numeric" maxLength={6} required className="w-full px-4 py-3 bg-white rounded-xl border border-line focus:outline-none focus:border-ink focus:ring-1 focus:ring-ink transition-all shadow-sm font-normal" /></label>
-            <label className="flex flex-col gap-2 text-sm font-semibold text-ink">
-              State
-              <input required className="w-full px-4 py-3 bg-white rounded-xl border border-line focus:outline-none focus:border-ink focus:ring-1 focus:ring-ink transition-all shadow-sm font-normal" />
-            </label>
-            <label className="flex flex-col gap-2 text-sm font-semibold text-ink">Phone<input type="tel" required className="w-full px-4 py-3 bg-white rounded-xl border border-line focus:outline-none focus:border-ink focus:ring-1 focus:ring-ink transition-all shadow-sm font-normal" /></label>
-          </div>
-        )}
-      </section>
+              <label className="flex flex-col gap-2 text-sm font-semibold text-ink">Phone<input type="tel" required className="w-full px-4 py-3 bg-white rounded-xl border border-line focus:outline-none focus:border-ink focus:ring-1 focus:ring-ink transition-all shadow-sm font-normal" /></label>
+            </div>
+          )}
+        </section>
+
+        <button
+          type="submit"
+          className="w-full py-4 bg-ink text-paper rounded-xl font-medium text-lg text-center flex items-center justify-center gap-2 hover:bg-forest transition-colors active:scale-[0.98] shadow-md"
+        >
+          Continue to Payment <ArrowRight className="w-5 h-5" />
+        </button>
+      </form>
+    );
+  }
+
+  /* ─── STEP 3: Payment ─── */
+  return (
+    <form className="flex flex-col gap-8" onSubmit={handleSubmit}>
+      <button
+        type="button"
+        onClick={() => goToStep(2)}
+        className="text-sm font-bold uppercase tracking-wider text-muted hover:text-ink transition-colors flex items-center gap-2 w-fit"
+      >
+        <ArrowLeft className="w-4 h-4" /> Back to delivery
+      </button>
 
       <section className="bg-white border border-line rounded-3xl p-8 shadow-sm">
         <div className="flex items-center gap-4 mb-6 border-b border-line pb-4">

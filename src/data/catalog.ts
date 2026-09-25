@@ -5,7 +5,7 @@ export const catalog = [
   { slug: "sol-ambient-glow", name: "Sol Ambient Glow", category: "Lighting", price: 2999, compareAt: 3499, image: "/images/sol-ambient.jpg", badge: "Sale" },
   { slug: "sol-desk-companion", name: "Desk Companion", category: "Lighting", price: 3999, image: "/images/desk-companion.jpg" },
   { slug: "sol-precision-dial", name: "Precision Dial", category: "Accessories", price: 1499, image: "/images/precision-dial.jpg", badge: "New" },
-  { slug: "Lamp bulb pro", name: "Lamp bulb pro", category: "bulbs", price: 1999, image: "/images/lamp-bulb-pro.jpg", badge: "New" },
+  { slug: "lamp-bulb-pro", name: "Lamp bulb pro", category: "bulbs", price: 1999, image: "/images/lamp-bulb-pro.jpg", badge: "New" },
 
 ];
 

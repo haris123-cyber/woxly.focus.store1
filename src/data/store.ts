@@ -122,6 +122,26 @@ export const productsMap: Record<string, StoreProduct> = {
       { src: "/images/sol-detail.png", alt: "Dial resting on a wooden desk" }
     ],
   },
+  "lamp-bulb-pro": {
+    id: "sol-07",
+    name: "Lamp Bulb Pro",
+    eyebrow: "Smart illumination",
+    headline: "Bright, tunable, and always connected.",
+    description: "Upgrade any existing fixture with our Pro smart bulb. Seamlessly adjust brightness and color temperature right from your phone, or let it sync with the daylight.",
+    price: 1999,
+    compareAtPrice: 1999,
+    badge: "New",
+    rating: 4.8,
+    reviewCount: 42,
+    variants: [
+      { id: "e27", name: "E27 Screw", swatch: "#f7f5ef", inStock: true },
+      { id: "b22", name: "B22 Bayonet", swatch: "#e0e0e0", inStock: true },
+    ],
+    images: [
+      { src: "/images/lamp-bulb-pro.jpg", alt: "Lamp bulb pro glowing warmly" },
+      { src: "/images/sol-ambient.jpg", alt: "Warm ambient glow in a room" }
+    ],
+  },
 };
 
 export const bundles = [

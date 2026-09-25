@@ -38,14 +38,18 @@ export function Navbar() {
 
             {/* Desktop Cart Button */}
             <button className="hidden md:flex items-center gap-2 hover:opacity-70 transition-opacity font-medium text-sm cursor-pointer relative z-[110]" onClick={() => { setCartOpen(true); }} aria-label={`Open cart with ${cartQuantity} items`}>
-              <ShoppingBag size={20} className="pointer-events-none" />
-              {cartQuantity > 0 && <b className="bg-ink text-paper text-[11px] h-5 min-w-[20px] rounded-full flex items-center justify-center px-1 font-bold pointer-events-none">{cartQuantity}</b>}
+              <span className="relative">
+                <ShoppingBag size={20} className="pointer-events-none" />
+                {cartQuantity > 0 && <b className="absolute -top-2 -right-2 bg-ink text-paper text-[10px] h-4 min-w-[16px] rounded-full flex items-center justify-center px-1 font-bold pointer-events-none leading-none">{cartQuantity}</b>}
+              </span>
             </button>
 
             {/* Mobile Cart Link */}
             <Link href="/cart" onClick={() => { setCartOpen(false); setMenuOpen(false); }} className="md:hidden flex items-center gap-2 hover:opacity-70 transition-opacity font-medium text-sm cursor-pointer relative z-[110]" aria-label={`View cart with ${cartQuantity} items`}>
-              <ShoppingBag size={20} className="pointer-events-none" />
-              {cartQuantity > 0 && <b className="bg-ink text-paper text-[11px] h-5 min-w-[20px] rounded-full flex items-center justify-center px-1 font-bold pointer-events-none">{cartQuantity}</b>}
+              <span className="relative">
+                <ShoppingBag size={20} className="pointer-events-none" />
+                {cartQuantity > 0 && <b className="absolute -top-2 -right-2 bg-ink text-paper text-[10px] h-4 min-w-[16px] rounded-full flex items-center justify-center px-1 font-bold pointer-events-none leading-none">{cartQuantity}</b>}
+              </span>
             </Link>
             <button className="md:hidden flex items-center justify-center w-10 h-10 rounded-full hover:bg-line/50 transition-colors cursor-pointer relative z-[110]" onClick={() => { setMenuOpen(true); }} aria-label="Open menu">
               <Menu size={21} className="pointer-events-none" />
@@ -60,7 +64,7 @@ export function Navbar() {
         <div className="flex justify-between items-center px-6 py-5 border-b border-line shrink-0">
           <div>
             <span className="font-serif text-xl block text-ink">Your bag</span>
-            <small className="text-muted text-sm">{cartQuantity} {cartQuantity === 1 ? "item" : "items"}</small>
+            <small className="text-muted text-sm ">{cartQuantity} {cartQuantity === 1 ? "item" : "items"}</small>
           </div>
           <button onClick={() => setCartOpen(false)} className="w-10 h-10 rounded-full flex items-center justify-center hover:bg-line/50 transition-colors text-ink" aria-label="Close bag"><X size={20} /></button>
         </div>

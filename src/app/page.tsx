@@ -3,12 +3,14 @@
 import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowDown, ArrowRight, Check } from "lucide-react";
+import { ArrowDown, ArrowRight, Check, ShoppingBag } from "lucide-react";
 import { catalog } from "@/data/catalog";
+import { useCart } from "@/context/CartContext";
 
 const money = (value: number) => new Intl.NumberFormat("en-IN", { style: "currency", currency: "INR", maximumFractionDigits: 0 }).format(value);
 
 export default function Home() {
+  const { addToCart, setCartOpen } = useCart();
   const [filter, setFilter] = useState("All");
   const [newsletterStatus, setNewsletterStatus] = useState<"idle" | "submitting" | "success">("idle");
 
@@ -125,36 +127,21 @@ export default function Home() {
             <span className="text-amber text-xs font-semibold tracking-[0.2em] uppercase mb-4 block">The Collection</span>
             <h2 className="text-5xl md:text-6xl font-serif text-ink mb-2 leading-tight">Every formula, <br /><i className="text-amber">intentional.</i></h2>
           </div>
-          <div className="relative w-full lg:w-auto max-w-full">
-            <div className="flex gap-1 overflow-x-auto  pb-2 max-w-full scrollbar-none pl-20 sm:pr-10">
-              <button onClick={() => setFilter("All")} className={`px-6 py-2 text-xs font-bold uppercase tracking-widest shrink-0 transition-colors ${filter === "All" ? "bg-amber text-ink" : "border border-line text-muted hover:text-ink"}`}>
-                All
-              </button>
-              <button onClick={() => setFilter("Lamps")} className={`px-6 py-2 text-xs font-bold uppercase tracking-widest shrink-0 transition-colors ${filter === "Lamps" ? "bg-amber text-ink border-amber" : "border border-line text-muted hover:text-ink"}`}>
-                Lamps
-              </button>
-              <button onClick={() => setFilter("bulbs")} className={`px-6 py-2 text-xs font-bold uppercase tracking-widest shrink-0 transition-colors ${filter === "bulbs" ? "bg-amber text-ink border-amber" : "border border-line text-muted hover:text-ink"}`}>
-                bulbs
-              </button>
-              <button onClick={() => setFilter("Accessories")} className={`px-6 py-2 text-xs font-bold uppercase tracking-widest shrink-0 transition-colors ${filter === "Accessories" ? "bg-amber text-ink border-amber" : "border border-line text-muted hover:text-ink"}`}>
-                Accessories
-              </button>
-            </div>
 
-            {/* Scroll indicator */}
-            <div className="absolute right-0 sm:hidden  top-0 bottom-2 flex items-center pl-5 pr-5 bg-gradient-to-l from-white via-white/90 to-transparent pointer-events-none">
-            </div>
-          </div>
         </div>
 
         <div className="grid grid-cols-2 md:grid-cols-3 gap-2 md:gap-8">
           {filteredCatalog.map((item, i) => (
             <div key={item.slug} className="group">
-              {/* White Card Box (Paper Mockup) */}
-              <Link href={`/store/${item.slug}`} className="block relative bg-sage/10 aspect-[4/5] p-6 md:p-8 mb-2 shadow-sm border border-line">
-                <div className="absolute top-6 left-6 z-20 flex flex-col gap-2 items-start pointer-events-none">
+              {/* Image Container with Hover Group */}
+              <div className="relative mb-2 aspect-[4/5] bg-sage/10 shadow-sm border border-line group overflow-hidden block">
+                <Link href={`/store/${item.slug}`} className="absolute inset-0 z-10">
+                  {/* The link covers the entire image area */}
+                </Link>
+
+                <div className="absolute top-4 md:top-6 left-4 md:left-6 z-20 flex flex-col gap-2 items-start pointer-events-none">
                   {item.badge && (
-                    <span className={`px-2 py-1 text-[10px] font-bold tracking-widest uppercase ${i === 0 ? 'bg-[#7a2e2e] text-white text-amber' : i === 1 ? 'bg-[#7a2e2e] text-white text-amber' : 'bg-[#7a2e2e] text-white'}`}>
+                    <span className={`px-2 py-1 text-[10px] font-bold tracking-widest uppercase ${i === 0 || i === 1 ? 'bg-[#7a2e2e] text-amber' : 'bg-[#7a2e2e] text-white'}`}>
                       {item.badge === "Most popular" ? "Bestseller" : item.badge === "Best value" ? "Sale" : "New"}
                     </span>
                   )}
@@ -165,12 +152,57 @@ export default function Home() {
                   )}
                 </div>
 
-
-
                 {/* Main Content Area */}
+                <Image src={item.image} alt={item.name} fill sizes="(max-width: 800px) 100vw, 33vw" className="object-cover drop-shadow-sm group-hover:scale-105 transition-transform duration-700 pointer-events-none" />
 
-                <Image src={item.image} alt={item.name} fill sizes="(max-width: 800px) 100vw, 33vw" className="object-cover drop-shadow-sm group-hover:scale-105 transition-transform duration-700" />
-              </Link>
+                {/* Animated Bag Button (Always visible on mobile, animated on desktop) */}
+                <div className="absolute bottom-3 block md:hidden right-3 md:bottom-4 md:left-4 md:right-4 z-30 flex justify-center opacity-100 translate-y-0 md:opacity-0 md:translate-y-4 md:group-hover:opacity-100 md:group-hover:translate-y-0 transition-all duration-300 ease-out">
+                  <button
+                    onClick={(e) => { 
+                      e.preventDefault(); 
+                      e.stopPropagation(); 
+                      addToCart({
+                        id: `${item.slug}-default`,
+                        slug: item.slug,
+                        name: item.name,
+                        price: item.price,
+                        image: item.image,
+                        quantity: 1,
+                        category: item.category,
+                        variant: "Standard",
+                        bundleLabel: "One item",
+                      });
+                      setCartOpen(true);
+                    }}
+                    className="bg-paper text-ink w-[60px] py-2 p-1 md:py-3 rounded-full font-medium text-xs md:text-sm flex items-center justify-center gap-1.5 md:gap-2 shadow-xl hover:scale-[1.02] active:scale-95 transition-transform cursor-pointer"
+                  >
+                    <ShoppingBag className="w-4 h-4 md:w-[18px] md:h-[18px]" strokeWidth={2} />
+                  </button>
+                </div>
+                <div className="absolute bottom-3 hidden md:block right-3 md:bottom-4 md:left-4 md:right-4 z-30 flex justify-center opacity-100 translate-y-0 md:opacity-0 md:translate-y-4 md:group-hover:opacity-100 md:group-hover:translate-y-0 transition-all duration-300 ease-out">
+                  <button
+                    onClick={(e) => { 
+                      e.preventDefault(); 
+                      e.stopPropagation(); 
+                      addToCart({
+                        id: `${item.slug}-default`,
+                        slug: item.slug,
+                        name: item.name,
+                        price: item.price,
+                        image: item.image,
+                        quantity: 1,
+                        category: item.category,
+                        variant: "Standard",
+                        bundleLabel: "One item",
+                      });
+                      setCartOpen(true);
+                    }}
+                    className="bg-paper text-ink w-full py-2 p-1 md:py-3 rounded-full font-medium text-xs md:text-sm flex items-center justify-center gap-1.5 md:gap-2 shadow-xl hover:scale-[1.02] active:scale-95 transition-transform cursor-pointer"
+                  >
+                    <ShoppingBag className="w-4 h-4 md:w-[18px] md:h-[18px]" strokeWidth={2} />add to bag
+                  </button>
+                </div>
+              </div>
 
               {/* Details below card */}
               <div className="px-0">
