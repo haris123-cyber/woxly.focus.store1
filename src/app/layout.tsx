@@ -9,6 +9,7 @@ import "./globals.css";
 import { CartProvider } from "@/context/CartContext";
 import { Navbar } from "@/components/navbar";
 import { Footer } from "@/components/footer";
+import { WhatsAppWidget } from "@/components/whatsapp-widget";
 
 export const metadata: Metadata = {
   title: "Sol Focus Lamp | Woxly",
@@ -28,6 +29,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         <CartProvider>
           <Navbar />
           {children}
+          <WhatsAppWidget />
           <Footer />
         </CartProvider>
       </body>
