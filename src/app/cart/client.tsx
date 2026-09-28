@@ -13,6 +13,10 @@ export function CartClient() {
   const { items, updateQuantity, removeFromCart, cartQuantity, setCartOpen } = useCart();
   const subtotal = items.reduce((total, item) => total + item.price * item.quantity, 0);
 
+  const freeShippingThreshold = 8000;
+  const progress = Math.min((subtotal / freeShippingThreshold) * 100, 100);
+  const remaining = freeShippingThreshold - subtotal;
+
   useEffect(() => {
     setCartOpen(false);
   }, [setCartOpen]);
@@ -20,7 +24,7 @@ export function CartClient() {
   return (
     <SiteShell>
       <PageHero eyebrow="Your selection" title="Shopping bag" />
-      <section className="max-w-6xl mx-auto px-6 pb-24 w-full flex flex-col lg:flex-row gap-12 lg:gap-24 font-sans items-start">
+      <section className="max-w-6xl mx-auto px-6 pb-5 w-full flex flex-col lg:flex-row gap-12 lg:gap-24 font-sans items-start">
         <div className="flex-1 w-full">
           {cartQuantity === 0 ? (
             <div className="flex flex-col items-center justify-center py-16 text-center border border-line rounded-3xl bg-white">
@@ -33,11 +37,20 @@ export function CartClient() {
             </div>
           ) : (
             <>
-              <div className="bg-sage/20 border border-sage/50 text-forest text-sm font-medium py-3 px-4 rounded-xl flex items-center gap-2 mb-8">
-                <CircleCheck className="w-5 h-5 shrink-0" />
-                <span className="flex-1">You have free delivery</span>
-                <div className="w-24 h-1.5 bg-white rounded-full overflow-hidden shrink-0"><div className="w-full h-full bg-forest rounded-full" /></div>
-              </div>
+              {progress >= 100 ? (
+                <div className="bg-sage/20 border border-sage/50 text-forest text-sm font-medium py-2 px-4 rounded-xl flex items-center gap-2 mb-4">
+                  <CircleCheck className="w-5 h-5 shrink-0" />
+                  <span className="flex-1">You have free delivery</span>
+                  <div className="w-24 h-1.5 bg-white rounded-full overflow-hidden shrink-0"><div className="w-full h-full bg-forest rounded-full" /></div>
+                </div>
+              ) : (
+                <div className="bg-amber/10 border border-amber/20 text-ink text-sm font-medium py-2 px-4 rounded-xl flex items-center gap-2 mb-4">
+                  <span className="flex-1">Add {money(remaining)} for free delivery</span>
+                  <div className="w-24 h-1.5 bg-white rounded-full overflow-hidden shrink-0">
+                    <div className="h-full bg-amber rounded-full transition-all duration-500 ease-out" style={{ width: `${progress}%` }} />
+                  </div>
+                </div>
+              )}
 
               <div className="flex flex-col">
                 {items.map(item => (

@@ -35,88 +35,240 @@ export default function Home() {
 
   return (
     <main className="min-h-screen bg-paper text-ink pb-1">
-      {/* 1. Hero Section (Mobile) */}
-      <section className="relative w-full bg-[#e6e2db] md:hidden">
-        <Image
-          src="/images/mobile-hero-lamp.jpg"
-          alt="Sol Lamp Hero Banner"
-          width={1080}
-          height={1920}
-          className="w-full h-auto block"
-          priority
-          sizes="100vw"
-        />
-      </section>
+      {/* Hero Carousel Section */}
+      <section className="relative w-full h-[80vh] min-h-[500px] md:h-auto md:min-h-0 md:aspect-[3/1] 2xl:max-h-[640px] overflow-hidden group">
 
-      {/* 1. Hero Section (Desktop) */}
-      <section className="hidden md:flex relative flex-col justify-between min-h-[600px] lg:min-h-[700px] xl:min-h-[700px] overflow-hidden bg-[#e6e2db] w-full max-w-[1200px] mx-auto md:mt-6 md:rounded-3xl">
-        {/* Background Image */}
-        <div className="absolute inset-0 z-0">
-          <Image
-            src="/images/image cop1y.png"
-            alt="Sol Lamp"
-            fill
-            className="w-full h-full block object-cover object-center"
-            priority
-            sizes="100vw"
-          />
+        {/* Scrollable Container */}
+        <div className="flex w-full h-full overflow-x-auto snap-x snap-mandatory [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+
+          {/* Slide 1 */}
+          <div className="relative flex-none w-full h-full snap-center bg-[#e6e2db] flex items-end">
+            <Image
+              src="/images/mobile-hero-lamp.jpg"
+              alt="Hero Banner Mobile"
+              fill
+              className="w-full h-full object-cover object-center md:hidden"
+              priority
+              sizes="100vw"
+            />
+            <Image
+              src="/images/image cop1y.png"
+              alt="Hero Banner Desktop"
+              fill
+              className="hidden md:block w-full h-full object-cover object-center"
+              priority
+              sizes="100vw"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent z-10" />
+            <div className="relative z-20 w-full p-6 pb-10 md:p-16 md:pb-16 flex flex-col justify-end">
+              <div className="max-w-2xl text-white">
+                <span className="text-[10px] md:text-sm font-bold tracking-[0.15em] uppercase mb-2 md:mb-4 block drop-shadow-md">
+                  ALL NEW DASHER NZ COLLECTION
+                </span>
+                <h1 className="text-[32px] md:text-6xl font-bold mb-6 md:mb-10 leading-[1.1] drop-shadow-lg">
+                  Wildly Comfortable. <br /> Super Natural.
+                </h1>
+                <div className="flex flex-row gap-3 md:gap-4">
+                  <Link href="/shop" className="flex-1 sm:flex-none bg-white text-ink px-4 py-3 md:px-8 md:py-4 rounded-full font-bold text-[11px] md:text-[13px] tracking-wider uppercase hover:bg-gray-100 transition-colors text-center shadow-lg">
+                    SHOP MEN
+                  </Link>
+                  <Link href="/shop" className="flex-1 sm:flex-none bg-white text-ink px-4 py-3 md:px-8 md:py-4 rounded-full font-bold text-[11px] md:text-[13px] tracking-wider uppercase hover:bg-gray-100 transition-colors text-center shadow-lg">
+                    SHOP WOMEN
+                  </Link>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Slide 2 */}
+          <div className="relative flex-none w-full h-full snap-center bg-black flex items-end">
+            <Image
+              src="/images/ambient_banner.jpg"
+              alt="Ambient Collection"
+              fill
+              className="w-full h-full object-cover object-center"
+              sizes="100vw"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent z-10" />
+            <div className="relative z-20 w-full p-6 pb-10 md:p-16 md:pb-16 flex flex-col justify-end">
+              <div className="max-w-2xl text-white">
+                <span className="text-[10px] md:text-sm font-bold tracking-[0.15em] uppercase mb-2 md:mb-4 block drop-shadow-md">
+                  THE EVERYDAY CLASSIC
+                </span>
+                <h2 className="text-[32px] md:text-6xl font-bold mb-6 md:mb-10 leading-[1.1] drop-shadow-lg">
+                  Elevate Your <br /> Daily Routine.
+                </h2>
+                <div className="flex flex-row gap-3 md:gap-4">
+                  <Link href="/shop" className="flex-1 sm:flex-none bg-white text-ink px-4 py-3 md:px-8 md:py-4 rounded-full font-bold text-[11px] md:text-[13px] tracking-wider uppercase hover:bg-gray-100 transition-colors text-center shadow-lg">
+                    SHOP COLLECTION
+                  </Link>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Slide 3 */}
+          <div className="relative flex-none w-full h-full snap-center bg-forest flex items-end">
+            <Image
+              src="/images/workspace_banner.jpg"
+              alt="Sustainable Collection"
+              fill
+              className="w-full h-full object-cover object-center"
+              sizes="100vw"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent z-10" />
+            <div className="relative z-20 w-full p-6 pb-10 md:p-16 md:pb-16 flex flex-col justify-end">
+              <div className="max-w-2xl text-white">
+                <span className="text-[10px] md:text-sm font-bold tracking-[0.15em] uppercase mb-2 md:mb-4 block drop-shadow-md">
+                  SUSTAINABLE BY DESIGN
+                </span>
+                <h2 className="text-[32px] md:text-6xl font-bold mb-6 md:mb-10 leading-[1.1] drop-shadow-lg">
+                  Tread Lighter. <br /> Go Further.
+                </h2>
+                <div className="flex flex-row gap-3 md:gap-4">
+                  <Link href="/about" className="flex-1 sm:flex-none bg-white text-ink px-4 py-3 md:px-8 md:py-4 rounded-full font-bold text-[11px] md:text-[13px] tracking-wider uppercase hover:bg-gray-100 transition-colors text-center shadow-lg">
+                    LEARN MORE
+                  </Link>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        {/* Swipe indicator (optional visible hint for mobile) */}
+        <div className="absolute bottom-4 left-0 right-0 z-30 flex justify-center gap-2 md:hidden pointer-events-none">
+          <div className="w-1.5 h-1.5 rounded-full bg-white opacity-100"></div>
+          <div className="w-1.5 h-1.5 rounded-full bg-white opacity-40"></div>
+          <div className="w-1.5 h-1.5 rounded-full bg-white opacity-40"></div>
         </div>
       </section>
 
 
       {/* 2. Category Blocks */}
-      <section className="max-w-[1200px] mx-auto py-10 px-6 md:px-12">
-        <div className="flex justify-between items-end mb-12">
+      <section className="max-w-[1200px] mx-auto py-12 px-6 md:px-12">
+        <div className="flex justify-between items-end mb-8 md:mb-12">
           <div>
-            <span className="text-amber text-xs font-semibold tracking-[0.2em] uppercase mb-4 block">Browse by Category</span>
-            <h2 className="text-4xl md:text-5xl font-serif text-ink">Find your ritual.</h2>
+            <h2 className="text-3xl md:text-5xl font-serif text-ink">Shop by Collection</h2>
           </div>
-          <Link href="/shop" className="text-muted text-sm hover:text-ink transition-colors hidden md:block">
-            All categories &rarr;
+          <Link href="/shop" className="text-ink font-medium text-sm hover:opacity-70 transition-opacity hidden md:block underline underline-offset-4">
+            View All
           </Link>
         </div>
 
-        <div className="flex overflow-x-auto snap-x snap-mandatory gap-1 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] h-[500px] md:h-[600px] border-t border-l border-line">
-          <Link href="/shop" className="relative flex-none w-[65vw] sm:w-full md:w-1/3 snap-center group overflow-hidden border-r border-b border-line">
-            <Image src="/images/sol-hero.png" alt="Precision" fill sizes="(max-width: 800px) 100vw, 33vw" className="object-cover  opacity-100 group-hover:opacity-90 transition-opacity duration-700 group-hover:scale-105" />
-            <div className="absolute inset-0 bg-gradient-to-t from-paper/0 via-paper/20 to-transparent"></div>
-            <div className="absolute bottom-8 left-8">
-              <span className="text-amber text-[10px] font-bold tracking-widest uppercase mb-2 block">Precision Lighting</span>
-              <h3 className="text-3xl font-serif text-ink">Desk Lamps</h3>
+        <div className="flex overflow-x-auto snap-x snap-mandatory gap-2 md:gap-6 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] h-[350px] md:h-[650px] pb-4">
+
+          {/* Card 1 */}
+          <div className="relative flex-none w-[55vw] md:flex-1 snap-center group overflow-hidden rounded-[24px]">
+            <Image src="/images/sol-hero.png" alt="Precision Lighting" fill sizes="(max-width: 800px) 100vw, 33vw" className="object-cover group-hover:scale-105 transition-transform duration-700" />
+            <div className="absolute inset-0 bg-black/20 transition-colors duration-500"></div>
+
+            <div className="absolute inset-0 flex items-center justify-center p-8 pointer-events-none">
+              <h3 className="text-3xl md:text-4xl lg:text-5xl font-serif text-white text-center leading-[1.1] drop-shadow-md">Precision<br />Lighting</h3>
             </div>
-          </Link>
-          <Link href="/shop" className="relative flex-none w-[65vw] sm:w-full md:w-1/3 snap-center group overflow-hidden border-r border-b border-line">
-            <Image src="/images/sol-lifestyle.png" alt="Ambient" fill sizes="(max-width: 800px) 100vw, 33vw" className="object-cover opacity-100 group-hover:opacity-90 transition-opacity duration-700 group-hover:scale-105" />
-            <div className="absolute inset-0 bg-gradient-to-t from-paper/0 via-paper/20 to-transparent"></div>
-            <div className="absolute bottom-8 left-8">
-              <span className="text-amber text-[10px] font-bold tracking-widest uppercase mb-2 block">Signature Moods</span>
-              <h3 className="text-3xl font-serif text-ink">Ambient</h3>
+
+            <div className="absolute bottom-8 left-0 right-0 flex justify-center gap-3 px-6">
+              <Link href="/shop?category=desk" className="border border-white/80 text-white px-6 py-2.5 rounded-full font-medium text-[11px] md:text-xs tracking-widest uppercase hover:bg-white hover:text-ink transition-colors backdrop-blur-sm">
+                SHOP DESK LAMPS
+              </Link>
             </div>
-          </Link>
-          <Link href="/shop" className="relative flex-none w-[65vw] sm:w-full md:w-1/3 snap-center group overflow-hidden border-r border-b border-line">
-            <Image src="/images/sol-detail.png" alt="Accessories" fill sizes="(max-width: 800px) 100vw, 33vw" className="object-cover opacity-100 group-hover:opacity-90 transition-opacity duration-700 group-hover:scale-105" />
-            <div className="absolute inset-0 bg-gradient-to-t from-paper/0 via-paper/20 to-transparent"></div>
-            <div className="absolute bottom-8 left-8">
-              <span className="text-amber text-[10px] font-bold tracking-widest uppercase mb-2 block">Targeted Care</span>
-              <h3 className="text-3xl font-serif text-ink">Accessories</h3>
+          </div>
+
+          {/* Card 2 */}
+          <div className="relative flex-none w-[55vw] md:flex-1 snap-center group overflow-hidden rounded-[24px]">
+            <Image src="/images/sol-lifestyle.png" alt="Ambient Collection" fill sizes="(max-width: 800px) 100vw, 33vw" className="object-cover group-hover:scale-105 transition-transform duration-700" />
+            <div className="absolute inset-0 bg-black/20 transition-colors duration-500"></div>
+
+            <div className="absolute inset-0 flex items-center justify-center p-8 pointer-events-none">
+              <h3 className="text-3xl md:text-4xl lg:text-5xl font-serif text-white text-center leading-[1.1] drop-shadow-md">Ambient<br />Glow</h3>
             </div>
-          </Link>
+
+            <div className="absolute bottom-8 left-0 right-0 flex justify-center gap-3 px-6">
+
+              <Link href="/shop?category=table" className="border border-white/80 text-white px-6 py-2.5 rounded-full font-medium text-[11px] md:text-xs tracking-widest uppercase hover:bg-white hover:text-ink transition-colors backdrop-blur-sm">
+                SHOP TABLE
+              </Link>
+            </div>
+          </div>
+
+          {/* Card 3 */}
+          <div className="relative flex-none w-[55vw] md:flex-1 snap-center group overflow-hidden rounded-[24px]">
+            <Image src="/images/sol-detail.png" alt="Accessories" fill sizes="(max-width: 800px) 100vw, 33vw" className="object-cover group-hover:scale-105 transition-transform duration-700" />
+            <div className="absolute inset-0 bg-black/20 transition-colors duration-500"></div>
+
+            <div className="absolute inset-0 flex items-center justify-center p-8 pointer-events-none">
+              <h3 className="text-3xl md:text-4xl lg:text-5xl font-serif text-white text-center leading-[1.1] drop-shadow-md">Essential<br />Accessories</h3>
+            </div>
+
+            <div className="absolute bottom-8 left-0 right-0 flex justify-center gap-3 px-6">
+              <Link href="/shop?category=accessories" className="border border-white/80 text-white px-6 py-2.5 rounded-full font-medium text-[11px] md:text-xs tracking-widest uppercase hover:bg-white hover:text-ink transition-colors backdrop-blur-sm">
+                SHOP ACCESSORIES
+              </Link>
+            </div>
+          </div>
+          {/* Card 4 */}
+          <div className="relative flex-none w-[55vw] md:flex-1 snap-center group overflow-hidden rounded-[24px]">
+            <Image src="/images/sol-detail.png" alt="Accessories" fill sizes="(max-width: 800px) 100vw, 33vw" className="object-cover group-hover:scale-105 transition-transform duration-700" />
+            <div className="absolute inset-0 bg-black/20 transition-colors duration-500"></div>
+
+            <div className="absolute inset-0 flex items-center justify-center p-8 pointer-events-none">
+              <h3 className="text-3xl md:text-4xl lg:text-5xl font-serif text-white text-center leading-[1.1] drop-shadow-md">Essential<br />Accessories</h3>
+            </div>
+
+            <div className="absolute bottom-8 left-0 right-0 flex justify-center gap-3 px-6">
+              <Link href="/shop?category=accessories" className="border border-white/80 text-white px-6 py-2.5 rounded-full font-medium text-[11px] md:text-xs tracking-widest uppercase hover:bg-white hover:text-ink transition-colors backdrop-blur-sm">
+                SHOP ACCESSORIES
+              </Link>
+            </div>
+          </div>
+
         </div>
       </section>
 
-      {/* Banner 1: Workspace */}
+      {/* Banner 1: Product Promotion */}
       <section className="max-w-[1200px] mx-auto w-full px-0 md:px-12 py-5 md:py-24">
-        <div className="relative w-full aspect-square md:aspect-[21/9] bg-line/20 overflow-hidden group">
-          <Image src="/images/workspace_banner.jpg" alt="The Workspace Collection" fill sizes="100vw" className="object-cover group-hover:scale-105 transition-transform duration-1000" />
-          <div className="absolute inset-0 bg-gradient-to-t from-ink/60 via-ink/20 to-transparent pointer-events-none" />
-          <div className="absolute bottom-8 left-8 md:bottom-16 md:left-16 text-white max-w-lg pr-8">
-            <span className="text-amber text-xs font-bold tracking-[0.2em] uppercase mb-4 block drop-shadow-md">The Workspace Collection</span>
-            <h2 className="text-3xl md:text-5xl font-serif mb-4 leading-tight drop-shadow-lg">Where focus finds its form.</h2>
-            <p className="text-white/90 text-sm md:text-base leading-relaxed mb-8 drop-shadow-md">Carefully considered lighting that reduces eye strain and creates a quiet atmosphere for deep work.</p>
-            <Link href="/shop" className="bg-white text-ink px-8 py-3 font-medium text-sm hover:bg-amber hover:text-ink transition-colors drop-shadow-md inline-flex items-center gap-2">
-              Explore the collection <ArrowRight size={16} />
-            </Link>
+        <div className="relative w-full aspect-square md:aspect-[21/9] bg-line/20 overflow-hidden group rounded-none md:rounded-[32px]">
+          <Image src="/images/lamp banner.png" alt="Sol Focus Lamp Details" fill sizes="100vw" className="object-cover group-hover:scale-105 transition-transform duration-1000" />
+
+        </div>
+      </section>
+
+      {/* Highlights / Collections (New Arrivals, Trending, Offers) */}
+      <section className="max-w-[1200px] mx-auto py-12 px-6 md:px-12">
+        <div className="flex justify-between items-end mb-8 md:mb-12">
+          <div>
+            <h2 className="text-3xl md:text-5xl font-serif text-ink">Discover What's New</h2>
           </div>
+        </div>
+
+        <div className="flex gap-4 md:gap-6">
+
+          {/* Left Column */}
+          <div className="flex flex-col gap-4 md:gap-6 flex-1">
+            {/* Card 1: Tall */}
+            <div className="relative group overflow-hidden rounded-[14px] aspect-[5/8]">
+              <Image src="/images/grid2.png" alt="New Arrivals" fill sizes="(max-width: 800px) 50vw, 50vw" className="object-cover group-hover:scale-105 transition-transform duration-700" />
+            </div>
+
+            {/* Card 3: Square */}
+            <div className="relative group overflow-hidden rounded-[14px] aspect-square">
+              <Image src="/images/grid1.png" alt="Special Offers" fill sizes="(max-width: 800px) 50vw, 50vw" className="object-cover group-hover:scale-105 transition-transform duration-700" />
+            </div>
+          </div>
+
+          {/* Right Column */}
+          <div className="flex flex-col gap-4 md:gap-6 flex-1">
+            {/* Card 2: Square */}
+            <div className="relative group overflow-hidden rounded-[14px] aspect-square">
+              <Image src="/images/grid3.png" alt="Trending" fill sizes="(max-width: 800px) 50vw, 50vw" className="object-cover group-hover:scale-105 transition-transform duration-700" />
+            </div>
+
+            {/* Card 4: Tall */}
+            <div className="relative group overflow-hidden rounded-[14px] aspect-[5/8]">
+              <Image src="/images/grid4.png" alt="Best Sellers" fill sizes="(max-width: 800px) 50vw, 50vw" className="object-cover group-hover:scale-105 transition-transform duration-700" />
+            </div>
+          </div>
+
         </div>
       </section>
 
@@ -131,7 +283,7 @@ export default function Home() {
         </div>
 
         <div className="grid grid-cols-2 md:grid-cols-3 gap-2 md:gap-8">
-          {filteredCatalog.map((item, i) => (
+          {filteredCatalog.slice(0, 4).map((item, i) => (
             <div key={item.slug} className="group">
               {/* Image Container with Hover Group */}
               <div className="relative mb-2 aspect-[4/5] bg-sage/10 shadow-sm border border-line group overflow-hidden block">
@@ -158,9 +310,9 @@ export default function Home() {
                 {/* Animated Bag Button (Always visible on mobile, animated on desktop) */}
                 <div className="absolute bottom-3 block md:hidden right-3 md:bottom-4 md:left-4 md:right-4 z-30 flex justify-center opacity-100 translate-y-0 md:opacity-0 md:translate-y-4 md:group-hover:opacity-100 md:group-hover:translate-y-0 transition-all duration-300 ease-out">
                   <button
-                    onClick={(e) => { 
-                      e.preventDefault(); 
-                      e.stopPropagation(); 
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
                       addToCart({
                         id: `${item.slug}-default`,
                         slug: item.slug,
@@ -181,9 +333,9 @@ export default function Home() {
                 </div>
                 <div className="absolute bottom-3 hidden md:block right-3 md:bottom-4 md:left-4 md:right-4 z-30 flex justify-center opacity-100 translate-y-0 md:opacity-0 md:translate-y-4 md:group-hover:opacity-100 md:group-hover:translate-y-0 transition-all duration-300 ease-out">
                   <button
-                    onClick={(e) => { 
-                      e.preventDefault(); 
-                      e.stopPropagation(); 
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
                       addToCart({
                         id: `${item.slug}-default`,
                         slug: item.slug,
@@ -229,7 +381,11 @@ export default function Home() {
 
         </div>
 
-
+        <div className="mt-6 flex justify-center">
+          <Link href="/shop" className="border border-ink text-ink hover:bg-ink hover:text-white px-4 py-1 rounded-full font-medium text-[9px] md:text-xs transition-colors uppercase tracking-[0.15em]">
+            View All Products
+          </Link>
+        </div>
       </section>
 
       {/* Banner 2: Sustainability Split */}
@@ -251,16 +407,8 @@ export default function Home() {
 
       {/* Banner 3: Ambient Full Width */}
       <section className="relative w-full min-h-[500px] md:min-h-[700px] flex items-center justify-center overflow-hidden">
-        <Image src="/images/ambient_banner.jpg" alt="Ambient Lighting Nook" fill sizes="100vw" className="object-cover" />
-        <div className="absolute inset-0 bg-ink/40 pointer-events-none" />
-        <div className="relative z-10 text-center px-6 max-w-2xl">
-          <span className="text-amber text-xs font-bold tracking-[0.2em] uppercase mb-4 block drop-shadow-md">The Evening Ritual</span>
-          <h2 className="text-4xl md:text-6xl font-serif text-white mb-6 leading-tight drop-shadow-lg">Slow down your space.</h2>
-          <p className="text-white/90 text-lg md:text-xl leading-relaxed mb-10 drop-shadow-md">Warm, diffused light that signals the end of the workday and the beginning of your time.</p>
-          <Link href="/shop" className="bg-amber text-ink px-8 py-4 font-medium text-sm hover:bg-white hover:text-ink transition-colors drop-shadow-md inline-block">
-            Shop Ambient Lamps
-          </Link>
-        </div>
+        <Image src="/images/lamp banner2.png" alt="Ambient Lighting Nook" fill sizes="100vw" className="object-cover" />
+
       </section>
 
       {/* Newsletter */}

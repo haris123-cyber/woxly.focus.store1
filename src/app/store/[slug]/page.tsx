@@ -203,11 +203,12 @@ export default function Storefront({ params }: { params: Promise<{ slug: string 
                 </div>
               </div>
             )}
-          </div>
-          <div className="flex items-center gap-3 py-3 mb-0 pb-5 border-b border-line">
-            <p className="flex items-center bg-white border border-green-200 py-1 px-3 rounded-full gap-1 text-sm text-[green] m-0 font-medium">
+            <p className="flex items-center ml-auto bg-white border border-green-200 py-1 px-3 rounded-full gap-1 text-sm text-[green] m-0 font-medium">
               <CircleCheck size={16} className="text-[green]" /> In stock
             </p>
+          </div>
+          <div className="flex items-center gap-3 py-3 mb-0 pb-5 border-b border-line">
+
             {product.urgencyMessage && (
               <div className="bg-sage text-forest ml-auto px-4 py-2 rounded-full text-xs font-bold flex items-center gap-1.5 shadow-sm border border-forest/20 animate-pulse">
                 <Flame size={14} className="fill-current text-red-600" /> {product.urgencyMessage}
