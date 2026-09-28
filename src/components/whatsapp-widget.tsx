@@ -1,6 +1,12 @@
+"use client";
+
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 
 export function WhatsAppWidget() {
+  const pathname = usePathname();
+  if (pathname.startsWith('/store')) return null;
+
   return (
     <Link
       href="https://wa.me/1234567890" // Placeholder WhatsApp number - user can update this

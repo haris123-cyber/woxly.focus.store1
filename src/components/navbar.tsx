@@ -16,6 +16,7 @@ export function Navbar() {
   const subtotal = items.reduce((total, item) => total + item.price * item.quantity, 0);
   const pathname = usePathname();
   const isHome = pathname === "/";
+  const isStore = pathname.startsWith("/store");
 
   return (
     <>
@@ -25,59 +26,59 @@ export function Navbar() {
         <button className="text-white hover:opacity-70 transition-opacity"><ChevronRight size={16} /></button>
       </div>
 
-      <div className={`sticky top-0 w-full z-[100] ${isHome ? 'h-0' : 'h-[70px] md:h-[80px]'}`}>
-        <header className="absolute top-0 w-full px-4 py-3 pointer-events-none">
-          <div className="bg-white rounded-full max-w-[1200px] mx-auto w-full px-5 py-3 md:py-4 flex justify-between items-center shadow-md pointer-events-auto">
-          {/* Mobile Left: Menu */}
-          <div className="md:hidden flex items-center justify-start flex-1">
-            <button className="flex items-center justify-center w-8 h-8 rounded-full hover:bg-line/50 transition-colors text-ink" onClick={() => { setMenuOpen(true); }} aria-label="Open menu">
-              <Menu size={22} className="pointer-events-none" />
-            </button>
-          </div>
+      <div className={`${isStore ? 'relative' : 'sticky'} top-0 w-full z-[100] ${isHome ? 'h-0' : 'h-[70px] md:h-[80px]'}`}>
+        <header className={`absolute top-0 w-full pointer-events-none ${isStore ? '' : 'px-4 py-3'}`}>
+          <div className={`mx-auto w-full flex justify-between items-center pointer-events-auto ${isStore ? 'px-6 py-4 md:py-5 bg-paper' : 'max-w-[1200px] bg-white rounded-full px-5 py-3 md:py-4 shadow-md'}`}>
+            {/* Mobile Left: Menu */}
+            <div className="md:hidden flex items-center justify-start flex-1">
+              <button className="flex items-center justify-center w-8 h-8 rounded-full hover:bg-line/50 transition-colors text-ink" onClick={() => { setMenuOpen(true); }} aria-label="Open menu">
+                <Menu size={22} className="pointer-events-none" />
+              </button>
+            </div>
 
-          {/* Desktop Left: Logo */}
-          <div className="hidden md:flex items-center flex-1">
-            <Logo />
-          </div>
-
-          {/* Center: Mobile Logo / Desktop Links */}
-          <div className="flex justify-center items-center">
-            <div className="md:hidden flex justify-center">
+            {/* Desktop Left: Logo */}
+            <div className="hidden md:flex items-center flex-1">
               <Logo />
             </div>
-            <nav className="hidden md:flex items-center gap-8 text-sm font-medium text-ink" aria-label="Main navigation">
-              <Link href="/" className="hover:text-muted transition-colors">Home</Link>
-              <Link href="/shop" className="hover:text-muted transition-colors">Shop</Link>
-              <Link href="/blog" className="hover:text-muted transition-colors">Blog</Link>
-              <Link href="/contact" className="hover:text-muted transition-colors">Support</Link>
-            </nav>
+
+            {/* Center: Mobile Logo / Desktop Links */}
+            <div className="flex justify-center items-center">
+              <div className="md:hidden flex justify-center">
+                <Logo />
+              </div>
+              <nav className="hidden md:flex items-center gap-8 text-sm font-medium text-ink" aria-label="Main navigation">
+                <Link href="/" className="hover:text-muted transition-colors">Home</Link>
+                <Link href="/shop" className="hover:text-muted transition-colors">Shop</Link>
+                <Link href="/blog" className="hover:text-muted transition-colors">Blog</Link>
+                <Link href="/contact" className="hover:text-muted transition-colors">Support</Link>
+              </nav>
+            </div>
+
+            {/* Right: Icons */}
+            <div className="flex items-center justify-end gap-4 flex-1 text-ink">
+              <button aria-label="Search" className="hover:opacity-70 transition-opacity">
+                <Search size={20} />
+              </button>
+
+              {/* Desktop Account Icon */}
+              <Link href="/account" className="hidden md:flex items-center hover:opacity-70 transition-opacity" aria-label="Account">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" /><circle cx="12" cy="7" r="4" /></svg>
+              </Link>
+
+              {/* Desktop Cart Button */}
+              <button className="hidden md:flex items-center hover:opacity-70 transition-opacity relative" onClick={() => { setCartOpen(true); }} aria-label={`Open cart with ${cartQuantity} items`}>
+                <ShoppingBag size={20} />
+                {cartQuantity > 0 && <b className="absolute -top-2 -right-2 bg-ink text-white text-[10px] h-4 min-w-[16px] rounded-full flex items-center justify-center px-1 font-bold pointer-events-none leading-none">{cartQuantity}</b>}
+              </button>
+
+              {/* Mobile Cart Link */}
+              <Link href="/cart" onClick={() => { setCartOpen(false); setMenuOpen(false); }} className="md:hidden flex items-center hover:opacity-70 transition-opacity relative" aria-label={`View cart with ${cartQuantity} items`}>
+                <ShoppingBag size={20} />
+                {cartQuantity > 0 && <b className="absolute -top-2 -right-2 bg-ink text-white text-[10px] h-4 min-w-[16px] rounded-full flex items-center justify-center px-1 font-bold pointer-events-none leading-none">{cartQuantity}</b>}
+              </Link>
+            </div>
           </div>
-
-          {/* Right: Icons */}
-          <div className="flex items-center justify-end gap-4 flex-1 text-ink">
-            <button aria-label="Search" className="hover:opacity-70 transition-opacity">
-              <Search size={20} />
-            </button>
-
-            {/* Desktop Account Icon */}
-            <Link href="/account" className="hidden md:flex items-center hover:opacity-70 transition-opacity" aria-label="Account">
-              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" /><circle cx="12" cy="7" r="4" /></svg>
-            </Link>
-
-            {/* Desktop Cart Button */}
-            <button className="hidden md:flex items-center hover:opacity-70 transition-opacity relative" onClick={() => { setCartOpen(true); }} aria-label={`Open cart with ${cartQuantity} items`}>
-              <ShoppingBag size={20} />
-              {cartQuantity > 0 && <b className="absolute -top-2 -right-2 bg-ink text-white text-[10px] h-4 min-w-[16px] rounded-full flex items-center justify-center px-1 font-bold pointer-events-none leading-none">{cartQuantity}</b>}
-            </button>
-
-            {/* Mobile Cart Link */}
-            <Link href="/cart" onClick={() => { setCartOpen(false); setMenuOpen(false); }} className="md:hidden flex items-center hover:opacity-70 transition-opacity relative" aria-label={`View cart with ${cartQuantity} items`}>
-              <ShoppingBag size={20} />
-              {cartQuantity > 0 && <b className="absolute -top-2 -right-2 bg-ink text-white text-[10px] h-4 min-w-[16px] rounded-full flex items-center justify-center px-1 font-bold pointer-events-none leading-none">{cartQuantity}</b>}
-            </Link>
-          </div>
-        </div>
-      </header>
+        </header>
       </div>
 
       {/* Cart Drawer & Overlay (Desktop only) */}

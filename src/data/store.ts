@@ -201,7 +201,7 @@ export const reviews = [
     meta: "Verified buyer",
     rating: 4,
     date: "3 weeks ago",
-    images: ["/images/pr.jpg", "/images/sol-lifestyle.png"],
+    images: ["/images/lamp-bulb-pro.jpg", "/images/sol-lifestyle.png"],
     helpfulCount: 5,
     unhelpfulCount: 1
   },
