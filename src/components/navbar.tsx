@@ -49,16 +49,16 @@ export function Navbar() {
               <nav className="hidden md:flex items-center gap-8 text-sm font-medium text-ink" aria-label="Main navigation">
                 <Link href="/" className="hover:text-muted transition-colors">Home</Link>
                 <Link href="/shop" className="hover:text-muted transition-colors">Shop</Link>
-                <Link href="/blog" className="hover:text-muted transition-colors">Blog</Link>
+                <Link href="/account/orders" className="hover:text-muted transition-colors">Order</Link>
                 <Link href="/contact" className="hover:text-muted transition-colors">Support</Link>
               </nav>
             </div>
 
             {/* Right: Icons */}
             <div className="flex items-center justify-end gap-4 flex-1 text-ink">
-              <button aria-label="Search" className="hover:opacity-70 transition-opacity">
+              <Link href="/search" aria-label="Search" className="hover:opacity-70 transition-opacity">
                 <Search size={20} />
-              </button>
+              </Link>
 
               {/* Desktop Account Icon */}
               <Link href="/account" className="hidden md:flex items-center hover:opacity-70 transition-opacity" aria-label="Account">
@@ -149,7 +149,7 @@ export function Navbar() {
           <button onClick={() => setMenuOpen(false)} className="w-10 h-10 rounded-full flex items-center justify-center hover:bg-line/50 transition-colors text-ink"><X size={20} /></button>
         </div>
         <nav className="flex flex-col px-6 py-8 gap-6 flex-1">
-          {[["Home", "/"], ["Shop", "/shop"], ["Blog", "/blog"], ["Support", "/contact"], ["Account", "/account"]].map(([label, href]) => (
+          {[["Home", "/"], ["Shop", "/shop"], ["Order", "/account/orders"], ["Support", "/contact"], ["Account", "/account"]].map(([label, href]) => (
             <Link key={label} href={href} onClick={() => setMenuOpen(false)} className="font-serif text-3xl text-ink flex items-center justify-between border-b border-line pb-4">
               {label} <ArrowRight className="text-muted" />
             </Link>

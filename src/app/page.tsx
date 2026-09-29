@@ -298,8 +298,8 @@ export default function Home() {
                     </span>
                   )}
                   {item.compareAt && item.compareAt > item.price && (
-                    <span className="bg-[green] text-white px-2 py-1 text-[10px] font-bold tracking-widest uppercase">
-                      OFF
+                    <span className="bg-[#7a2e2e] text-amber px-2 py-1 text-[10px] font-bold tracking-widest uppercase shadow-sm">
+                      Offer
                     </span>
                   )}
                 </div>

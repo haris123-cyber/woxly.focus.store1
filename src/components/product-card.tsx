@@ -23,11 +23,18 @@ export function ProductCard({ product }: { product: CardProduct }) {
             className="object-cover transition-transform duration-700 group-hover:scale-105"
           />
         </Link>
-        {product.badge && (
-          <span className="absolute top-4 left-4 bg-white text-ink text-[11px] font-bold uppercase tracking-wider px-2 py-1 rounded-sm shadow-sm">
-            {product.badge}
-          </span>
-        )}
+        <div className="absolute top-4 left-4 flex flex-col gap-2 items-start pointer-events-none z-10">
+          {product.badge && (
+            <span className="bg-white text-ink text-[11px] font-bold uppercase tracking-wider px-2 py-1 rounded-sm shadow-sm">
+              {product.badge}
+            </span>
+          )}
+          {product.compareAt && product.compareAt > product.price && (
+            <span className="bg-[#7a2e2e] text-amber text-[11px] font-bold uppercase tracking-wider px-2 py-1 rounded-sm shadow-sm">
+              Offer
+            </span>
+          )}
+        </div>
         <button
           aria-label={`Save ${product.name}`}
           onClick={(e) => { e.preventDefault(); toggleWishlist(product.slug); }}
