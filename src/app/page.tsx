@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowDown, ArrowRight, Check, ShoppingBag } from "lucide-react";
+import { ArrowDown, ArrowRight, Check, ShoppingBag, BadgePercent } from "lucide-react";
 import { catalog } from "@/data/catalog";
 import { useCart } from "@/context/CartContext";
 
@@ -297,12 +297,19 @@ export default function Home() {
                       {item.badge === "Most popular" ? "Bestseller" : item.badge === "Best value" ? "Sale" : "New"}
                     </span>
                   )}
-                  {item.compareAt && item.compareAt > item.price && (
-                    <span className="bg-[#7a2e2e] text-amber px-2 py-1 text-[10px] font-bold tracking-widest uppercase shadow-sm">
-                      Offer
-                    </span>
-                  )}
                 </div>
+                {item.compareAt && item.compareAt > item.price && (
+                  <div
+                    className="absolute top-0 right-6 sm:w-10 sm:h-[72px] w-9 h-[68px] bg-[#7a2e2e] pointer-events-none z-20 flex flex-col items-center pt-1.5 sm:pt-2"
+                    style={{ clipPath: 'polygon(0 0, 100% 0, 100% 100%, 50% 80%, 0 100%)' }}
+                  >
+                    <BadgePercent size={15} className="text-white mb-1" strokeWidth={2.5} />
+                    <span className="text-white text-[10px]  sm:text-[11px] font-bold flex flex-col items-center leading-none">
+                      <span>{Math.round(((item.compareAt - item.price) / item.compareAt) * 100)}%</span>
+                      <span className="text-[7px] sm:text-[8px] mt-[1px]">OFF</span>
+                    </span>
+                  </div>
+                )}
 
                 {/* Main Content Area */}
                 <Image src={item.image} alt={item.name} fill sizes="(max-width: 800px) 100vw, 33vw" className="object-cover drop-shadow-sm group-hover:scale-105 transition-transform duration-700 pointer-events-none" />

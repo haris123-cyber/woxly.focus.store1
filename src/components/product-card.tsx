@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowDown, Heart } from "lucide-react";
+import { ArrowDown, Heart, BadgePercent } from "lucide-react";
 import { useCart } from "@/context/CartContext";
 
 type CardProduct = { slug: string; name: string; category: string; price: number; compareAt?: number; image: string; badge?: string };
@@ -29,16 +29,23 @@ export function ProductCard({ product }: { product: CardProduct }) {
               {product.badge}
             </span>
           )}
-          {product.compareAt && product.compareAt > product.price && (
-            <span className="bg-[#7a2e2e] text-amber text-[11px] font-bold uppercase tracking-wider px-2 py-1 rounded-sm shadow-sm">
-              Offer
-            </span>
-          )}
         </div>
+        {product.compareAt && product.compareAt > product.price && (
+          <div
+            className="absolute top-0 right-6 sm:right-4 sm:w-10 sm:h-[72px] w-9 h-[68px] bg-[#7a2e2e] pointer-events-none z-10 flex flex-col items-center pt-1.5 sm:pt-2"
+            style={{ clipPath: 'polygon(0 0, 100% 0, 100% 100%, 50% 80%, 0 100%)' }}
+          >
+            <BadgePercent size={15} className="text-white mb-1" strokeWidth={2.5} />
+            <span className="text-white text-[10px] sm:text-[11px] font-bold flex flex-col items-center leading-none">
+              <span>{Math.round(((product.compareAt - product.price) / product.compareAt) * 100)}%</span>
+              <span className="text-[7px] sm:text-[8px] mt-[1px]">OFF</span>
+            </span>
+          </div>
+        )}
         <button
           aria-label={`Save ${product.name}`}
           onClick={(e) => { e.preventDefault(); toggleWishlist(product.slug); }}
-          className={`absolute z-20 top-4 right-4 w-9 h-9 backdrop-blur-sm rounded-full flex items-center justify-center transition-all duration-300 hover:bg-white hover:text-amber ${isWishlisted ? 'bg-white text-amber opacity-100 translate-y-0' : 'bg-white/80 text-ink opacity-100 translate-y-0 md:opacity-0 md:translate-y-2 md:group-hover:opacity-100 md:group-hover:translate-y-0'}`}
+          className={`absolute z-20 bottom-4 right-4 w-9 h-9 backdrop-blur-sm rounded-full flex items-center justify-center transition-all duration-300 hover:bg-white hover:text-amber ${isWishlisted ? 'bg-white text-amber opacity-100 translate-y-0' : 'bg-white/80 text-ink opacity-100 translate-y-0 md:opacity-0 md:translate-y-2 md:group-hover:opacity-100 md:group-hover:translate-y-0'}`}
         >
           <Heart className={`w-4 h-4 ${isWishlisted ? 'fill-current' : ''}`} />
         </button>

@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight, Check, Menu, Minus, Plus, ShieldCheck, ShoppingBag, X, Search, ChevronLeft, ChevronRight } from "lucide-react";
+import { ArrowRight, Check, Menu, Minus, Plus, ShieldCheck, ShoppingBag, X, Search, ChevronLeft, ChevronRight, Home, Store, Package, Headphones, User } from "lucide-react";
 import { product } from "@/data/store";
 import { Logo } from "./logo";
 import { useCart } from "@/context/CartContext";
@@ -149,9 +149,19 @@ export function Navbar() {
           <button onClick={() => setMenuOpen(false)} className="w-10 h-10 rounded-full flex items-center justify-center hover:bg-line/50 transition-colors text-ink"><X size={20} /></button>
         </div>
         <nav className="flex flex-col px-6 py-8 gap-6 flex-1">
-          {[["Home", "/"], ["Shop", "/shop"], ["Order", "/account/orders"], ["Support", "/contact"], ["Account", "/account"]].map(([label, href]) => (
-            <Link key={label} href={href} onClick={() => setMenuOpen(false)} className="font-serif text-3xl text-ink flex items-center justify-between border-b border-line pb-4">
-              {label} <ArrowRight className="text-muted" />
+          {[
+            { label: "Home", href: "/", Icon: Home },
+            { label: "Shop", href: "/shop", Icon: Store },
+            { label: "Order", href: "/account/orders", Icon: Package },
+            { label: "Support", href: "/contact", Icon: Headphones },
+            { label: "Account", href: "/account", Icon: User }
+          ].map(({ label, href, Icon }) => (
+            <Link key={label} href={href} onClick={() => setMenuOpen(false)} className="font-serif text-3xl text-ink flex items-center justify-between  pb-4">
+              <span className="flex items-center gap-4">
+                <Icon size={28} className="text-muted" strokeWidth={1.5} />
+                {label}
+              </span>
+              <ArrowRight className="text-muted" />
             </Link>
           ))}
         </nav>
