@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { useEffect, useMemo, useRef, useState, use } from "react";
-import { ArrowDown, ArrowRight, BatteryCharging, Check, ChevronDown, CircleCheck, Eye, Headphones, PackageCheck, ShieldCheck, SlidersHorizontal, Truck, X, Heart, Flame, WashingMachine } from "lucide-react";
+import { ArrowDown, ArrowRight, BatteryCharging, Check, ChevronDown, CircleCheck, Eye, Headphones, PackageCheck, ShieldCheck, SlidersHorizontal, Truck, X, Heart, Flame, WashingMachine, BadgePercent, Tag, Ticket } from "lucide-react";
 import { faqs, productsMap, reviews } from "@/data/store";
 import { useCart } from "@/context/CartContext";
 import { notFound, useRouter } from "next/navigation";
@@ -217,7 +217,43 @@ export default function Storefront({ params }: { params: Promise<{ slug: string 
             )}
           </div>
 
-          <div className="mb-10 mt-10">
+          {/* Offers */}
+          <div className="flex flex-col gap-4 mt-6 mb-2">
+            {/* 1. Scalloped coupon */}
+            <div className="relative bg-[#1C5A34]/100 p-1.5 overflow-hidden rounded-sm">
+              <div className="absolute top-1/2 -left-[12px] -translate-y-1/2 w-6 h-6 bg-paper rounded-full z-10"></div>
+              <div className="absolute top-1/2 -right-[12px] -translate-y-1/2 w-6 h-6 bg-paper rounded-full z-10"></div>
+
+              <div className="border border-dashed border-[#a3885c] flex items-center justify-between p-2 relative z-0">
+                <div className="flex flex-col">
+                  <strong className="text-[11px] ml-5 tracking-[0.2em] uppercase text-white font-bold mb-1">Bank Offer</strong>
+                  <span className="text-[13px] ml-5 text-white font-medium">10% off on HDFC cards</span>
+                </div>
+                <div className="flex flex-col items-end">
+                  <span className="text-2xl font-serif text-white mr-5">10% off</span>
+                  <span className="text-[9px] tracking-widest uppercase text-white mt-0.5 mr-5">Code HDFC10</span>
+                </div>
+              </div>
+            </div>
+
+            {/* 2. Stamp ticket */}
+            <div className="bg-[#f5f1ea]/120 rounded-2xl p-2 flex items-center gap-4">
+              <div className="w-[60px] h-[60px] ml-5 rounded-full border border-[#b29f79] flex items-center justify-center p-1 shrink-0 bg-white">
+                <div className="w-full h-full   rounded-full border border-dashed border-[#b29f79] flex flex-col items-center justify-center pt-0.5">
+                  <span className="text-xl   font-serif font-bold text-[#053765] leading-none">15%</span>
+                  <span className="text-[9px]  tracking-widest text-[#a3885c] mt-0.5 font-bold">OFF</span>
+                </div>
+              </div>
+              <div className="flex flex-col gap-1">
+                <strong className="text-[11px] tracking-[0.15em] uppercase text-[#053765] font-bold">First Order</strong>
+                <span className="text-[13px] text-ink/90 font-medium">
+                  Extra 15% off. Code <span className="border-b border-[#a3885c] text-[#053765] pb-[1px] font-semibold">WELCOME15</span>
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <div className="mb-10 mt-6">
 
             <div className="flex justify-between items-end mb-4 mt-6">
               <span className="text-sm font-semibold tracking-widest uppercase text-muted">Colour</span>
